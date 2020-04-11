@@ -1,0 +1,7 @@
+actions:
+  test:
+    run: "bundle exec rspec"
+    alias: t
+  test-watch:
+    run: "bundle exec rerun -x -- rspec"
+    alias: tw
