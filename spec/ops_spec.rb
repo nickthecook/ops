@@ -41,6 +41,11 @@ RSpec.describe Ops do
 			expect(Kernel).to receive(:exec).with(action_string)
 			result
 		end
+
+		it "loads ops.yml" do
+			expect(YAML).to receive(:load_file).with("ops.yml")
+			result
+		end
 	end
 end
 

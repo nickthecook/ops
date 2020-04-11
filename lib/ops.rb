@@ -33,6 +33,10 @@ class Ops
 		config["actions"]
 	end
 
+	def deps
+		config["deps"]
+	end
+
 	def config
 		@config ||= YAML.load_file(CONFIG_FILE)
 	end
