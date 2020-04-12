@@ -11,12 +11,16 @@ require_rel "builtins"
 class Ops
 	CONFIG_FILE = "ops.yml"
 
+	INVALID_SYNTAX_EXIT_CODE = 1
+
 	def initialize(argv)
 		@action_name = argv[0]
 		@args = argv[1..-1]
 	end
 
 	def run
+		exit(INVALID_SYNTAX_EXIT_CODE) unless syntax_valid?
+
 		return builtin.run if builtin
 
 		puts "Running '#{action}' from #{CONFIG_FILE}..."
@@ -24,6 +28,15 @@ class Ops
 	end
 
 	private
+
+	def syntax_valid?
+		if @action_name.nil?
+			puts "Usage: ops <action>"
+			false
+		else
+			true
+		end
+	end
 
 	def builtin
 		@builtin ||= Builtins.const_get(builtin_class_name).new(@args, config)
