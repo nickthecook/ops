@@ -20,6 +20,7 @@ module Builtins
 				# TODO: output to stderr
 				puts "File '#{OPS_YML} exists; not initializing."
 			else
+				puts "Creating '#{OPS_YML} from template..."
 				FileUtils.cp(OPS_YML_TEMPLATE, OPS_YML)
 			end
 		end

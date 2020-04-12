@@ -5,7 +5,7 @@ dependencies:
     # - docker
     # - curl
 actions:
-  server:
+  start:
     command: docker-compose up -d
   stop:
     command: docker-compose down
