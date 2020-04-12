@@ -12,6 +12,7 @@ Gem::Specification.new do |s|
 		'Gemfile',
 		'bin/*',
 		'lib/*',
+		'etc/*',
 		'lib/builtins/*',
 		'lib/dependencies/*'
 	]

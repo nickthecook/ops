@@ -33,6 +33,7 @@ module Builtins
 
 			names.map { |name| dependency_class.new(name) }
 		rescue NameError
+			# TODO: output to stderr
 			puts "No way to install dependencies of type '#{type}; ignoring."
 		end
 

@@ -23,6 +23,7 @@ class Ops
 
 		return builtin.run if builtin
 
+		# TODO: output to stderr
 		puts "Running '#{action}' from #{CONFIG_FILE}..."
 		action.run
 	end
@@ -31,6 +32,7 @@ class Ops
 
 	def syntax_valid?
 		if @action_name.nil?
+			# TODO: output to stderr
 			puts "Usage: ops <action>"
 			false
 		else
@@ -67,6 +69,8 @@ class Ops
 
 	def config
 		@config ||= YAML.load_file(CONFIG_FILE)
+	rescue StandardError
+		{}
 	end
 end
 

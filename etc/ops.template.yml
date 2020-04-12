@@ -1,0 +1,12 @@
+dependencies:
+  # e.g.
+  # brew:
+    # - docker
+    # - curl
+actions:
+  test:
+    command: "bundle exec rspec"
+    alias: t
+  test-watch:
+    command: "bundle exec rerun -x -- rspec"
+    alias: tw
