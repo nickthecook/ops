@@ -1,7 +1,10 @@
+dependencies:
+  brew:
+    - docker
 actions:
   test:
-    run: "bundle exec rspec"
+    command: "bundle exec rspec"
     alias: t
   test-watch:
-    run: "bundle exec rerun -x -- rspec"
+    command: "bundle exec rerun -x -- rspec"
     alias: tw

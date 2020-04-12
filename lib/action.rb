@@ -8,8 +8,11 @@ class Action
 		@args = args
 	end
 
+	def run
+		Kernel.exec(to_s)
+	end
+
 	def to_s
 		"#{@command} #{@args.join(' ')}"
 	end
 end
-
