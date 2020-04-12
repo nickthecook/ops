@@ -1,12 +1,11 @@
 dependencies:
   # e.g.
   # brew:
+    # - docker-compose
     # - docker
     # - curl
 actions:
-  test:
-    command: "bundle exec rspec"
-    alias: t
-  test-watch:
-    command: "bundle exec rerun -x -- rspec"
-    alias: tw
+  server:
+    command: docker-compose up -d
+  stop:
+    command: docker-compose down
