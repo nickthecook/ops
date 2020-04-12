@@ -18,7 +18,12 @@ module Builtins
 			# we probably need a DependencyInstaller to do this, and Up calls it
 			# but this can wait until Up has more than one thing to do
 			dependencies.each do |dependency|
-				dependency.install unless dependency.installed?
+				if dependency.installed?
+					puts "Package #{dependency.name} already installed; skipping..."
+				else
+					puts "Installing package '#{dependency.name}..."
+					dependency.install
+				end
 			end
 		end
 
