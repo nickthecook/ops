@@ -3,6 +3,8 @@ dependencies:
     - docker
   docker:
     - pebble
+  custom:
+    - bundle install --quiet
 actions:
   test:
     command: "bundle exec rspec"
