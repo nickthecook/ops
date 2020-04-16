@@ -21,12 +21,20 @@ RSpec.describe Builtins::Up do
 	describe "#run" do
 		let(:result) { subject.run }
 		let(:dependency_class_double) { class_double(Dependency) }
-		let(:dependency_double) { instance_double(Dependency, installed?: installed?, install: true) }
-		let(:installed?) { false }
+		let(:dependency_double) do
+			instance_double(Dependency, met?: met?, meet: true, name: "dep_double", type: "apk")
+		end
+		let(:met?) { false }
 
 		before do
 			allow(Dependencies).to receive(:const_get).and_return(dependency_class_double)
 			allow(dependency_class_double).to receive(:new).and_return(dependency_double)
+			allow(dependency_double)
+		end
+
+		it "Looks for a class to handle the dependency" do
+			expect(Dependencies).to receive(:const_get).with(:Apk)
+			result
 		end
 
 		it "creates a Dependency for each dependency in config" do
@@ -34,21 +42,21 @@ RSpec.describe Builtins::Up do
 			result
 		end
 
-		it "checks if the dependency is installed" do
-			expect(dependency_double).to receive(:installed?)
+		it "checks if the dependency is met" do
+			expect(dependency_double).to receive(:met?)
 			result
 		end
 
-		it "installs the dependency" do
-			expect(dependency_double).to receive(:install)
+		it "meets the dependency" do
+			expect(dependency_double).to receive(:meet)
 			result
 		end
 
-		context "dependency already installed" do
-			let(:installed?) { true }
+		context "dependency already met" do
+			let(:met?) { true }
 
-			it "does not install the dependency" do
-				expect(dependency_double).not_to receive(:install)
+			it "does not meet the dependency" do
+				expect(dependency_double).not_to receive(:meet)
 				result
 			end
 		end

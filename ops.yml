@@ -1,10 +1,12 @@
 dependencies:
   brew:
     - docker
+  docker:
+    - pebble
 actions:
   test:
     command: "bundle exec rspec"
     alias: t
-  test-watch:
+  tw:
     command: "bundle exec rerun -x -- rspec"
     alias: tw

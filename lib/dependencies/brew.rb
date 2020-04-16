@@ -4,11 +4,11 @@ require_relative "../dependency"
 
 module Dependencies
 	class Brew < Dependency
-		def installed?
+		def met?
 			`brew list #{name}`
 		end
 
-		def install
+		def meet
 			`brew install #{name}`
 		end
 	end

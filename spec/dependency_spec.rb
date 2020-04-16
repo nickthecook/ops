@@ -8,15 +8,15 @@ RSpec.describe Dependency do
 	subject { described_class.new(name) }
 	let(:name) { "some-dependency" }
 
-	describe "#installed?" do
+	describe "#met?" do
 		it "raises an error" do
-			expect { subject.installed? }.to raise_error(NotImplementedError)
+			expect { subject.met? }.to raise_error(NotImplementedError)
 		end
 	end
 
-	describe "#install" do
+	describe "#meet" do
 		it "raises an error" do
-			expect { subject.install }.to raise_error(NotImplementedError)
+			expect { subject.meet }.to raise_error(NotImplementedError)
 		end
 	end
 end

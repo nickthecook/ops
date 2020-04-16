@@ -7,11 +7,15 @@ class Dependency
 		@name = name
 	end
 
-	def installed?
+	def met?
 		raise NotImplementedError
 	end
 
-	def install
+	def meet
 		raise NotImplementedError
+	end
+
+	def type
+		self.class.name.split('::').last
 	end
 end

@@ -8,9 +8,9 @@ RSpec.describe Dependencies::Brew do
 	subject { described_class.new(name) }
 	let(:name) { "some-dependency" }
 
-	describe "#installed?" do
+	describe "#met?" do
 	end
 
-	describe "#install" do
+	describe "#meet" do
 	end
 end

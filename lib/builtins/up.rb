@@ -9,26 +9,25 @@ require_rel "../dependencies"
 module Builtins
 	class Up < Builtin
 		def run
+			# TODO: return a success/failure status to the caller
 			install_dependencies
 		end
 
 		private
 
 		def install_dependencies
-			# we probably need a DependencyInstaller to do this, and Up calls it
-			# but this can wait until Up has more than one thing to do
 			dependencies.each do |dependency|
-				if dependency.installed?
-					puts "Package #{dependency.name} already installed; skipping..."
+				if dependency.met?
+					puts "#{dependency.type} dependency '#{dependency.name}' already met; skipping..."
 				else
-					puts "Installing package '#{dependency.name}..."
-					dependency.install
+					puts "Meeting #{dependency.type} dependency '#{dependency.name}'..."
+					puts "Failed to meet dependency '#{dependency.name}'!" unless dependency.meet
 				end
 			end
 		end
 
 		def dependencies
-			dependency_types.map do |type, names|
+			dependency_names_by_type.map do |type, names|
 				dependencies_for(type, names)
 			end.flatten
 		end
@@ -42,15 +41,7 @@ module Builtins
 			puts "No way to install dependencies of type '#{type}; ignoring."
 		end
 
-		def brew_dependencies
-			brew_dependency_names.map { |name| Dependencies::Brew.new(name) }
-		end
-
-		def brew_dependency_names
-			dependency_types["brew"] || []
-		end
-
-		def dependency_types
+		def dependency_names_by_type
 			@config["dependencies"] || []
 		end
 	end
