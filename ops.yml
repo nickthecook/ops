@@ -10,3 +10,9 @@ actions:
   tw:
     command: "bundle exec rerun -x -- rspec"
     alias: tw
+  tag:
+    command: "bin/tag"
+  build:
+    command: gem build ops.gemspec
+  install:
+    command: gem i `ls -t *.gem | head -n 1`

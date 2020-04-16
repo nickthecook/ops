@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
 	s.name = 'ops'
-	s.version = '0.0.5'
+	s.version = '0.0.6'
 	s.authors = [
 		'nick@rmtly.com'
 	]
@@ -14,6 +14,7 @@ Gem::Specification.new do |s|
 		'lib/*',
 		'etc/*',
 		'lib/builtins/*',
+		'lib/builtins/helpers/*',
 		'lib/dependencies/*'
 	]
 	s.executables << 'ops'

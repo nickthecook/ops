@@ -1,0 +1,14 @@
+#!/bin/bash
+# tags a commit, asking for input when needed
+
+if [ -z "$1" ]; then
+	read -p "Enter tag value: " tag
+else
+	tag="$1"
+fi
+
+comment="Tagging $tag for release"
+
+echo "Tagging '$tag' with comment '$comment'..."
+git tag -a "$tag" -m "$comment"
+git push origin "$tag"
