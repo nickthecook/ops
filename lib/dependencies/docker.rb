@@ -13,5 +13,9 @@ module Dependencies
 		def meet
 			system("cd #{name} && docker-compose up -d")
 		end
+
+		def unmeet
+			system("cd #{name} && docker-compose down")
+		end
 	end
 end

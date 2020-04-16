@@ -7,10 +7,10 @@ require_relative "../builtin"
 require_relative "helpers/dependency_handler"
 
 module Builtins
-	class Up < Builtin
+	class Down < Builtin
 		def run
 			# TODO: return a success/failure status to the caller
-			meet_dependencies
+			unmeet_dependencies
 		end
 
 		private
@@ -19,13 +19,13 @@ module Builtins
 			Helpers::DependencyHandler.new(@config["dependencies"])
 		end
 
-		def meet_dependencies
+		def unmeet_dependencies
 			dependency_handler.dependencies.each do |dependency|
 				if dependency.met?
-					puts "#{dependency.type} dependency '#{dependency.name}' already met; skipping..."
+					puts "Unmeeting #{dependency.type} dependency '#{dependency.name}'..."
+					puts "Failed to unmeet dependency '#{dependency.name}'!" unless dependency.unmeet
 				else
-					puts "Meeting #{dependency.type} dependency '#{dependency.name}'..."
-					puts "Failed to meet dependency '#{dependency.name}'!" unless dependency.meet
+					puts "#{dependency.type} dependency '#{dependency.name}' not met; skipping..."
 				end
 			end
 		end

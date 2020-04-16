@@ -15,6 +15,10 @@ class Dependency
 		raise NotImplementedError
 	end
 
+	def unmeet
+		raise NotImplementedError
+	end
+
 	def type
 		self.class.name.split('::').last
 	end
