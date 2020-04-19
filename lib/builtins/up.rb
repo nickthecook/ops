@@ -29,7 +29,9 @@ module Builtins
 		end
 
 		def meet_dependency(dependency)
-			if dependency.meet
+			dependency.meet if dependency.should_meet?
+
+			if dependency.success?
 				Output.okay
 			else
 				Output.failed

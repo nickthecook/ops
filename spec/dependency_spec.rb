@@ -10,21 +10,27 @@ RSpec.describe Dependency do
 	subject { described_class.new(name) }
 	let(:name) { "some-dependency" }
 
-	describe "#met?" do
+	shared_examples "raises error" do |method|
 		it "raises an error" do
-			expect { subject.met? }.to raise_error(NotImplementedError)
+			expect { subject.send(method) }.to raise_error(NotImplementedError)
 		end
+	end
+
+	describe "#met?" do
+		include_examples "raises error", :met?
 	end
 
 	describe "#meet" do
-		it "raises an error" do
-			expect { subject.meet }.to raise_error(NotImplementedError)
-		end
+		include_examples "raises error", :meet
 	end
 
 	describe "#unmeet" do
-		it "raises an error" do
-			expect { subject.unmeet }.to raise_error(NotImplementedError)
+		include_examples "raises error", :unmeet
+	end
+
+	describe "#should_meet?" do
+		it "returns true" do
+			expect(subject.should_meet?).to be true
 		end
 	end
 

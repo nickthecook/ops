@@ -26,6 +26,8 @@ RSpec.describe Builtins::Up do
 				Dependency,
 				met?: met?,
 				meet: true,
+				should_meet?: true,
+				success?: true,
 				name: "ridiculous_package",
 				type: "apk"
 			)
@@ -50,6 +52,11 @@ RSpec.describe Builtins::Up do
 
 		it "checks if the dependency is met" do
 			expect(dependency_double).to receive(:met?)
+			result
+		end
+
+		it "checks if it should meet the dependency" do
+			expect(dependency_double).to receive(:should_meet?)
 			result
 		end
 

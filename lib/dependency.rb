@@ -23,12 +23,16 @@ class Dependency
 		raise NotImplementedError
 	end
 
+	def should_meet?
+		true
+	end
+
 	def type
 		self.class.name.split('::').last
 	end
 
 	def success?
-		@exit_code&.zero?
+		@exit_code.nil? ? true : @exit_code.zero?
 	end
 
 	private

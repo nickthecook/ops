@@ -3,13 +3,13 @@
 require_relative "../dependency"
 
 module Dependencies
-	class Brew < Dependency
+	class Apt < Dependency
 		def met?
-			`brew list #{name}`
+			`dpkg-query --show --showformat '${db:Status-Status}\n' #{name} | grep -q ^installed`
 		end
 
 		def meet
-			`brew install #{name}`
+			`apt-get install -y #{name}`
 		end
 
 		def unmeet
@@ -18,7 +18,7 @@ module Dependencies
 		end
 
 		def should_meet?
-			`uname`.chomp == "Darwin"
+			`uname`.chomp == "Linux"
 		end
 	end
 end

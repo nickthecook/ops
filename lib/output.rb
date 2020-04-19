@@ -6,7 +6,7 @@ class Output
 	@out = STDOUT
 	@err = STDERR
 
-	STATUS_WIDTH = "40"
+	STATUS_WIDTH = "50"
 
 	OKAY = "OK"
 	SKIPPED = "SKIPPED"
