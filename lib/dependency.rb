@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
+require "open3"
+
 class Dependency
-	attr_reader :name
+	DESCRIPTION_TYPE_WIDTH = 8
+
+	attr_reader :name, :stdout, :stderr, :exit_code
 
 	def initialize(name)
 		@name = name
@@ -21,5 +25,17 @@ class Dependency
 
 	def type
 		self.class.name.split('::').last
+	end
+
+	def success?
+		@exit_code&.zero?
+	end
+
+	private
+
+	def execute(cmd)
+		@stdout, @stderr, status = Open3.capture3(cmd)
+		@exit_code = status.exitstatus
+		success?
 	end
 end

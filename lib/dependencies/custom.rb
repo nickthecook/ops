@@ -11,7 +11,7 @@ module Dependencies
 
 		def meet
 			# this dependency is just a custom, idempotent command
-			system(name)
+			execute(name)
 		end
 
 		def unmeet

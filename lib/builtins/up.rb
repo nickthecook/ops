@@ -5,6 +5,7 @@ require_rel "../dependencies"
 
 require_relative "../builtin"
 require_relative "helpers/dependency_handler"
+require_relative "../output.rb"
 
 module Builtins
 	class Up < Builtin
@@ -21,12 +22,19 @@ module Builtins
 
 		def meet_dependencies
 			dependency_handler.dependencies.each do |dependency|
-				if dependency.met?
-					puts "#{dependency.type} dependency '#{dependency.name}' already met; skipping..."
-				else
-					puts "Meeting #{dependency.type} dependency '#{dependency.name}'..."
-					puts "Failed to meet dependency '#{dependency.name}'!" unless dependency.meet
-				end
+				Output.status("[#{dependency.type}] #{dependency.name}")
+
+				dependency.met? ? Output.okay : meet_dependency(dependency)
+			end
+		end
+
+		def meet_dependency(dependency)
+			if dependency.meet
+				Output.okay
+			else
+				Output.failed
+				Output.error("Error meeting #{dependency.type} dependency '#{dependency.name}':")
+				puts(dependency.stderr)
 			end
 		end
 	end

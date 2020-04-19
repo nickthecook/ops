@@ -22,7 +22,13 @@ RSpec.describe Builtins::Up do
 		let(:result) { subject.run }
 		let(:dependency_class_double) { class_double(Dependency) }
 		let(:dependency_double) do
-			instance_double(Dependency, met?: met?, meet: true, name: "dep_double", type: "apk")
+			instance_double(
+				Dependency,
+				met?: met?,
+				meet: true,
+				name: "ridiculous_package",
+				type: "apk"
+			)
 		end
 		let(:met?) { false }
 

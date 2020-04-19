@@ -7,15 +7,15 @@ module Dependencies
 		def met?
 			# this will return true if docker-compose returns any output,
 			# which it will if containers are running
-			system("cd #{name} && docker-compose ps -q | grep -q .")
+			execute("cd #{name} && docker-compose ps -q | grep -q .")
 		end
 
 		def meet
-			system("cd #{name} && docker-compose up -d")
+			execute("cd #{name} && docker-compose up -d")
 		end
 
 		def unmeet
-			system("cd #{name} && docker-compose down")
+			execute("cd #{name} && docker-compose down")
 		end
 	end
 end

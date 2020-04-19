@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-require_relative "../../builtin.rb"
+require_relative "../../builtin"
+require_relative "../../output"
 
 module Builtins
 	module Helpers
@@ -22,8 +23,7 @@ module Builtins
 
 				names.map { |name| dependency_class.new(name) }
 			rescue NameError
-				# TODO: output to stderr
-				puts "No way to handle dependencies of type '#{type}; ignoring."
+				Output.error("No way to handle dependencies of type '#{type}; ignoring.")
 			end
 		end
 	end

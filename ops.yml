@@ -5,6 +5,8 @@ dependencies:
     - pebble
   custom:
     - bundle install --quiet
+    - "echo this is stdout"
+    - "echo 1>&2 this is stderr && false"
 actions:
   test:
     command: "bundle exec rspec"
