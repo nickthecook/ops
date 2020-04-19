@@ -10,6 +10,8 @@ module Builtins
 			end
 
 			def dependencies
+				return [] unless @dependency_set
+
 				@dependency_set.map do |type, names|
 					dependencies_for(type, names)
 				end.flatten
