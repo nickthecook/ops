@@ -11,6 +11,7 @@ require_rel "builtins"
 # executes commands defined in local `ops.yml`
 class Ops
 	class UnknownActionError < StandardError; end
+	class ConfigNotFoundError < StandardError; end
 
 	CONFIG_FILE = "ops.yml"
 
@@ -73,14 +74,10 @@ class Ops
 		config["actions"]
 	end
 
-	def deps
-		config["deps"]
-	end
-
 	def config
+		raise ConfigNotFoundError, "File '#{CONFIG_FILE}' does not exist." unless File.exist?(CONFIG_FILE)
+
 		@config ||= YAML.load_file(CONFIG_FILE)
-	rescue StandardError
-		{}
 	end
 
 	def aliases
