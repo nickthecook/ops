@@ -6,15 +6,18 @@ require_relative "../lib/ops.rb"
 
 RSpec.describe Ops do
 	subject { described_class.new(argv) }
+	let(:input) { "test" }
 	let(:action) { "test" }
+	let(:action_alias) { "t" }
 	let(:args) { ["spec/file1.rb", "spec/file2.rb"] }
-	let(:argv) { [action, *args] }
+	let(:argv) { [input, *args] }
 	let(:command) { "bundle exec rspec" }
 	let(:ops_config) do
 		{
 			"actions" => {
 				action => {
-					"command" => command
+					"command" => command,
+					"alias" => action_alias
 				}
 			}
 		}
@@ -72,8 +75,14 @@ RSpec.describe Ops do
 				result
 			end
 		end
+
+		context "when given action is an alias" do
+			let(:input) { "t" }
+
+			it "executes the action string for the aliased action" do
+				expect(Action).to receive(:new).with(*expected_action_args)
+				result
+			end
+		end
 	end
 end
-
-# to suppress the putses from Ops
-def puts(*_); end

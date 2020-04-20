@@ -13,7 +13,7 @@ actions:
   test:
     command: "bundle exec rspec"
     alias: t
-  tw:
+  test-watch:
     command: "bundle exec rerun -x -- rspec"
     alias: tw
   tag:
