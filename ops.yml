@@ -1,6 +1,8 @@
 dependencies:
   brew:
     - docker
+  apt:
+    - curl
   docker:
     - pebble
   custom:

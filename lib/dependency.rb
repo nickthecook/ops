@@ -23,6 +23,10 @@ class Dependency
 		raise NotImplementedError
 	end
 
+	# should_meet? can be used to implement dependencies that should only be met on some platforms,
+	# e.g. brew on Macs and apt on Linux
+	# it can be used to base a decision on anything else that can be read from the environment at
+	# runtime
 	def should_meet?
 		true
 	end

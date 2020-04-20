@@ -22,14 +22,17 @@ module Builtins
 
 		def meet_dependencies
 			dependency_handler.dependencies.each do |dependency|
+				# don't even output anything for dependencies that shouldn't be considered on this machine
+				next unless dependency.should_meet?
+
 				Output.status("[#{dependency.type}] #{dependency.name}")
 
-				dependency.met? ? Output.okay : meet_dependency(dependency)
+				meet_dependency(dependency)
 			end
 		end
 
 		def meet_dependency(dependency)
-			dependency.meet if dependency.should_meet?
+			dependency.meet unless dependency.met?
 
 			if dependency.success?
 				Output.okay
