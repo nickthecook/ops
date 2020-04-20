@@ -21,12 +21,24 @@ module Builtins
 
 		def unmeet_dependencies
 			dependency_handler.dependencies.each do |dependency|
-				if dependency.met?
-					puts "Unmeeting #{dependency.type} dependency '#{dependency.name}'..."
-					puts "Failed to unmeet dependency '#{dependency.name}'!" unless dependency.unmeet
-				else
-					puts "#{dependency.type} dependency '#{dependency.name}' not met; skipping..."
-				end
+				# don't even output anything for dependencies that shouldn't be considered on this machine
+				next unless dependency.should_meet?
+
+				Output.status("[#{dependency.type}] #{dependency.name}")
+
+				unmeet_dependency(dependency)
+			end
+		end
+
+		def unmeet_dependency(dependency)
+			dependency.unmeet if dependency.met?
+
+			if dependency.success?
+				Output.okay
+			else
+				Output.failed
+				Output.error("Error unmeeting #{dependency.type} dependency '#{dependency.name}':")
+				puts(dependency.stderr)
 			end
 		end
 	end
