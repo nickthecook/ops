@@ -36,6 +36,10 @@ class Output
 			@out.puts(FAILED.red)
 		end
 
+		def warn(msg)
+			@err.puts(msg.yellow)
+		end
+
 		def error(msg)
 			@err.puts(msg.red)
 		end

@@ -11,7 +11,6 @@ require_rel "builtins"
 # executes commands defined in local `ops.yml`
 class Ops
 	class UnknownActionError < StandardError; end
-	class ConfigNotFoundError < StandardError; end
 
 	CONFIG_FILE = "ops.yml"
 
@@ -27,8 +26,7 @@ class Ops
 
 		return builtin.run if builtin
 
-		# TODO: output to stderr
-		Output.out("Running '#{action}' from #{CONFIG_FILE}...")
+		Output.warn("Running '#{action}' from #{CONFIG_FILE}...")
 		action.run
 	rescue UnknownActionError => e
 		Output.error("Error: #{e}")
@@ -75,9 +73,11 @@ class Ops
 	end
 
 	def config
-		raise ConfigNotFoundError, "File '#{CONFIG_FILE}' does not exist." unless File.exist?(CONFIG_FILE)
+		Output.warn("File '#{CONFIG_FILE}' does not exist.") unless File.exist?(CONFIG_FILE)
 
 		@config ||= YAML.load_file(CONFIG_FILE)
+	rescue StandardError
+		{}
 	end
 
 	def aliases
