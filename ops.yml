@@ -20,5 +20,7 @@ actions:
     command: "bin/tag"
   build:
     command: gem build ops.gemspec
+    alias: b
   install:
     command: gem i `ls -t *.gem | head -n 1`
+    alias: i
