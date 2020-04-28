@@ -27,12 +27,14 @@ RSpec.describe Builtins::Up do
 				met?: met?,
 				meet: true,
 				should_meet?: should_meet?,
+				always_act?: always_act?,
 				success?: true,
 				name: "ridiculous_package",
 				type: "apk"
 			)
 		end
 		let(:should_meet?) { true }
+		let(:always_act?) { false }
 		let(:met?) { false }
 
 		before do
@@ -80,6 +82,16 @@ RSpec.describe Builtins::Up do
 
 			it "does not check if dependency is met" do
 				expect(dependency_double).not_to receive(:met?)
+				result
+			end
+		end
+
+		context "always_act? and met? are true" do
+			let(:always_act?) { true }
+			let(:met?) { true }
+
+			it "meets the dependency" do
+				expect(dependency_double).to receive(:meet)
 				result
 			end
 		end

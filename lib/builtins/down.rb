@@ -31,7 +31,8 @@ module Builtins
 		end
 
 		def unmeet_dependency(dependency)
-			dependency.unmeet if dependency.met?
+			# TODO: make this simpler, and factor in `should_meet?` above, too
+			dependency.unmeet if dependency.met? || dependency.always_act?
 
 			if dependency.success?
 				Output.okay

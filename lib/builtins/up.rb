@@ -32,7 +32,8 @@ module Builtins
 		end
 
 		def meet_dependency(dependency)
-			dependency.meet unless dependency.met?
+			# TODO: make this simpler, and factor in `should_meet?` above, too
+			dependency.meet if !dependency.met? || dependency.always_act?
 
 			if dependency.success?
 				Output.okay

@@ -96,11 +96,18 @@ E.g.:
 ```yaml
 depdendencies:
   docker:
-    mysql
+    deps/mysql
 ```
 
-- specifies that this repo includes a directory with the given name (e.g. `mysql`) that includes a `docker-compose.yml` file
+- specifies that this repo includes a directory with the given name (e.g. `deps/mysql`) that includes a `docker-compose.yml` file
 - `ops` will change to the given directory and use `docker-compose` to start, stop, and check the status of this service as needed
+
+### `terraform`
+
+- specifies that this repo includes a directory with the given name containing a terraform configuration
+- `ops` will change to the given directory and use `terraform` to create or destroy resources
+
+**Note:** To avoid prompting the user for input on every `ops up` and `ops down`, `ops` will pass the `--auto-approve` flag to `terraform` on both `apply` and `destroy` operations. You should only use `ops` to manage development resources, and *not* any resources you care about in the least.
 
 ### `custom`
 

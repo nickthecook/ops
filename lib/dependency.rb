@@ -33,6 +33,12 @@ class Dependency
 		true
 	end
 
+	# if true, this type of resource must always have `meet` and `unmeet` called;
+	# useful for resources that can't easily be checked to see if they're met
+	def always_act?
+		false
+	end
+
 	def type
 		self.class.name.split('::').last
 	end
@@ -47,8 +53,6 @@ class Dependency
 		@stdout, @stderr, status = Open3.capture3(cmd)
 		@exit_code = status.exitstatus
 		
-		Output.error("\n" + @stderr) unless success?
-
 		success?
 	end
 end
