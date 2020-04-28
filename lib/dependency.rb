@@ -2,6 +2,8 @@
 
 require "open3"
 
+require_relative "output"
+
 class Dependency
 	DESCRIPTION_TYPE_WIDTH = 8
 
@@ -44,6 +46,9 @@ class Dependency
 	def execute(cmd)
 		@stdout, @stderr, status = Open3.capture3(cmd)
 		@exit_code = status.exitstatus
+		
+		Output.error("\n" + @stderr) unless success?
+
 		success?
 	end
 end

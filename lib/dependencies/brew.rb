@@ -5,7 +5,7 @@ require_relative "../dependency"
 module Dependencies
 	class Brew < Dependency
 		def met?
-			execute("brew list #{name}`")
+			execute("brew list #{name}")
 		end
 
 		def meet
