@@ -5,11 +5,11 @@ require_relative "../dependency"
 module Dependencies
 	class Apt < Dependency
 		def met?
-			`dpkg-query --show --showformat '${db:Status-Status}\n' #{name} | grep -q ^installed`
+			execute("dpkg-query --show --showformat '${db:Status-Status}\n' #{name} | grep -q ^installed")
 		end
 
 		def meet
-			`apt-get install -y #{name}`
+			execute("apt-get install -y #{name}")
 		end
 
 		def unmeet
