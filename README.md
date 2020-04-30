@@ -6,6 +6,16 @@
 - saves time by allowing command-line shortcuts for common tasks
 - can be used in CI, to install dependencies, start services, and run tests, exactly as you do on your dev machine
 
+The typical workflow is:
+
+```
+ops init   # to create the ops.yml file so you can edit
+ops up     # to install dependencies and start services your app depends on
+ops start  # to start your app
+ops test   # to test your app
+ops stop   # to stop your app
+```
+
 ![ops up in action](ops.png)
 
 ## Getting started
@@ -55,24 +65,27 @@ dependencies:
   brew:
     - docker
   apt:
-    - docker
+    - curl
   docker:
     - pebble
   custom:
     - bundle install --quiet
+    - "echo this is stdout"
 actions:
   test:
-    command: bundle exec rspec
+    command: "bundle exec rspec"
     alias: t
   test-watch:
-    command: bundle exec rerun -x -- rspec
+    command: "bundle exec rerun -x rspec"
     alias: tw
   tag:
-    command: bin/tag
+    command: "bin/tag"
   build:
     command: gem build ops.gemspec
+    alias: b
   install:
     command: gem i `ls -t *.gem | head -n 1`
+    alias: i
 ```
 
 ## Dependencies
@@ -123,9 +136,9 @@ custom:
 - therefore, the command should be idempotent
 - it's also a good idea to prevent it from printing output unless it encounters an error, to keep the ops output clean
 
-## Command-line arguments
+## Builtins
 
-Supported commands are:
+Built-in commands are:
 
 - `up`: tries to meet the dependencies in the `dependencies` section of `ops.yml`
 - `down`: stops services listed in the `dependencies` section of `ops.yml` (but does not uninstall packages)
@@ -134,9 +147,35 @@ Supported commands are:
 
 E.g. `ops up`, `ops init`, or `ops start` (if you've defined a `start` action in `ops.yml`).
 
-Some conventions to follow, so that you end up with common `ops` actions across your projects:
+## Actions
 
-- `ops server` to run your app, if it's a server
+Actions are defined in the `actions` section of `ops.yml`. If the first argument to `ops` is not a builtin (see section above), `ops` will look for an action with that name.
+
+```yaml
+actions:
+  test:
+    command: bundle exec rspec
+    alias: t
+  test-watch:
+    command: rerun -x ops test
+    alias: tw
+```
+
+This snippet shows two actions: `test` and `test-watch`. When `ops test` is run, `ops` will run `bundle exec rspec`.
+
+Note that `test-watch` actually uses rerun to run `ops`; since `ops` is just an executable in your `$PATH`, it can be used in a `command` itself. This technique can be used to avoid duplicating parts of some commands, e.g. the `bundle exec rspec` in `test`.
+
+### Aliases
+
+An action can have one alias. If the first argument to `ops` is not a builtin or an action name, `ops` will look for an alias that matches the argument.
+
+In the above example, the `test` action has the alias `t`. When `ops t` is run, `ops` will execute the `test` action.
+
+### Naming actions
+
+Here are some conventions to follow when naming your actions, so that you end up with common `ops` actions across your projects:
+
+- `ops server` or `ops start` to start your app, if it's a server
 - `ops stop` to stop your app
 - `ops run` if it's a client, or a program that is expected to exit on its own
 - `ops test` to run your local tests
@@ -146,10 +185,14 @@ Some conventions to follow, so that you end up with common `ops` actions across 
 actions:
   server:
     command: docker-compose up # or however you start your service
+    alias: s
   stop:
     command: docker-compose down # or however you stop your service
+    alias: st
   test:
     command: bundle exec rspec # or whatever runs your unit tests
+    alias: t
   test-watch:
-    command: bundle exec rerun -x rspec # runs your tests every time the
+    command: rerun -x ops test # runs your tests every time a file changes
+    alias: tw
 ```
