@@ -1,26 +1,24 @@
 # frozen_string_literal: true
 
-require_relative "../spec_helper.rb"
-
-require_relative "../../lib/dependencies/terraform"
+require 'dependencies/terraform'
 
 RSpec.describe Dependencies::Terraform do
 	subject { described_class.new(name) }
 	let(:name) { "some-dependency" }
 
-	describe "#met?" do
+	describe '#met?' do
 		it "returns false" do
 			expect(subject.met?).to be false
 		end
 	end
 
-	describe "always_act?" do
+	describe 'always_act?' do
 		it "returns true" do
 			expect(subject.always_act?).to be true
 		end
 	end
 
-	describe "#meet" do
+	describe '#meet' do
 		let(:result) { subject.meet }
 
 		it "uses the execute method to run `terraform apply`" do

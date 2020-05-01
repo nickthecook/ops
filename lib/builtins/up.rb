@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require "require_all"
-require_rel "../dependencies"
+require 'require_all'
+require_all "lib/dependencies"
 
-require_relative "../builtin"
-require_relative "helpers/dependency_handler"
-require_relative "../output.rb"
+require 'builtin'
+require 'builtins/helpers/dependency_handler'
+require 'output'
 
 module Builtins
 	class Up < Builtin

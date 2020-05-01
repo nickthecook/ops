@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "../dependency"
+require 'dependency'
 
 module Dependencies
 	class Apt < Dependency

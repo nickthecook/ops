@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "spec_helper.rb"
-
-require_relative "../lib/dependency"
+require 'dependency'
 
 require_relative "test_dependency.rb"
 
@@ -16,31 +14,31 @@ RSpec.describe Dependency do
 		end
 	end
 
-	describe "#met?" do
+	describe '#met?' do
 		include_examples "raises error", :met?
 	end
 
-	describe "#meet" do
+	describe '#meet' do
 		include_examples "raises error", :meet
 	end
 
-	describe "#unmeet" do
+	describe '#unmeet' do
 		include_examples "raises error", :unmeet
 	end
 
-	describe "#should_meet?" do
+	describe '#should_meet?' do
 		it "returns true" do
 			expect(subject.should_meet?).to be true
 		end
 	end
 
-	describe "#type" do
+	describe '#type' do
 		it "returns the name of the class without modules" do
 			expect(subject.type).to eq("Dependency")
 		end
 	end
 
-	describe "#execute" do
+	describe '#execute' do
 		subject { TestDependency.new(name) }
 
 		let(:result) { subject.meet }

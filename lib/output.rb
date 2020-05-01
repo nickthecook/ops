@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "colorize"
+require 'colorize'
 
 class Output
 	@out = STDOUT

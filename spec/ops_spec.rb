@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "spec_helper.rb"
-
-require_relative "../lib/ops.rb"
+require 'ops'
 
 RSpec.describe Ops do
 	subject { described_class.new(argv) }
@@ -23,7 +21,7 @@ RSpec.describe Ops do
 		}
 	end
 
-	describe "#run" do
+	describe '#run' do
 		let(:result) { subject.run }
 		let(:expected_action_args) { ["bundle exec rspec", args] }
 		let(:action_string) { "bundle exec rspec spec/file1.rb spec/file2.rb" }

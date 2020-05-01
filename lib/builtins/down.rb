@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require "require_all"
-require_rel "../dependencies"
+require 'require_all'
+require_all "lib/dependencies"
 
-require_relative "../builtin"
-require_relative "helpers/dependency_handler"
+require 'builtin'
+require 'builtins/helpers/dependency_handler'
 
 module Builtins
 	class Down < Builtin

@@ -1,15 +1,13 @@
 # frozen_string_literal: true
 
-require_relative 'spec_helper'
-
-require_relative '../lib/action.rb'
+require 'action'
 
 RSpec.describe Action do
 	subject { described_class.new(command, args) }
 	let(:command) { "bundle exec rspec" }
 	let(:args) { ["spec/file1.rb", "spec/file2.rb"] }
 
-	describe "#to_s" do
+	describe '#to_s' do
 		let(:result) { subject.to_s }
 
 		it "appends args to command" do

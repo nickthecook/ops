@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require "fileutils"
+require 'fileutils'
 
-require_relative "../builtin"
+require 'builtin'
 
 module Builtins
 	class Init < Builtin

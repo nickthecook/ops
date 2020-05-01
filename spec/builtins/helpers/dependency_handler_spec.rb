@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "../../../lib/builtins/helpers/dependency_handler"
+require 'builtins/helpers/dependency_handler'
 
 RSpec.describe Builtins::Helpers::DependencyHandler do
 	subject { described_class.new(dependency_set) }
@@ -13,7 +13,7 @@ RSpec.describe Builtins::Helpers::DependencyHandler do
 		}
 	end
 
-	describe "#dependencies" do
+	describe '#dependencies' do
 		let(:result) { subject.dependencies }
 
 		it "returns a list of instances of Dependency" do

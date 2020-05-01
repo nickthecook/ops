@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "../../lib/builtins/init"
+require 'builtins/init'
 
 RSpec.describe Builtins::Init do
 	subject { described_class.new(args, config) }
@@ -8,7 +8,7 @@ RSpec.describe Builtins::Init do
 	let(:args) { {} }
 	let(:config) { {} }
 
-	describe "#run" do
+	describe '#run' do
 		let(:result) { subject.run }
 		let(:ops_yml_exists) { false }
 		let(:ops_yml_template) { /\/etc\/ops.template.yml$/ }

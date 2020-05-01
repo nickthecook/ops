@@ -1,11 +1,11 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require "yaml"
-require "require_all"
+require 'yaml'
+require 'require_all'
 
-require_relative "action"
-require_relative "output"
+require 'action'
+require 'output'
 require_rel "builtins"
 
 # executes commands defined in local `ops.yml`

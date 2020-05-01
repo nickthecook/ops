@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require "open3"
-require "English"
+require 'open3'
+require 'English'
 
-require_relative "output"
+require 'output'
 
 class Dependency
 	DESCRIPTION_TYPE_WIDTH = 8

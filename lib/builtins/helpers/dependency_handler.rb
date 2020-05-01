@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require_relative "../../builtin"
-require_relative "../../output"
+require 'builtin'
+require 'output'
 
-require "require_all"
+require 'require_all'
 require_rel "../../dependencies"
 
 module Builtins

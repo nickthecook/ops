@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "../lib/dependency"
+require 'dependency'
 
 class TestDependency < Dependency
 	def meet

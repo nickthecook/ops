@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "brew"
+require 'dependencies/brew'
 
 module Dependencies
 	class Cask < Brew

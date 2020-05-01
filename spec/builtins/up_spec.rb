@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "../../lib/builtins/up.rb"
-
-require_relative "../spec_helper.rb"
+require 'builtins/up'
 
 RSpec.describe Builtins::Up do
 	subject { described_class.new(args, config) }
@@ -18,7 +16,7 @@ RSpec.describe Builtins::Up do
 		}
 	end
 
-	describe "#run" do
+	describe '#run' do
 		let(:result) { subject.run }
 		let(:dependency_class_double) { class_double(Dependency) }
 		let(:dependency_double) do
