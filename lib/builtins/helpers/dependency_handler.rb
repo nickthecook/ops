@@ -3,6 +3,9 @@
 require_relative "../../builtin"
 require_relative "../../output"
 
+require "require_all"
+require_rel "../../dependencies"
+
 module Builtins
 	module Helpers
 		class DependencyHandler
@@ -23,7 +26,7 @@ module Builtins
 
 				names.map { |name| dependency_class.new(name) }
 			rescue NameError
-				Output.error("No way to handle dependencies of type '#{type}; ignoring.")
+				Output.error("No way to handle dependencies of type '#{type}'; ignoring.")
 			end
 		end
 	end

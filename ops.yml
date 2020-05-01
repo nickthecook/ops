@@ -1,6 +1,8 @@
 dependencies:
   brew:
     - docker
+  cask:
+    - font-anonymice-powerline
   apt:
     - curl
   docker:

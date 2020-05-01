@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
 require "open3"
+require "English"
 
 require_relative "output"
 
 class Dependency
 	DESCRIPTION_TYPE_WIDTH = 8
 
-	attr_reader :name, :stdout, :stderr, :exit_code
+	attr_reader :name, :output, :exit_code
 
 	def initialize(name)
 		@name = name
@@ -49,10 +50,14 @@ class Dependency
 
 	private
 
+	def print_output?
+		false
+	end
+
 	def execute(cmd)
-		@stdout, @stderr, status = Open3.capture3(cmd)
+		@output, status = Open3.capture2e(cmd)
 		@exit_code = status.exitstatus
-		
+
 		success?
 	end
 end

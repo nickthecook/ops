@@ -49,12 +49,12 @@ RSpec.describe Dependency do
 		let(:exit_code) { 0 }
 
 		before do
-			allow(Open3).to receive(:capture3).and_return(["this is stdout\n", "this is stderr\n", status_double])
+			allow(Open3).to receive(:capture2e).and_return(["this is stdout\nthis is stderr\n", status_double])
 		end
 
 
 		it "executes the command" do
-			expect(Open3).to receive(:capture3).with(cmd)
+			expect(Open3).to receive(:capture2e).with(cmd)
 			result
 		end
 
@@ -64,12 +64,12 @@ RSpec.describe Dependency do
 
 		it "captures stdout" do
 			result
-			expect(subject.stdout).to eq("this is stdout\n")
+			expect(subject.output).to match(/this is stdout/)
 		end
 
 		it "captures stderr" do
 			result
-			expect(subject.stderr).to eq("this is stderr\n")
+			expect(subject.output).to match(/this is stderr/)
 		end
 
 		it "captures the exit code" do
@@ -81,7 +81,7 @@ RSpec.describe Dependency do
 			let(:exit_code) { 1 }
 
 			before do
-				allow(Open3).to receive(:capture3).and_return(["", "no such command!\n", status_double])
+				allow(Open3).to receive(:capture2e).and_return(["no such command!\n", status_double])
 			end
 
 			it "returns false" do

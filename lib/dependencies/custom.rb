@@ -17,5 +17,11 @@ module Dependencies
 		def unmeet
 			true
 		end
+
+		private
+
+		def print_output?
+			true
+		end
 	end
 end
