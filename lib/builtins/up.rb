@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'require_all'
-require_all "lib/dependencies"
+require_rel "../dependencies"
 
 require 'builtin'
 require 'builtins/helpers/dependency_handler'
