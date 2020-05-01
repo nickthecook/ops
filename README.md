@@ -136,6 +136,36 @@ custom:
 - therefore, the command should be idempotent
 - it's also a good idea to prevent it from printing output unless it encounters an error, to keep the ops output clean
 
+### `gem`
+
+E.g.:
+
+```yaml
+gem:
+  - ejson
+```
+
+- installs the gem with the given name
+- by default, runs "gem install ...", but can be configured to use "sudo gem install" or "gem install --user-install" (see below)
+
+The behaviour of the `gem` dependency type is affected by some options you can put in your `ops.yml` file. E.g.:
+
+```yaml
+dependencies:
+  gem:
+    - ejson
+options:
+  gem:
+    use_sudo: false
+    user_install: false
+```
+
+With this config, `ops up` will run `gem install ejson` to install the `ejson` gem. This is the default behaviour, and is used if the `options` section is not present in the file.
+
+`use_sudo: true` causes `ops up` to run `sudo gem install ejson`.
+
+`user_install: true` causes `ops up` to run `gem install --user-install ejson`.
+
 ## Builtins
 
 Built-in commands are:
