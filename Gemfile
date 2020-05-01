@@ -4,17 +4,17 @@ source "https://rubygems.org"
 
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 
-gem "require_all"
 gem "colorize"
+gem "require_all"
 
 group :test do
 	gem "fuubar"
-	gem "pry"
-	gem "pry-byebug"
 	gem "rspec"
 end
 
-group :ops do
+group :development do
+	gem "pry"
+	gem "pry-byebug"
 	gem "rerun"
 	gem "rubocop"
 end
