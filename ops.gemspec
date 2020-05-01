@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
 	s.name = 'ops'
-	s.version = '0.0.14'
+	s.version = '0.0.15'
 	s.authors = [
 		'nick@rmtly.com'
 	]
@@ -15,7 +15,8 @@ Gem::Specification.new do |s|
 		'etc/*',
 		'lib/builtins/*',
 		'lib/builtins/helpers/*',
-		'lib/dependencies/*'
+		'lib/dependencies/*',
+		'loader.rb'
 	]
 	s.executables << 'ops'
 	s.add_runtime_dependency 'require_all', '~> 1.1', '>= 1.1.6'
