@@ -6,6 +6,7 @@ require 'require_all'
 
 require 'action'
 require 'output'
+require 'options'
 require_rel "builtins"
 
 # executes commands defined in local `ops.yml`
@@ -19,6 +20,8 @@ class Ops
 	def initialize(argv)
 		@action_name = argv[0]
 		@args = argv[1..-1]
+
+		Options.set(config["options"] || {})
 	end
 
 	def run

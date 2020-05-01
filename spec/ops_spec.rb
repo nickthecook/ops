@@ -17,9 +17,11 @@ RSpec.describe Ops do
 					"command" => command,
 					"alias" => action_alias
 				}
-			}
+			},
+			"options" => options
 		}
 	end
+	let(:options) { {} }
 
 	describe '#run' do
 		let(:result) { subject.run }
@@ -54,6 +56,20 @@ RSpec.describe Ops do
 			it "doesn't run the action" do
 				expect(Action).not_to receive(:new)
 				result
+			end
+
+			it "initializes Options" do
+				expect(Options).to receive(:set).with({})
+				result
+			end
+
+			context "when options are set" do
+				let(:options) { { "fries_with_that" => true } }
+
+				it "initializes Options with options from config" do
+					expect(Options).to receive(:set).with({ "fries_with_that" => true })
+					result
+				end
 			end
 		end
 
