@@ -19,5 +19,6 @@ Gem::Specification.new do |s|
 		'loader.rb'
 	]
 	s.executables << 'ops'
+	s.add_runtime_dependency 'colorize', '~> 0.8', '>= 0.8.1'
 	s.add_runtime_dependency 'require_all', '~> 1.1', '>= 1.1.6'
 end
