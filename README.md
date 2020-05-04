@@ -24,6 +24,8 @@ ops stop   # to stop your app
 
 ### Installing
 
+`ops` has been tested on Ruby 2.6.5 and 2.6.6, but should work on any Ruby >= 2.3, and possible even older versions.
+
 #### On Linux, or if you've installed your own Ruby interpreter on a Mac
 
 ```shell
@@ -38,6 +40,19 @@ gem i ops-<version>.gem
 # from this repo
 gem build ops.gemspec
 gem i --user-install ops-<version>.gem on a Mac
+```
+
+In this case, you may need to add your gems' `bin/` directory to your `$PATH` variable in order to be. To find the path to the right `bin/` directory:
+
+```
+$ gem environment | grep "EXECUTABLE DIRECTORY"
+  - EXECUTABLE DIRECTORY: /Users/nick/.gem/ruby/2.6.6/bin
+```
+
+To add it to your path, append this to your `.bashrc` or `.zshrc` (or equivalent for your shell):
+
+```
+export PATH="$PATH:/Users/nick/.gem/ruby/2.6.6/bin"
 ```
 
 ### Running
@@ -228,3 +243,11 @@ actions:
     command: rerun -x ops test # runs your tests every time a file changes
     alias: tw
 ```
+
+## Contributing
+
+Submit a PR that meets the following super-strict criteria:
+
+- tests have been added or updated for your code changes
+- `rspec` passes
+- `rubocop` passes
