@@ -1,5 +1,7 @@
 # ops
 
+**This gem is still quite new; if you encounter an issue, please open an Issue in this project.**
+
 `ops` is like an operations team for your dev environment. It:
 
 - reduces the cognitive load of getting up and running as a new developer on a project
