@@ -76,11 +76,12 @@ class Ops
 	end
 
 	def config
-		Output.warn("File '#{CONFIG_FILE}' does not exist.") unless File.exist?(CONFIG_FILE)
-
-		@config ||= YAML.load_file(CONFIG_FILE)
-	rescue StandardError
-		{}
+		@config ||= begin
+			Output.warn("File '#{CONFIG_FILE}' does not exist.") unless File.exist?(CONFIG_FILE)
+			YAML.load_file(CONFIG_FILE)
+		rescue StandardError
+			{}
+		end
 	end
 
 	def aliases

@@ -27,3 +27,5 @@ Style/IfUnlessModifier:
   Enabled: false
 Style/RegexpLiteral:
   Enabled: false
+Layout/RescueEnsureAlignment:
+  Enabled: false
