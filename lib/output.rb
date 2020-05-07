@@ -48,6 +48,10 @@ class Output
 			@out.puts(msg)
 		end
 
+		def print(msg)
+			@out.print(msg)
+		end
+
 		def silence
 			@out = @err = dummy_output
 		end
