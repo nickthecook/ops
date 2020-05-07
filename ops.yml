@@ -5,6 +5,8 @@ dependencies:
     - font-anonymice-powerline
   apt:
     - curl
+  apk:
+    - curl
   docker:
     - pebble
   gem:

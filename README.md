@@ -119,6 +119,11 @@ A few types of dependency are supported:
 - specifies that a particular package from `apt` is needed
 - will only run if you're on Linux
 
+### `apk`
+
+- specifies that a particular package from `apk` is needed
+- will only run if the `apk` command is available (usually only on Alpine linux)
+
 ### `docker`
 
 E.g.:
