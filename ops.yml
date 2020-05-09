@@ -1,9 +1,21 @@
 dependencies:
+  brew:
+    - docker-compose
+  cask:
+    - font-anonymice-powerline
+  apt:
+    - curl
+  apk:
+    - curl
+  docker:
+    - pebble
   gem:
     - bundler
     - rerun
   custom:
-    - bundle
+    - bundle install --quiet
+    - "echo this is stdout"
+    - "echo 1>&2 this is stderr && false"
 actions:
   start:
     command: echo update me
@@ -15,3 +27,25 @@ actions:
   test-watch:
     command: rerun -x ops test
     alias: tw
+actions:
+  test:
+    command: "bundle exec rspec"
+    alias: t
+  test-watch:
+    command: "bundle exec rerun -x -- rspec"
+    alias: tw
+  tag:
+    command: "bin/tag"
+  build:
+    command: gem build ops.gemspec
+    alias: b
+  install:
+    command: gem i `ls -t *.gem | head -n 1`
+    alias: i
+  build-and-install:
+    command: ops b && ops i
+    alias: bi
+options:
+  gem:
+    use_sudo: false
+    user_install: true
