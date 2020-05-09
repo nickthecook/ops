@@ -1,0 +1,26 @@
+dependencies:
+  brew:
+    - terraform
+  apt:
+    - terraform
+  custom:
+    - terraform init
+actions:
+  apply:
+    command: terraform apply
+    alias: a
+  apply-auto-approve:
+    command: terraform apply --auto-approve
+    alias: aa
+  destroy:
+    command: terraform destroy
+    alias: d
+  destroy-auto-approve:
+    command: terraform destroy --auto-approve
+    alias: dd
+  plan:
+    command: terraform plan
+    alias: p
+  graph:
+    command: terraform graph
+    alias: g

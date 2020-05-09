@@ -30,5 +30,15 @@ RSpec.describe Builtins::Init do
 				result
 			end
 		end
+
+		context "when template name is given" do
+			let(:args) { ["terraform"] }
+			let(:ops_yml_template) { /\/etc\/terraform.template.yml$/ }
+
+			it "copies the specified template to ops.yml" do
+				expect(FileUtils).to receive(:cp).with(ops_yml_template, "ops.yml")
+				result
+			end
+		end
 	end
 end
