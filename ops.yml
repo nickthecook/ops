@@ -45,6 +45,9 @@ actions:
   build-and-install:
     command: ops b && ops i
     alias: bi
+  lint:
+    command: bundle exec rubocop --safe-auto-correct
+    alias: l
 options:
   gem:
     use_sudo: false

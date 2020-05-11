@@ -45,11 +45,11 @@ RSpec.describe Dependency do
 		let(:cmd) { "bin/some_script" }
 		let(:status_double) { instance_double(Process::Status, exitstatus: exit_code) }
 		let(:exit_code) { 0 }
+		let(:output_string) { "this is stdout\nthis is stderr\n" }
 
 		before do
-			allow(Open3).to receive(:capture2e).and_return(["this is stdout\nthis is stderr\n", status_double])
+			allow(Open3).to receive(:capture2e).and_return([output_string, status_double])
 		end
-
 
 		it "executes the command" do
 			expect(Open3).to receive(:capture2e).with(cmd)

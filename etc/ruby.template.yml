@@ -15,3 +15,6 @@ actions:
   test-watch:
     command: rerun -x ops test
     alias: tw
+  lint:
+    command: bundle exec rubocop --safe-auto-correct
+    alias: l
