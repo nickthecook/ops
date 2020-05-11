@@ -50,10 +50,6 @@ class Dependency
 
 	private
 
-	def print_output?
-		false
-	end
-
 	def execute(cmd)
 		@output, status = Open3.capture2e(cmd)
 		@exit_code = status.exitstatus
