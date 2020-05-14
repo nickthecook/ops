@@ -5,9 +5,7 @@ require 'dependency'
 module Dependencies
 	class Docker < Dependency
 		def met?
-			# this will return true if docker-compose returns any output,
-			# which it will if containers are running
-			execute("cd #{name} && docker-compose ps -q | grep -q .")
+			execute("cd #{name} && docker-compose ps | grep -q ' Up '")
 		end
 
 		def meet
