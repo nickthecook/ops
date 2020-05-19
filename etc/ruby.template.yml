@@ -18,3 +18,12 @@ actions:
   lint:
     command: bundle exec rubocop --safe-auto-correct
     alias: l
+  build:
+    command: gem build *.gemspec
+    alias: b
+  install:
+    command: gem install `ls -t *.gem | head -n1`
+    alias: i
+  build-and-install:
+    command: ops build && ops install
+    alias: bi
