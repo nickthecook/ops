@@ -4,7 +4,7 @@
 if [ -n "$1" ]; then
 	tag="$1"
 else
-	tag=$(grep -o "'[0-9.]*'" opsteam.gemspec | sed "s/'//g")
+	tag=$(grep -o "'[0-9.]*'" ops_team.gemspec | sed "s/'//g")
 	if [ -z "$tag" ]; then
 		read -p "Enter tag value: " tag
 	fi
