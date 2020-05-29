@@ -2,6 +2,8 @@
 
 **This gem is still quite new; if you encounter an issue, please open an Issue in this project.**
 
+[![Gem Version](https://badge.fury.io/rb/ops_team.svg)](https://badge.fury.io/rb/ops_team)
+
 `ops` is like an operations team for your dev environment. It:
 
 - reduces the cognitive load of getting up and running as a new developer on a project
@@ -24,22 +26,20 @@ ops stop   # to stop your app
 
 ### Installing
 
-`ops` has been tested on Ruby 2.6.5 and 2.6.6, but should work on any Ruby >= 2.3, and possible even older versions.
+##### With a normal Ruby installation
 
-#### On Linux, or if you've installed your own Ruby interpreter on a Mac
+Manually:
+
+`gem install ops_team`
+
+With Bundler:
+
+`gem 'ops_team`
+
+##### On a Mac with built-in Ruby
 
 ```shell
-# from this repo
-gem build ops.gemspec
-gem i ops-<version>.gem
-```
-
-#### On Mac with built-in Ruby
-
-```shell
-# from this repo
-gem build ops.gemspec
-gem i --user-install ops-<version>.gem on a Mac
+gem i --user-install ops_team
 ```
 
 In this case, you may need to add your gems' `bin/` directory to your `$PATH` variable in order to be. To find the path to the right `bin/` directory:
@@ -52,7 +52,18 @@ $ gem environment | grep "EXECUTABLE DIRECTORY"
 To add it to your path, append this to your `.bashrc` or `.zshrc` (or equivalent for your shell):
 
 ```
-export PATH="$PATH:/Users/nick/.gem/ruby/2.6.6/bin"
+export PATH="$PATH:/Users/yourusernamehere/.gem/ruby/2.6.6/bin"
+```
+
+### Testing it
+
+To make sure the gem is installed and the `ops` executable is in your `$PATH`:
+
+```
+$ ops
+File 'ops.yml' does not exist.
+Usage: ops <action>
+$
 ```
 
 ### Running
@@ -61,6 +72,8 @@ export PATH="$PATH:/Users/nick/.gem/ruby/2.6.6/bin"
 # from the repo where you wish to use ops
 ops init
 ```
+
+There are also some `ops.yml` templates for `ruby` and `terraform` projects. To use one of these, pass its name as an argument to `ops init`, e.g. `ops init ruby`.
 
 Edit `ops.yml` to suit your needs. There will be some examples in there that you will want to change.
 
@@ -195,6 +208,7 @@ Built-in commands are:
 - `up`: tries to meet the dependencies in the `dependencies` section of `ops.yml`
 - `down`: stops services listed in the `dependencies` section of `ops.yml` (but does not uninstall packages)
 - `init`: creates `ops.yml` for your project
+- `env`: prints the current environment if defined in `$environment`; otherwise defaults to `dev`
 - any actions you define in the `actions` section of `ops.yml`
 
 E.g. `ops up`, `ops init`, or `ops start` (if you've defined a `start` action in `ops.yml`).
