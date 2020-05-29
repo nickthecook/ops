@@ -1,14 +1,16 @@
 #!/bin/bash
 # tags a commit, asking for input when needed
 
-if [ -z "$1" ]; then
-	read -p "Enter tag value: " tag
-else
+if [ -n "$1" ]; then
 	tag="$1"
+else
+	tag=$(grep -o "'[0-9.]*'" opsteam.gemspec | sed "s/'//g")
+	if [ -z "$tag" ]; then
+		read -p "Enter tag value: " tag
+	fi
 fi
 
 comment="Tagging $tag for release"
-
 echo "Tagging '$tag' with comment '$comment'..."
 git tag -a "$tag" -m "$comment"
 git push origin "$tag"
