@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 Gem::Specification.new do |s|
-	s.name = 'opsteam'
+	s.name = 'ops_team'
 	s.version = '0.1.0'
 	s.authors = [
-		'nick@rmtly.com'
+		'nickthecook@gmail.com'
 	]
 	s.date = '2020-05-29'
-	s.summary = 'ops handles basic operations tasks for your project, driven by YAML config'
+	s.summary = 'ops_team handles basic operations tasks for your project, driven by YAML config'
 	s.files = Dir[
 		'Gemfile',
 		'bin/*',

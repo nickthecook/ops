@@ -37,14 +37,16 @@ actions:
   tag:
     command: "bin/tag"
   build:
-    command: gem build opsteam.gemspec
+    command: gem build ops_team.gemspec
     alias: b
   install:
-    command: gem i `ls -t *.gem | head -n 1`
+    command: gem i `ls -t ops_team-*.gem | head -n 1`
     alias: i
   build-and-install:
     command: ops b && ops i
     alias: bi
+  push:
+    command: gem push `ls -t ops_team-*.gem | head -n 1`
   lint:
     command: bundle exec rubocop --safe-auto-correct
     alias: l
