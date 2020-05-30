@@ -73,7 +73,12 @@ $
 ops init
 ```
 
-There are also some `ops.yml` templates for `ruby` and `terraform` projects. To use one of these, pass its name as an argument to `ops init`, e.g. `ops init ruby`.
+There are some specialized templates for terraform and ruby projects. You can run:
+
+```shell
+ops init terraform  # to get a template pre-populated with some common terraform commands
+ops init ruby       # to get a template pre-populated with some common ruby commands
+```
 
 Edit `ops.yml` to suit your needs. There will be some examples in there that you will want to change.
 
@@ -83,10 +88,10 @@ Add an action like:
 actions:
   hello-world:
     command: "echo hello world"
-    alias: hello
+    alias: h
 ```
 
-Then run `ops hello` (to use the alias) or `ops hello-world` to use the full command name.
+Then run `ops h` (to use the alias) or `ops hello-world` to use the full command name.
 
 The `ops.yml` for `ops` looks something ike:
 
