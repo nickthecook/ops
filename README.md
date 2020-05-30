@@ -34,7 +34,7 @@ Manually:
 
 With Bundler:
 
-`gem 'ops_team`
+`gem 'ops_team'`
 
 ##### On a Mac with built-in Ruby
 
