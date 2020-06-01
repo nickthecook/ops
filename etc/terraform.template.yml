@@ -22,5 +22,8 @@ actions:
     command: terraform plan
     alias: p
   graph:
-    command: terraform graph
+    command: terraform graph | dot -T pdf -o resource_graph.pdf
     alias: g
+  open-graph:
+    command: ops graph && open resource_graph.pdf
+    alias: og
