@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 ENV['environment'] = "test"
+ENV['EJSON_KEYDIR'] = "./spec/ejson_keys"
 
 RSpec.configure do |config|
 	config.expect_with :rspec do |expectations|

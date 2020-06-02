@@ -12,6 +12,7 @@ dependencies:
   gem:
     - bundler
     - rerun
+    - ejson
   dir:
     - runtime_data
   custom:
@@ -26,7 +27,7 @@ actions:
   stop:
     command: echo update me too
   test:
-    command: rspec
+    command: bundle exec rspec
     alias: t
   test-watch:
     command: rerun -x ops test
@@ -47,7 +48,12 @@ actions:
   lint:
     command: bundle exec rubocop --safe-auto-correct
     alias: l
+  secrets:
+    command: bin/print_secrets
+    load_secrets: true
 options:
   gem:
     use_sudo: false
-    user_install: true
+    user_install: false
+  environment:
+    EJSON_KEYDIR: "./spec/ejson_keys"

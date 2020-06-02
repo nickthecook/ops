@@ -7,9 +7,10 @@ require 'require_all'
 require 'action'
 require 'output'
 require 'options'
+require 'environment'
 require_rel "builtins"
 
-# executes commands defined in local `ops.yml`
+# executes commands based on local `ops.yml`
 class Ops
 	class UnknownActionError < StandardError; end
 
@@ -27,7 +28,7 @@ class Ops
 	def run
 		exit(INVALID_SYNTAX_EXIT_CODE) unless syntax_valid?
 
-		ENV['environment'] ||= 'dev'
+		environment.set_variables
 
 		return builtin.run if builtin
 
@@ -61,20 +62,16 @@ class Ops
 	end
 
 	def action
-		@action ||= Action.new(command, @args)
-	end
+		return actions[@action_name] if actions[@action_name]
+		return aliases[@action_name] if aliases[@action_name]
 
-	def command
-		@command ||= begin
-			return actions[@action_name]["command"] if actions[@action_name]
-			return aliases[@action_name]["command"] if aliases[@action_name]
-
-			raise UnknownActionError, "Unknown action: #{@action_name}"
-		end
+		raise UnknownActionError, "Unknown action: #{@action_name}"
 	end
 
 	def actions
-		config["actions"]
+		config["actions"].transform_values do |config|
+			Action.new(config, @args, action_options)
+		end
 	end
 
 	def config
@@ -88,10 +85,22 @@ class Ops
 
 	def aliases
 		@aliases ||= begin
-			actions.each_with_object({}) do |(_name, body), alias_hash|
-				alias_hash[body["alias"]] = body if body.include?("alias")
+			actions.each_with_object({}) do |(_name, action), alias_hash|
+				alias_hash[action.alias] = action if action.alias
 			end
 		end
+	end
+
+	def action_options
+		@action_options ||= @config.dig("options", "actions")
+	end
+
+	def env_vars
+		@config.dig("options", "environment") || {}
+	end
+
+	def environment
+		@environment ||= Environment.new(env_vars)
 	end
 end
 

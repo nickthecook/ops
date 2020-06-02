@@ -5,7 +5,7 @@ Layout/IndentationWidth:
 Style/Documentation:
   Enabled: false
 AllCops:
-  TargetRubyVersion: 2.6
+  TargetRubyVersion: 2.5
 Style/StringLiterals:
   Enabled: false
 Style/HashEachMethods:
@@ -16,6 +16,8 @@ Style/HashTransformValues:
   Enabled: true
 Layout/LineLength:
   Max: 100
+  Exclude:
+    - spec/*
 Layout/FirstHashElementIndentation:
   EnforcedStyle: consistent
 Layout/FirstArrayElementIndentation:

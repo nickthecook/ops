@@ -25,9 +25,10 @@ RSpec.describe Ops do
 
 	describe '#run' do
 		let(:result) { subject.run }
-		let(:expected_action_args) { ["bundle exec rspec", args] }
+		let(:expected_action_args) { [{ "command" => "bundle exec rspec", "alias" => "t" }, args, options] }
+		let(:options) { nil }
 		let(:action_string) { "bundle exec rspec spec/file1.rb spec/file2.rb" }
-		let(:action_double) { instance_double(Action, run: nil) }
+		let(:action_double) { instance_double(Action, run: nil, alias: action_alias) }
 
 		before do
 			allow(YAML).to receive(:load_file).and_return(ops_config)

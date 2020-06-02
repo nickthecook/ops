@@ -9,8 +9,6 @@ module Builtins
 			Output.print(environment)
 		end
 
-		private
-
 		def environment
 			ENV['environment']
 		end
