@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
 	s.name = 'ops_team'
-	s.version = '0.1.3'
+	s.version = '0.1.4'
 	s.authors = [
 		'nickthecook@gmail.com'
 	]
@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
 		'loader.rb'
 	]
 	s.executables << 'ops'
-	s.required_ruby_version = '~> 2.6'
+	s.required_ruby_version = '~> 2.5'
 	s.add_runtime_dependency 'colorize', '~> 0.8', '>= 0.8.1'
 	s.add_runtime_dependency 'require_all', '~> 1.1', '>= 1.1.6'
 	s.license = 'GPL-3.0-only'
