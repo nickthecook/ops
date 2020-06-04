@@ -11,7 +11,7 @@ RSpec.describe Builtins::Env do
 		let(:result) { subject.run }
 
 		it "prints 'dev'" do
-			expect(Output).to receive(:print).with("dev")
+			expect(Output).to receive(:print).with("test")
 			result
 		end
 

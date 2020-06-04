@@ -12,7 +12,7 @@ module Builtins
 		private
 
 		def environment
-			ENV['environment'] || 'dev'
+			ENV['environment']
 		end
 	end
 end

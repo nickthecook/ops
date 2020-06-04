@@ -27,6 +27,8 @@ class Ops
 	def run
 		exit(INVALID_SYNTAX_EXIT_CODE) unless syntax_valid?
 
+		ENV['environment'] ||= 'dev'
+
 		return builtin.run if builtin
 
 		Output.warn("Running '#{action}' from #{CONFIG_FILE}...")

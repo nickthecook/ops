@@ -19,6 +19,8 @@ dependencies:
     - "echo this is stdout"
     - "echo 1>&2 this is stderr && false"
 actions:
+  environment:
+    command: echo $environment
   start:
     command: echo update me
   stop:
@@ -28,13 +30,6 @@ actions:
     alias: t
   test-watch:
     command: rerun -x ops test
-    alias: tw
-actions:
-  test:
-    command: "bundle exec rspec"
-    alias: t
-  test-watch:
-    command: "bundle exec rerun -x -- rspec"
     alias: tw
   tag:
     command: "bin/tag"
