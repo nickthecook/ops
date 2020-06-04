@@ -42,7 +42,7 @@ RSpec.describe Builtins::Up do
 		end
 
 		it "Looks for a class to handle the dependency" do
-			expect(Dependencies).to receive(:const_get).with(:Apk)
+			expect(Dependencies).to receive(:const_get).with(:Apk, false)
 			result
 		end
 
