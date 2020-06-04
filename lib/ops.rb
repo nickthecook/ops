@@ -48,7 +48,7 @@ class Ops
 	end
 
 	def builtin
-		@builtin ||= Builtins.const_get(builtin_class_name).new(@args, config)
+		@builtin ||= Builtins.const_get(builtin_class_name, false).new(@args, config)
 	rescue NameError
 		# this means there isn't a builtin with that name in that module
 		nil
