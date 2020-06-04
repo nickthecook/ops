@@ -12,6 +12,8 @@ dependencies:
   gem:
     - bundler
     - rerun
+  dir:
+    - runtime_data
   custom:
     - bundle install --quiet
     - "echo this is stdout"

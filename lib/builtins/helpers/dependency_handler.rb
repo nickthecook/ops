@@ -22,7 +22,7 @@ module Builtins
 			end
 
 			def dependencies_for(type, names)
-				dependency_class = Dependencies.const_get(type.capitalize.to_sym)
+				dependency_class = Dependencies.const_get(type.capitalize.to_sym, false)
 
 				names.map { |name| dependency_class.new(name) }
 			rescue NameError

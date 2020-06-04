@@ -44,7 +44,7 @@ RSpec.describe Ops do
 			end
 
 			it "finds the builtin class" do
-				expect(Builtins).to receive(:const_get).with(:Test)
+				expect(Builtins).to receive(:const_get).with(:Test, false)
 				result
 			end
 
