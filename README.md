@@ -107,7 +107,7 @@ dependencies:
     - pebble
   custom:
     - bundle install --quiet
-    - "echo this is stdout"
+    - echo "this is stdout"
 actions:
   test:
     command: "bundle exec rspec"
