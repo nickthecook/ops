@@ -2,7 +2,9 @@
 
 **This gem is still quite new; if you encounter an issue, please open an Issue in this project.**
 
-[![Gem Version](https://badge.fury.io/rb/ops_team.svg)](https://badge.fury.io/rb/ops_team)
+[![Gem Version](https://badge.fury.io/rb/ops_team.svg)](https://badge.fury.io/rb/ops_team) 
+
+[View on RubyGems.org](https://rubygems.org/gems/ops_team)
 
 `ops` is like an operations team for your dev environment. It:
 
@@ -206,6 +208,19 @@ With this config, `ops up` will run `gem install ejson` to install the `ejson` g
 
 `user_install: true` causes `ops up` to run `gem install --user-install ejson`.
 
+### `dir`
+
+E.g.:
+
+```yaml
+dependencies:
+  dir:
+    - container_data
+    - logs
+```
+
+This dependency will ensure the given directory is created when you run `ops up`. This is handy for directories your app needs, but which contain no checked-in files, since `git` won't save empty directories.
+
 ## Builtins
 
 Built-in commands are:
@@ -267,6 +282,45 @@ actions:
     command: rerun -x ops test # runs your tests every time a file changes
     alias: tw
 ```
+
+## Secrets
+
+`ops` will optionally load secrets from [`.ejson`](https://github.com/Shopify/ejson) files into environment variables before running actions.
+
+By default secrets are loaded from `config/$environment/secrets.ejson`, where `$environment` is set to the current environment, like `dev`, `prod`, `staging`, or any other string. If the variable is not set, `ops` assumes the `dev` environment.
+
+For example, given this secrets file at `config/dev/secrets.ejson`:
+
+```json
+  "_public_key": "740ec2a8a5ace01055b682326c437bb3d976c1d35ad7e6434f72bf0334023e15",
+  "environment": {
+    "API_TOKEN": "EJ[1:VNdUPtGzDAN+LYexKTR1cVzbE397Jnl6oxV7dqCbETA=:OBey+AO8/K/CG37BzU7BLW+vSsvnFCBN:lmj5L4ipt4YGYABlk+peePrgs5ZMY/kmRystcC+pJdk=]"
+  }
+}
+```
+
+the environment variable `API_TOKEN` can be set automatically when an action is run by specifying `load_secrets: true` in that action definition:
+
+```yaml
+actions:
+  post:
+    command: curl -X POST "https://example.com/api?token=$API_TOKEN"
+    load_secrets: true
+```
+
+The secret remains encrypted by `ejson` in your repo, but if you have the private key to decrypt that file available, the secrets will be decrypted at runtime and loaded into your environment, available to your actions.
+
+If you want to keep the secrets file in a different location, you can configure the location with the following option in your `ops.yml` file:
+
+```yaml
+options:
+  secrets:
+    path: "secrets/$environment.ejson"
+```
+
+`ops` will look in the configured location for the secrets file. Environment variables are expanded by `ops` when loading this path, due to the high likelihood of the environment name being somewhere in the path.
+
+If `ops` looks for `config/$environment/secrets.ejson` and cannot find it, it will try to load `config/$environment/secrets.json`. This allows you to keep a secrets file for your development environment that is not encrypted, for easier editing and debugging.
 
 ## Contributing
 
