@@ -14,7 +14,7 @@ module Builtins
 
 		class << self
 			def description
-				"Creates an ops.yml file from a template"
+				"creates an ops.yml file from a template"
 			end
 		end
 

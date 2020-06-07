@@ -10,11 +10,11 @@ module Builtins
 	class Down < Builtin
 		class << self
 			def description
-				"Stops dependent services listed in ops.yml"
+				"stops dependent services listed in ops.yml"
 			end
 		end
 
-			def run
+		def run
 			# TODO: return a success/failure status to the caller
 			unmeet_dependencies
 		end

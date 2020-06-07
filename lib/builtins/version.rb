@@ -10,7 +10,7 @@ module Builtins
 
 		class << self
 			def description
-				"Prints the version of ops that is running"
+				"prints the version of ops that is running"
 			end
 		end
 

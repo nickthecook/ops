@@ -11,7 +11,7 @@ module Builtins
 	class Up < Builtin
 		class << self
 			def description
-				"Attempts to meet dependencies listed in ops.yml"
+				"attempts to meet dependencies listed in ops.yml"
 			end
 		end
 

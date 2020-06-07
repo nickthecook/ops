@@ -8,7 +8,7 @@ module Builtins
 	class Help < Builtin
 		class << self
 			def description
-				"Displays available builtins and actions"
+				"displays available builtins and actions"
 			end
 		end
 
