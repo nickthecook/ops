@@ -7,5 +7,7 @@ dependencies:
 actions:
   start:
     command: docker-compose up -d
+    description: starts the service
   stop:
     command: docker-compose down
+    description: stops the service

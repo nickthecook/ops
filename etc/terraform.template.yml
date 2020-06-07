@@ -9,21 +9,28 @@ actions:
   apply:
     command: terraform apply
     alias: a
+    description: runs 'terraform apply'
   apply-auto-approve:
     command: terraform apply --auto-approve
     alias: aa
+    description: runs 'terraform apply' with auto-approve
   destroy:
     command: terraform destroy
     alias: d
+    description: runs 'terraform destroy'
   destroy-auto-approve:
     command: terraform destroy --auto-approve
     alias: dd
+    description: runs 'terraform destroy' with auto-approve
   plan:
     command: terraform plan
     alias: p
+    description: runs 'terraform plan'
   graph:
     command: terraform graph | dot -T pdf -o resource_graph.pdf
     alias: g
+    description: runs 'terraform graph'
   open-graph:
     command: ops graph && open resource_graph.pdf
     alias: og
+    description: opens the terraform graph with the OS 'open' command

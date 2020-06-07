@@ -7,23 +7,31 @@ dependencies:
 actions:
   start:
     command: echo update me
+    description: starts the app
   stop:
     command: echo update me too
+    description: stops the app
   test:
     command: rspec
     alias: t
+    description: runs unit tests
   test-watch:
     command: rerun -x ops test
     alias: tw
+    description: runs unit tests every time a file changes
   lint:
     command: bundle exec rubocop --safe-auto-correct
     alias: l
+    description: runs rubocop with safe autocorrect
   build:
     command: gem build *.gemspec
     alias: b
+    description: builds the gem
   install:
     command: gem install `ls -t *.gem | head -n1`
     alias: i
+    description: installs the gem
   build-and-install:
     command: ops build && ops install
     alias: bi
+    description: builds and installs the gem

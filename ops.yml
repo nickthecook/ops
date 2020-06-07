@@ -22,35 +22,41 @@ dependencies:
 actions:
   environment:
     command: echo $environment
-  start:
-    command: echo update me
-  stop:
-    command: echo update me too
+    description: prints the current environment
   test:
     command: bundle exec rspec
     alias: t
+    description: runs unit tests
   test-watch:
     command: rerun -x ops test
     alias: tw
+    description: runs unit tests every time a file changes
   tag:
     command: "bin/tag"
+    description: tags the branch in github with the version from the gemspec
   build:
     command: gem build ops_team.gemspec
     alias: b
+    description: builds the ops_team gem
   install:
     command: gem i `ls -t ops_team-*.gem | head -n 1`
     alias: i
+    description: installs the ops_team gem from a local gemfile
   build-and-install:
     command: ops b && ops i
     alias: bi
+    description: builds and installs the ops_team gem
   push:
     command: gem push `ls -t ops_team-*.gem | head -n 1`
+    description: pushes the latest local .gem file to rubygems.org
   lint:
     command: bundle exec rubocop --safe-auto-correct
     alias: l
+    description: runs rubocop with safe autocorrect
   secrets:
     command: bin/print_secrets
     load_secrets: true
+    description: prints secrets
 options:
   gem:
     use_sudo: false
