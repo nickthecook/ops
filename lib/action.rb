@@ -29,6 +29,12 @@ class Action
 		@config["command"]
 	end
 
+	def description
+		@config["description"]
+	end
+
+	private
+
 	def load_secrets?
 		@config["load_secrets"]
 	end

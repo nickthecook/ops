@@ -8,7 +8,13 @@ require 'builtins/helpers/dependency_handler'
 
 module Builtins
 	class Down < Builtin
-		def run
+		class << self
+			def description
+				"Stops dependent services listed in ops.yml"
+			end
+		end
+
+			def run
 			# TODO: return a success/failure status to the caller
 			unmeet_dependencies
 		end

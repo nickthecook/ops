@@ -8,7 +8,13 @@ module Builtins
 	class Version < Builtin
 		GEMSPEC_FILE = "#{__dir__}/../../ops_team.gemspec"
 
-		def run
+		class << self
+			def description
+				"Prints the version of ops that is running"
+			end
+		end
+
+			def run
 			unless gemspec
 				Output.error("Unable to load gemspec at '#{GEMSPEC_FILE}")
 				return false

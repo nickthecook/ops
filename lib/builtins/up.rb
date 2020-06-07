@@ -9,6 +9,12 @@ require 'output'
 
 module Builtins
 	class Up < Builtin
+		class << self
+			def description
+				"Attempts to meet dependencies listed in ops.yml"
+			end
+		end
+
 		def run
 			# TODO: return a success/failure status to the caller
 			meet_dependencies

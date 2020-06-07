@@ -12,6 +12,12 @@ module Builtins
 		OPS_YML_TEMPLATE = File.join(TEMPLATE_DIR, "%<template_name>s.template.yml")
 		DEFAULT_TEMPLATE_NAME = "ops"
 
+		class << self
+			def description
+				"Creates an ops.yml file from a template"
+			end
+		end
+
 		def run
 			if File.exist?(OPS_YML)
 				Output.error("File '#{OPS_YML} exists; not initializing.")
