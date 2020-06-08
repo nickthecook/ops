@@ -40,10 +40,11 @@ class Action
 	end
 
 	def load_secrets
+		puts "SECRETS_FILE #{secrets_file}"
 		Secrets.new(secrets_file).load
 	end
 
 	def secrets_file
-		`echo -n #{@options&.dig("secrets", "path")}`
+		`echo #{@options&.dig("secrets", "path")}`.chomp
 	end
 end
