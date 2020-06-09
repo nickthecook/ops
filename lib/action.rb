@@ -40,7 +40,6 @@ class Action
 	end
 
 	def load_secrets
-		puts "SECRETS_FILE #{secrets_file}"
 		Secrets.new(secrets_file).load
 	end
 

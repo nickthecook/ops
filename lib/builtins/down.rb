@@ -45,7 +45,7 @@ module Builtins
 			else
 				Output.failed
 				Output.error("Error unmeeting #{dependency.type} dependency '#{dependency.name}':")
-				puts(dependency.output)
+				Output.out(dependency.output)
 			end
 		end
 	end

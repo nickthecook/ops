@@ -63,6 +63,19 @@ RSpec.describe Secrets do
 			end
 
 			context "when json file does not exist" do
+				before do
+					allow(File).to receive(:open).with("config/test/secrets.json").and_raise(Errno::ENOENT, "NOPE")
+				end
+
+				it "does not raise an exception" do
+					expect { result }.not_to raise_error
+				end
+
+				it "does not set any environment variables" do
+					expect(ENV).not_to receive(:[]=).with("SECRET1", anything)
+					expect(ENV).not_to receive(:[]=).with("SECRET2", anything)
+					result
+				end
 			end
 		end
 

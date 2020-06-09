@@ -29,6 +29,7 @@ class Ops
 		exit(INVALID_SYNTAX_EXIT_CODE) unless syntax_valid?
 
 		environment.set_variables
+		app_config.load
 
 		return builtin.run if builtin
 
@@ -101,6 +102,14 @@ class Ops
 
 	def environment
 		@environment ||= Environment.new(env_vars)
+	end
+
+	def app_config_file
+		`echo #{@options&.dig("config", "path")}`.chomp
+	end
+
+	def app_config
+		@app_config ||= AppConfig.new(app_config_file)
 	end
 end
 

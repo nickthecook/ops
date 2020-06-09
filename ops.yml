@@ -19,6 +19,7 @@ dependencies:
     - bundle install --quiet
     - "echo this is stdout"
     - "echo 1>&2 this is stderr && false"
+    - "[ \"$KEY1\" == \"This is key 1\" ] || false"
 actions:
   environment:
     command: echo $environment
@@ -56,7 +57,10 @@ actions:
   secrets:
     command: bin/print_secrets
     load_secrets: true
-    description: prints secrets
+    description: prints secrets from environment variables
+  config:
+    command: bin/print_config
+    description: prints config from environment variables
 options:
   gem:
     use_sudo: false
