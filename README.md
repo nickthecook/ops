@@ -283,6 +283,18 @@ actions:
     alias: tw
 ```
 
+## Environment variables in `ops.yml`
+
+`ops` will set any environment variables you define in the `options` section of `ops.yml` before running any built-in or action.
+
+E.g.:
+
+```json
+options:
+  environment:
+    EJSON_KEYDIR: "./spec/ejson_keys"
+```
+
 ## Secrets
 
 `ops` will optionally load secrets from [`.ejson`](https://github.com/Shopify/ejson) files into environment variables before running actions.
@@ -321,6 +333,30 @@ options:
 `ops` will look in the configured location for the secrets file. Environment variables are expanded by `ops` when loading this path, due to the high likelihood of the environment name being somewhere in the path.
 
 If `ops` looks for `config/$environment/secrets.ejson` and cannot find it, it will try to load `config/$environment/secrets.json`. This allows you to keep a secrets file for your development environment that is not encrypted, for easier editing and debugging.
+
+## Config
+
+Similar to its loading of secrets, `ops` will load the config file `config/$environment/config.json` and set environment variables for any values found in the "environment" section of the file.
+
+```json
+{
+  "environment": {
+    "KEY": "VALUE"
+  }
+}
+```
+
+Unlike secrets, `ops` will load these config variables every time it runs; prior to all builtins and actions.
+
+Unlike environment variables defined in the `options` section of `ops.yml`, these variables can be different for dev, production, or staging, since `ops` will load a different file depending on the value of `$environment`.
+
+You can override the path to the config file in `options`. E.g.:
+
+```json
+options:
+  config:
+    path: config/$environment.json
+```
 
 ## Contributing
 
