@@ -6,6 +6,20 @@ require 'output'
 require 'app_config'
 
 class Secrets < AppConfig
+	class << self
+		def from_options(options)
+			path = options&.dig("secrets", "path")
+
+			Secrets.new(expanded_path(path))
+		end
+
+		private
+
+		def expanded_path(path)
+			`echo #{path}`.chomp
+		end
+	end
+
 	private
 
 	def default_filename

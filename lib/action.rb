@@ -40,10 +40,6 @@ class Action
 	end
 
 	def load_secrets
-		Secrets.new(secrets_file).load
-	end
-
-	def secrets_file
-		`echo #{@options&.dig("secrets", "path")}`.chomp
+		Secrets.from_options(@options).load
 	end
 end
