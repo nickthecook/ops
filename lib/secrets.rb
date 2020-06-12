@@ -4,7 +4,7 @@ require 'json'
 
 require 'output'
 require 'app_config'
-require 'Options'
+require 'options'
 
 class Secrets < AppConfig
 	class << self
