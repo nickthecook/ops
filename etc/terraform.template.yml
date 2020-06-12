@@ -11,7 +11,7 @@ actions:
     alias: a
     description: runs 'terraform apply'
   apply-auto-approve:
-    command: terraform apply --auto-approve
+    command: ops apply --auto-approve
     alias: aa
     description: runs 'terraform apply' with auto-approve
   destroy:
@@ -19,7 +19,7 @@ actions:
     alias: d
     description: runs 'terraform destroy'
   destroy-auto-approve:
-    command: terraform destroy --auto-approve
+    command: ops destroy --auto-approve
     alias: dd
     description: runs 'terraform destroy' with auto-approve
   plan:
