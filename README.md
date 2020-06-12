@@ -225,13 +225,15 @@ This dependency will ensure the given directory is created when you run `ops up`
 
 Built-in commands are:
 
-- `up`: tries to meet the dependencies in the `dependencies` section of `ops.yml`
-- `down`: stops services listed in the `dependencies` section of `ops.yml` (but does not uninstall packages)
-- `init`: creates `ops.yml` for your project
-- `env`: prints the current environment if defined in `$environment`; otherwise defaults to `dev`
-- any actions you define in the `actions` section of `ops.yml`
-
-E.g. `ops up`, `ops init`, or `ops start` (if you've defined a `start` action in `ops.yml`).
+```
+  init                  creates an ops.yml file from a template
+  version               prints the version of ops that is running
+  down                  stops dependent services listed in ops.yml
+  env                   prints the current environment, e.g. 'dev', 'production', 'staging', etc.
+  exec                  executes the given command in the `ops` environment, i.e. with environment variables set
+  help                  displays available builtins and actions
+  up                    attempts to meet dependencies listed in ops.yml
+```
 
 ## Actions
 
@@ -295,6 +297,30 @@ options:
     EJSON_KEYDIR: "./spec/ejson_keys"
 ```
 
+## Config
+
+`ops` will load the config file `config/$environment/config.json` and set environment variables for any values found in the "environment" section of the file.
+
+```json
+{
+  "environment": {
+    "KEY": "VALUE"
+  }
+}
+```
+
+`ops` will load these config variables every time it runs; prior to all builtins and actions.
+
+Unlike environment variables defined in the `options.environment` section of `ops.yml`, these variables can be different for dev, production, or staging, since `ops` will load a different file depending on the value of `$environment`.
+
+You can override the path to the config file in `options`. E.g.:
+
+```json
+options:
+  config:
+    path: config/$environment.json
+```
+
 ## Secrets
 
 `ops` will optionally load secrets from [`.ejson`](https://github.com/Shopify/ejson) files into environment variables before running actions.
@@ -320,7 +346,7 @@ actions:
     load_secrets: true
 ```
 
-The secret remains encrypted by `ejson` in your repo, but if you have the private key to decrypt that file available, the secrets will be decrypted at runtime and loaded into your environment, available to your actions.
+The secret remains encrypted by `ejson` in your repo, but if you have the private key to decrypt that file available to `ejson` at runtime, the secrets will be decrypted and loaded into your environment, available to actions that need them.
 
 If you want to keep the secrets file in a different location, you can configure the location with the following option in your `ops.yml` file:
 
@@ -330,32 +356,22 @@ options:
     path: "secrets/$environment.ejson"
 ```
 
-`ops` will look in the configured location for the secrets file. Environment variables are expanded by `ops` when loading this path, due to the high likelihood of the environment name being somewhere in the path.
+Environment variables are expanded by `ops` when loading this path, due to the high likelihood of the environment name being somewhere in the path.
 
-If `ops` looks for `config/$environment/secrets.ejson` and cannot find it, it will try to load `config/$environment/secrets.json`. This allows you to keep a secrets file for your development environment that is not encrypted, for easier editing and debugging.
+If `ops` looks the default secrets file, `config/$environment/secrets.ejson`, and cannot find it, it will try to load `config/$environment/secrets.json`. This allows you to keep a secrets file for your development environment that is not encrypted, for easier editing and debugging.
 
-## Config
+Currently, if the path to the secrets file is overridden with the `options.secrets.path`, `ops` will not fall back to a `.json` version of the path if it cannot find the given filename `.ejson`. That is tracked in [this issue](https://github.com/nickthecook/ops/issues/13) in the `ops` project.
 
-Similar to its loading of secrets, `ops` will load the config file `config/$environment/config.json` and set environment variables for any values found in the "environment" section of the file.
+### Secrets and the `exec` builtin
 
-```json
-{
-  "environment": {
-    "KEY": "VALUE"
-  }
-}
-```
+The `exec` builtin executes a shell command from within the `ops` environment; that is, with `$environment` and any environment variables defined in config and options set. This can be useful for testing that config and secrets are being loaded correctly.
 
-Unlike secrets, `ops` will load these config variables every time it runs; prior to all builtins and actions.
+By default, `exec` does not load secrets. This can be overridden with the following option:
 
-Unlike environment variables defined in the `options` section of `ops.yml`, these variables can be different for dev, production, or staging, since `ops` will load a different file depending on the value of `$environment`.
-
-You can override the path to the config file in `options`. E.g.:
-
-```json
+```yaml
 options:
-  config:
-    path: config/$environment.json
+  exec:
+    load_secrets: true
 ```
 
 ## Contributing
