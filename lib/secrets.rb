@@ -4,18 +4,17 @@ require 'json'
 
 require 'output'
 require 'app_config'
+require 'Options'
 
 class Secrets < AppConfig
 	class << self
-		def from_options(options)
-			path = options&.dig("secrets", "path")
-
-			Secrets.new(expanded_path(path))
+		def load
+			Secrets.new(expand_path(Options.get("secrets.path"))).load
 		end
 
 		private
 
-		def expanded_path(path)
+		def expand_path(path)
 			`echo #{path}`.chomp
 		end
 	end

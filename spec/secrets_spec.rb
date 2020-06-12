@@ -23,6 +23,34 @@ RSpec.describe Secrets do
 		allow(subject).to receive(:`).with(/ejson decrypt .*/).and_return(secrets)
 	end
 
+	describe ".load" do
+		let(:result) { described_class.load }
+
+		context "when secrets path option is given" do
+			let(:secrets_path) { "development/secrets.ejson" }
+			let(:secrets_double) { instance_double(Secrets, load: nil) }
+
+			before do
+				allow(Options).to receive(:get).with("secrets.path").and_return(secrets_path)
+				allow(described_class).to receive(:new).and_return(secrets_double)
+			end
+
+			it "loads secrets from the given file" do
+				expect(described_class).to receive(:new).with("development/secrets.ejson")
+				result
+			end
+
+			context "when secrets path includes a shell variable" do
+				let(:secrets_path) { "secrets/$environment/secrets.ejson" }
+
+				it "expands the variable" do
+					expect(described_class).to receive(:new).with("secrets/test/secrets.ejson")
+					result
+				end
+			end
+		end
+	end
+
 	describe "#load" do
 		let(:result) { subject.load }
 

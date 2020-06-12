@@ -5,14 +5,13 @@ require 'secrets'
 # represents one action to be performed in the shell
 # can assemble a command line from a command and args
 class Action
-	def initialize(config, args, options)
+	def initialize(config, args)
 		@config = config
 		@args = args
-		@options = options
 	end
 
 	def run
-		load_secrets if load_secrets?
+		Secrets.load if load_secrets?
 
 		Kernel.exec(to_s)
 	end
@@ -37,9 +36,5 @@ class Action
 
 	def load_secrets?
 		@config["load_secrets"]
-	end
-
-	def load_secrets
-		Secrets.from_options(@options).load
 	end
 end

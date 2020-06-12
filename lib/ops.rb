@@ -71,7 +71,7 @@ class Ops
 
 	def actions
 		config["actions"].transform_values do |config|
-			Action.new(config, @args, action_options)
+			Action.new(config, @args)
 		end
 	end
 
@@ -92,10 +92,6 @@ class Ops
 		end
 	end
 
-	def action_options
-		@action_options ||= @config.dig("options", "actions")
-	end
-
 	def env_vars
 		@config.dig("options", "environment") || {}
 	end
@@ -105,7 +101,7 @@ class Ops
 	end
 
 	def app_config_file
-		`echo #{@options&.dig("config", "path")}`.chomp
+		`echo #{Options.get("config.path")}`.chomp
 	end
 
 	def app_config

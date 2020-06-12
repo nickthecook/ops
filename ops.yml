@@ -65,5 +65,9 @@ options:
   gem:
     use_sudo: false
     user_install: false
+  config:
+    path: "config/$environment/other_config.json"
+  exec:
+    load_secrets: true
   environment:
     EJSON_KEYDIR: "./spec/ejson_keys"
