@@ -29,7 +29,7 @@ actions:
     alias: t
     description: runs unit tests
   test-watch:
-    command: rerun -x ops test
+    command: rerun -x bin/ops test
     alias: tw
     description: runs unit tests every time a file changes
   tag:
@@ -44,7 +44,7 @@ actions:
     alias: i
     description: installs the ops_team gem from a local gemfile
   build-and-install:
-    command: ops b && ops i
+    command: bin/ops b && bin/ops i
     alias: bi
     description: builds and installs the ops_team gem
   push:

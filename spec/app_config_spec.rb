@@ -63,5 +63,19 @@ RSpec.describe AppConfig do
 				result
 			end
 		end
+
+		context "when numeric value is in config" do
+			let(:config) do
+				{
+					"environment" => {
+						"KEY1" => 13
+					}
+				}.to_json
+			end
+
+			it "does not raise an exception" do
+				expect { result }.not_to raise_error
+			end
+		end
 	end
 end

@@ -7,7 +7,7 @@ class AppConfig
 
 	def load
 		config['environment']&.each do |key, value|
-			ENV[key] = value
+			ENV[key] = value.to_s
 		end
 	end
 

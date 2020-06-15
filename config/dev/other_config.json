@@ -1,6 +1,7 @@
 {
 	"environment": {
 		"KEY1": "This is other key 1",
-		"KEY2": "This is other key 2"
+		"KEY2": "This is other key 2",
+		"NUM": 7
 	}
 }
