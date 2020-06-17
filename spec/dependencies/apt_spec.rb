@@ -14,9 +14,33 @@ RSpec.describe Dependencies::Apt do
 	end
 
 	describe '#meet' do
+		let(:result) { subject.meet }
+
 		it "calls apt-get to install the package" do
-			expect(subject).to receive(:execute).with("apt-get install -y some-dependency")
-			subject.meet
+			expect(subject).to receive(:execute).with("sudo apt-get install -y some-dependency")
+			result
+		end
+
+		context "when user is root" do
+			before do
+				allow(ENV).to receive(:[]).with("USER").and_return("root")
+			end
+
+			it "calls apt-get without sudo" do
+				expect(subject).to receive(:execute).with("apt-get install -y some-dependency")
+				result
+			end
+		end
+
+		context "when options.apt.sudo is false" do
+			before do
+				Options.set({ "apt" => { "use_sudo" => false } })
+			end
+
+			it "calls apt-get without sudo" do
+				expect(subject).to receive(:execute).with("apt-get install -y some-dependency")
+				result
+			end
 		end
 	end
 

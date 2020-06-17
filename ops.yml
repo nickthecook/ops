@@ -5,6 +5,7 @@ dependencies:
     - font-anonymice-powerline
   apt:
     - curl
+    - sl
   apk:
     - curl
   docker:
