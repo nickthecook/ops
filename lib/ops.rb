@@ -16,7 +16,8 @@ class Ops
 
 	CONFIG_FILE = "ops.yml"
 
-	INVALID_SYNTAX_EXIT_CODE = 1
+	INVALID_SYNTAX_EXIT_CODE = 64
+	UNKNOWN_ACTION_EXIT_CODE = 65
 
 	def initialize(argv)
 		@action_name = argv[0]
@@ -28,15 +29,10 @@ class Ops
 	def run
 		exit(INVALID_SYNTAX_EXIT_CODE) unless syntax_valid?
 
-		environment.set_variables
-		app_config.load
-
-		return builtin.run if builtin
-
-		Output.warn("Running '#{action}' from #{CONFIG_FILE}...")
-		action.run
+		run_action
 	rescue UnknownActionError => e
 		Output.error("Error: #{e}")
+		exit(UNKNOWN_ACTION_EXIT_CODE)
 	end
 
 	private
@@ -49,6 +45,16 @@ class Ops
 		else
 			true
 		end
+	end
+
+	def run_action
+		environment.set_variables
+		app_config.load
+
+		return builtin.run if builtin
+
+		Output.warn("Running '#{action}' from #{CONFIG_FILE}...")
+		action.run
 	end
 
 	def builtin
