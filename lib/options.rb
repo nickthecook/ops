@@ -3,7 +3,7 @@
 class Options
 	class << self
 		def get(path)
-			@options.dig(*path.split('.'))
+			@options&.dig(*path.split('.'))
 		end
 
 		def set(options)

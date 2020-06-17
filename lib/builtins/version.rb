@@ -14,7 +14,7 @@ module Builtins
 			end
 		end
 
-			def run
+		def run
 			unless gemspec
 				Output.error("Unable to load gemspec at '#{GEMSPEC_FILE}")
 				return false
