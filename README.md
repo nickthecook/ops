@@ -325,6 +325,8 @@ options:
 
 `ops` will optionally load secrets from [`.ejson`](https://github.com/Shopify/ejson) files into environment variables before running actions.
 
+`ops` _will not_ load secrets by default, to help a user avoid leaking secrets unintentionally. An `action` can be configured to load secrets by setting `load_secrets: true` in the `action` definition.
+
 By default secrets are loaded from `config/$environment/secrets.ejson`, where `$environment` is set to the current environment, like `dev`, `prod`, `staging`, or any other string. If the variable is not set, `ops` assumes the `dev` environment.
 
 For example, given this secrets file at `config/dev/secrets.ejson`:
