@@ -9,22 +9,28 @@ require 'options'
 class Secrets < AppConfig
 	class << self
 		def load
-			Secrets.new(expand_path(Options.get("secrets.path"))).load
+			Secrets.new(secrets_path).load
 		end
 
 		private
+
+		def secrets_path
+			expand_path(Options.get("secrets.path"))
+		end
 
 		def expand_path(path)
 			`echo #{path}`.chomp
 		end
 	end
 
+	def initialize(filename = "")
+		@filename = filename.empty? ? default_filename : actual_filename_for(filename)
+	end
+
 	private
 
 	def default_filename
-		return default_ejson_filename if File.exist?(default_ejson_filename)
-
-		default_json_filename
+		File.exist?(default_ejson_filename) ? default_ejson_filename : default_json_filename
 	end
 
 	def default_ejson_filename
@@ -33,6 +39,10 @@ class Secrets < AppConfig
 
 	def default_json_filename
 		"config/#{environment}/secrets.json"
+	end
+
+	def actual_filename_for(filename)
+		File.exist?(filename) ? filename : filename.sub(".ejson", ".json")
 	end
 
 	def file_contents

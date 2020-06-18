@@ -68,6 +68,8 @@ options:
     user_install: false
   config:
     path: "config/$environment/other_config.json"
+  secrets:
+    path: "config/$environment/other_secrets.ejson"
   exec:
     load_secrets: true
   environment:
