@@ -358,9 +358,7 @@ options:
 
 Environment variables are expanded by `ops` when loading this path, due to the high likelihood of the environment name being somewhere in the path.
 
-If `ops` looks the default secrets file, `config/$environment/secrets.ejson`, and cannot find it, it will try to load `config/$environment/secrets.json`. This allows you to keep a secrets file for your development environment that is not encrypted, for easier editing and debugging.
-
-Currently, if the path to the secrets file is overridden with the `options.secrets.path`, `ops` will not fall back to a `.json` version of the path if it cannot find the given filename `.ejson`. That is tracked in [this issue](https://github.com/nickthecook/ops/issues/13) in the `ops` project.
+If `ops` looks for an `ejson` secrets file and cannot find it, it will fall back to the equivalent `.json` file. This allows you to keep a secrets file for your development environment that is not encrypted, for easier editing and debugging.
 
 ### Secrets and the `exec` builtin
 
