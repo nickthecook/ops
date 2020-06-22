@@ -3,13 +3,16 @@
 require 'environment'
 
 RSpec.describe Environment do
-	subject { described_class.new({ "var1" => "val1", "var2" => "val2" }) }
+	subject { described_class.new(variables) }
+
+	let(:variables) { { "var1" => "val1", "var2" => "val2" } }
 
 	describe "#set_variables" do
 		let(:result) { subject.set_variables }
 
 		before do
-			allow(ENV).to receive(:[]=)
+			# keys and values set in ENV must be Strings
+			allow(ENV).to receive(:[]=).with(kind_of(String), kind_of(String))
 		end
 
 		it "sets the given variables" do
@@ -21,6 +24,33 @@ RSpec.describe Environment do
 		it "sets the 'environment' variable" do
 			expect(ENV).to receive(:[]=).with("environment", "test")
 			result
+		end
+
+		context "when numeric value is in config" do
+			let(:variables) { { "var1" => 1 } }
+
+			it "does not raise an exception" do
+				expect { result }.not_to raise_error
+			end
+		end
+
+		context "when environment_aliases are given" do
+			let(:aliases) { %w[ENV RAILS_ENV] }
+
+			before do
+				allow(Options).to receive(:get).with("environment_aliases").and_return(aliases)
+			end
+
+			it "sets all aliases to the environment value" do
+				expect(ENV).to receive(:[]=).with('ENV', 'test')
+				expect(ENV).to receive(:[]=).with('RAILS_ENV', 'test')
+				result
+			end
+
+			it "does not set 'environment'" do
+				expect(ENV).not_to receive(:[]=).with('environment', anything)
+				result
+			end
 		end
 	end
 

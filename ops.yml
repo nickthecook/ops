@@ -22,9 +22,6 @@ dependencies:
     - "echo 1>&2 this is stderr && false"
     - "[ \"$KEY1\" == \"This is key 1\" ] || false"
 actions:
-  environment:
-    command: echo $environment
-    description: prints the current environment
   test:
     command: bundle exec rspec
     alias: t
@@ -74,3 +71,7 @@ options:
     load_secrets: true
   environment:
     EJSON_KEYDIR: "./spec/ejson_keys"
+  environment_aliases:
+    - environment
+    - ENV
+    - RAILS_ENV

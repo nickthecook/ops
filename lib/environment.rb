@@ -6,16 +6,31 @@ class Environment
 	end
 
 	def set_variables
-		@env_hash.each do |key, value|
-			ENV[key] = value
-		end
-
-		ENV['environment'] = environment
+		set_environment_aliases
+		set_configured_variables
 	end
 
 	def environment
 		return 'dev' if ENV['environment'].nil? || ENV['environment'].empty?
 
 		ENV['environment']
+	end
+
+	private
+
+	def set_environment_aliases
+		environment_aliases.each do |alias_name|
+			ENV[alias_name] = environment
+		end
+	end
+
+	def environment_aliases
+		Options.get("environment_aliases") || ['environment']
+	end
+
+	def set_configured_variables
+		@env_hash.each do |key, value|
+			ENV[key] = value.to_s
+		end
 	end
 end
