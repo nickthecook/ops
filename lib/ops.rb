@@ -53,7 +53,7 @@ class Ops
 
 		return builtin.run if builtin
 
-		Output.warn("Running '#{action}' from #{CONFIG_FILE}...")
+		Output.warn("Running '#{action}' from #{CONFIG_FILE} in environment '#{ENV['environment']}'...")
 		action.run
 	end
 
