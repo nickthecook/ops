@@ -18,8 +18,8 @@ class AppConfig
 	end
 
 	def config
-		@config ||= file_contents ? JSON.parse(file_contents) : {}
-	rescue JSON::ParserError => e
+		@config ||= file_contents ? YAML.safe_load(file_contents) : {}
+	rescue YAML::SyntaxError => e
 		Output.error("Error parsing config data: #{e}")
 		{}
 	end

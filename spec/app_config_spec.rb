@@ -77,5 +77,20 @@ RSpec.describe AppConfig do
 				expect { result }.not_to raise_error
 			end
 		end
+
+		context "when config is in YAML" do
+			let(:config) do
+				{
+					"environment" => {
+						"key1" => "value 1"
+					}
+				}.to_yaml
+			end
+
+			it "sets environment variables for values in the 'environment' section" do
+				expect(ENV).to receive(:[]=).with("key1", "value 1")
+				result
+			end
+		end
 	end
 end
