@@ -36,20 +36,28 @@ You can install the `ops_team` gem with bundler, but more likely `ops` will be i
 
 ##### On a Mac with built-in Ruby
 
+You can install the gem with `sudo`, using the default MacOS Ruby interpreter:
+
+```shell
+sudo gem i ops_team
+```
+
+Or you can install `ops_team` to your user-gem directory:
+
 ```shell
 gem i --user-install ops_team
 ```
 
 In this case, you may need to add your gems' `bin/` directory to your `$PATH` variable. To find the path to the right `bin/` directory:
 
-```
+```shell
 $ gem environment | grep "EXECUTABLE DIRECTORY"
   - EXECUTABLE DIRECTORY: /Users/nick/.gem/ruby/2.6.6/bin
 ```
 
 To add it to your path, append this to your `.bashrc` or `.zshrc` (or equivalent for your shell):
 
-```
+```shell
 export PATH="$PATH:/Users/yourusernamehere/.gem/ruby/2.6.6/bin"
 ```
 
@@ -57,7 +65,7 @@ export PATH="$PATH:/Users/yourusernamehere/.gem/ruby/2.6.6/bin"
 
 To make sure the gem is installed and the `ops` executable is in your `$PATH`:
 
-```
+```shell
 $ ops version
 0.6.0
 $
@@ -92,7 +100,7 @@ actions:
 
 Then run `ops h` (to use the alias) or `ops hello-world` to use the full command name.
 
-```
+```shell
 $ ops h
 Running 'echo hello world ' from ops.yml in environment 'dev'...
 hello world

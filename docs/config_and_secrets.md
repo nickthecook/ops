@@ -16,10 +16,18 @@ Unlike environment variables defined in the `options.environment` section of `op
 
 You can override the path to the config file in `options`. E.g.:
 
-```json
+```yaml
 options:
   config:
     path: config/$environment.json
+```
+
+`ops` can also load YAML config files:
+
+```yaml
+options:
+  config:
+   path: config/$environment/config.yml
 ```
 
 ## Secrets
