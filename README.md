@@ -9,7 +9,7 @@
 `ops` is like an operations team for your project. It aims to be:
 
 - **simple**: easy to use even for people who know nothing about how the tool works
-- **self-contained**: no references to external resources, just `git clone` and `ops up`
+- **self-contained**: no references to external resources, just run `git clone` and `ops up`
 - **environment-aware**: make things easy in `dev` while allowing it to co-exist with `production`
 
 ![ops up in action](ops.png)
@@ -28,10 +28,11 @@ Manually:
 
 `gem install ops_team`
 
-You can install the `ops_team` gem with bundler, but more likely `ops` will be installing and running bundler; not the other way around.
+With `bundler`:
 
 `gem 'ops_team'`
 
+You can install the `ops_team` gem with bundler, but more likely `ops` will be installing and running bundler; not the other way around.
 
 ##### On a Mac with built-in Ruby
 
