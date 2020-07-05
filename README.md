@@ -2,27 +2,21 @@
 
 **This gem is still quite new; if you encounter an issue, please open an Issue in this project.**
 
-[![Gem Version](https://badge.fury.io/rb/ops_team.svg)](https://badge.fury.io/rb/ops_team) 
+[![Gem Version](https://badge.fury.io/rb/ops_team.svg)](https://badge.fury.io/rb/ops_team)
 
 [View on RubyGems.org](https://rubygems.org/gems/ops_team)
 
-`ops` is like an operations team for your dev environment. It:
+`ops` is like an operations team for your project. It aims to be:
 
-- reduces the cognitive load of getting up and running as a new developer on a project
-- saves time by allowing command-line shortcuts for common tasks
-- can be used in CI, to install dependencies, start services, and run tests, exactly as you do on your dev machine
-
-The typical workflow is:
-
-```
-ops init   # to create the ops.yml file so you can edit
-ops up     # to install dependencies and start services your app depends on
-ops start  # to start your app
-ops test   # to test your app
-ops stop   # to stop your app
-```
+- **simple**: easy to use even for people who know nothing about how the tool works
+- **self-contained**: no references to external resources, just `git clone` and `ops up`
+- **environment-aware**: make things easy in `dev` while allowing it to co-exist with `production`
 
 ![ops up in action](ops.png)
+
+Built-in commands are listed under "Builtins" in the `ops help` output. These `ops` commands will be available in any ops-enabled project.
+
+Actions are defined in `ops.yml` in the current directory. They are project-specific.
 
 ## Getting started
 
@@ -34,9 +28,10 @@ Manually:
 
 `gem install ops_team`
 
-With Bundler:
+You can install the `ops_team` gem with bundler, but more likely `ops` will be installing and running bundler; not the other way around.
 
 `gem 'ops_team'`
+
 
 ##### On a Mac with built-in Ruby
 
@@ -44,7 +39,7 @@ With Bundler:
 gem i --user-install ops_team
 ```
 
-In this case, you may need to add your gems' `bin/` directory to your `$PATH` variable in order to be. To find the path to the right `bin/` directory:
+In this case, you may need to add your gems' `bin/` directory to your `$PATH` variable. To find the path to the right `bin/` directory:
 
 ```
 $ gem environment | grep "EXECUTABLE DIRECTORY"
@@ -57,14 +52,13 @@ To add it to your path, append this to your `.bashrc` or `.zshrc` (or equivalent
 export PATH="$PATH:/Users/yourusernamehere/.gem/ruby/2.6.6/bin"
 ```
 
-### Testing it
+### Testing
 
 To make sure the gem is installed and the `ops` executable is in your `$PATH`:
 
 ```
-$ ops
-File 'ops.yml' does not exist.
-Usage: ops <action>
+$ ops version
+0.6.0
 $
 ```
 
@@ -78,9 +72,11 @@ ops init
 There are some specialized templates for terraform and ruby projects. You can run:
 
 ```shell
-ops init terraform  # to get a template pre-populated with some common terraform commands
-ops init ruby       # to get a template pre-populated with some common ruby commands
+ops init terraform  # template pre-populated with common terraform configuration
+ops init ruby       # template pre-populated with common ruby configuration
 ```
+
+*(If you'd like to see a template for another language, please submit a PR.)*
 
 Edit `ops.yml` to suit your needs. There will be some examples in there that you will want to change.
 
@@ -95,131 +91,75 @@ actions:
 
 Then run `ops h` (to use the alias) or `ops hello-world` to use the full command name.
 
-The `ops.yml` for `ops` looks something ike:
+```
+$ ops h
+Running 'echo hello world ' from ops.yml in environment 'dev'...
+hello world
+```
+
+### Sample `ops.yml`
+
+The ruby template for `ops.yml` looks something like:
 
 ```yaml
 dependencies:
-  brew:
-    - docker
-  apt:
-    - curl
-  docker:
-    - pebble
+  gem:
+    - bundler
+    - rerun
   custom:
-    - bundle install --quiet
-    - echo "this is stdout"
+    - bundle
 actions:
+  start:
+    command: echo update me
+    description: starts the app
+  stop:
+    command: echo update me too
+    description: stops the app
   test:
-    command: "bundle exec rspec"
+    command: rspec
     alias: t
+    description: runs unit tests
   test-watch:
-    command: "bundle exec rerun -x rspec"
+    command: rerun -x ops test
     alias: tw
-  tag:
-    command: "bin/tag"
+    description: runs unit tests every time a file changes
+  lint:
+    command: bundle exec rubocop --safe-auto-correct
+    alias: l
+    description: runs rubocop with safe autocorrect
   build:
-    command: gem build ops.gemspec
+    command: gem build *.gemspec
     alias: b
+    description: builds the gem
   install:
-    command: gem i `ls -t *.gem | head -n 1`
+    command: gem install `ls -t *.gem | head -n1`
     alias: i
+    description: installs the gem
+  build-and-install:
+    command: ops build && ops install
+    alias: bi
+    description: builds and installs the gem
 ```
 
 ## Dependencies
 
-A few types of dependency are supported:
+In the above sample file, the `dependencies` section lists things that this project depends on in order to run. These dependencies are satisfied when the `ops up` command is run.
 
-### `brew`
+The following dependency types are supported:
 
-- specifies that a particular `brew` package is needed
-- will only run if you're on a Mac
+- `brew`: installs a package using [Homebrew](https://brew.sh/) if running on a Mac
+- `apt`: installs a package using `apt` if running on linux
+- `apk`: installs a package using `apk` if running on alpine linux
+- `gem`: installs a gem
+- `docker`: uses `docker-compose` to start and stop a service in a subdirectory of your project
+- `custom`: runs a custom shell command
+- `dir`: creates a local directory (for when your app needs a directory, but there are no checked-in files in it)
 
-### `apt`
+`ops up` is **idempotent**, so if you're not sure what your local state is, or you've just added one dependency, you can run `ops up` and `ops` will only try to satisfy unsatisfied dependencies.
 
-- specifies that a particular package from `apt` is needed
-- will only run if you're on Linux
+This feature allows developers that are new to a project to get up and running **without knowing anything about the app itself**. Your `ops.yml` should allow a developer to `ops up && ops start` to run an application.
 
-### `apk`
-
-- specifies that a particular package from `apk` is needed
-- will only run if the `apk` command is available (usually only on Alpine linux)
-
-### `docker`
-
-E.g.:
-
-```yaml
-depdendencies:
-  docker:
-    deps/mysql
-```
-
-- specifies that this repo includes a directory with the given name (e.g. `deps/mysql`) that includes a `docker-compose.yml` file
-- `ops` will change to the given directory and use `docker-compose` to start, stop, and check the status of this service as needed
-
-### `terraform`
-
-- specifies that this repo includes a directory with the given name containing a terraform configuration
-- `ops` will change to the given directory and use `terraform` to create or destroy resources
-
-**Note:** To avoid prompting the user for input on every `ops up` and `ops down`, `ops` will pass the `--auto-approve` flag to `terraform` on both `apply` and `destroy` operations. You should only use `ops` to manage development resources, and *not* any resources you care about in the least.
-
-### `custom`
-
-E.g.:
-
-```yaml
-custom:
-  - bundle install --quiet
-```
-
-- runs the given command
-- can't tell if the command needs to be run or not, so always runs it on `ops up`
-- therefore, the command should be idempotent
-- it's also a good idea to prevent it from printing output unless it encounters an error, to keep the ops output clean
-
-### `gem`
-
-E.g.:
-
-```yaml
-gem:
-  - ejson
-```
-
-- installs the gem with the given name
-- by default, runs "gem install ...", but can be configured to use "sudo gem install" or "gem install --user-install" (see below)
-
-The behaviour of the `gem` dependency type is affected by some options you can put in your `ops.yml` file. E.g.:
-
-```yaml
-dependencies:
-  gem:
-    - ejson
-options:
-  gem:
-    use_sudo: false
-    user_install: false
-```
-
-With this config, `ops up` will run `gem install ejson` to install the `ejson` gem. This is the default behaviour, and is used if the `options` section is not present in the file.
-
-`use_sudo: true` causes `ops up` to run `sudo gem install ejson`.
-
-`user_install: true` causes `ops up` to run `gem install --user-install ejson`.
-
-### `dir`
-
-E.g.:
-
-```yaml
-dependencies:
-  dir:
-    - container_data
-    - logs
-```
-
-This dependency will ensure the given directory is created when you run `ops up`. This is handy for directories your app needs, but which contain no checked-in files, since `git` won't save empty directories.
+For more details on dependencies, see [Dependencies](docs/dependencies.md).
 
 ## Builtins
 
@@ -259,151 +199,33 @@ An action can have one alias. If the first argument to `ops` is not a builtin or
 
 In the above example, the `test` action has the alias `t`. When `ops t` is run, `ops` will execute the `test` action.
 
-### Naming actions
+For more information on actions, see [Actions](docs/actions.md).
 
-Here are some conventions to follow when naming your actions, so that you end up with common `ops` actions across your projects:
+## Environments
 
-- `ops server` or `ops start` to start your app, if it's a server
-- `ops stop` to stop your app
-- `ops run` if it's a client, or a program that is expected to exit on its own
-- `ops test` to run your local tests
-- `ops test-watch` can be handy, using something like the `rerun` gem, to run tests every time a file changes
+One of the goals of `ops` is to make things easy in `dev` while allowing it to co-exist with `production`. `ops` uses the concept of "software execution environment" to do this.
+
+By default, `ops` runs actions and builtins in the environment `dev`; that is, if `$environment` is not set, `ops` sets it to `dev`.
+
+Actions and builtins can refer to this variable to do different things in different environments. For example, an app might log to a different directory in `production` than in `dev`:
 
 ```yaml
+dependencies:
+  dir:
+    - log/$environment
 actions:
-  server:
-    command: docker-compose up # or however you start your service
-    alias: s
-  stop:
-    command: docker-compose down # or however you stop your service
-    alias: st
-  test:
-    command: bundle exec rspec # or whatever runs your unit tests
-    alias: t
-  test-watch:
-    command: rerun -x ops test # runs your tests every time a file changes
-    alias: tw
+  start:
+    command: run-the-app &> "log/$environment/app.log"
 ```
 
-## Environment variables
+In addition, `ops` will attempt to load other environment variables from the config file `config/$environment/config.json` and secrets from `config/$environment/secrets.ejson`. This allows your repo to support different configurations for different environments without implementing support in your code. For more information about this feature, see [Config and Secrets](docs/config_and_secrets.md).
 
-### Software execution environment
-
-`ops` will set the environment variable `$environment` to `dev` if it's not already set. This variable will be available to all actions run by `ops`. To specify a different software execution environment, set the `$environment` environment variable:
-
-```
-$ export environment=production
-$ ops some_action  # this action will see `$environment` set to `production`
-```
-
-Different software systems use different environment variables to determine the software execution environment. E.g. Ruby on Rails uses `RAILS_ENV`. Thus, `ops` allows the user to specify which variables should also be set to the name of the software environment.
-
-```yaml
-options:
-  environment_aliases:
-    - RAILS_ENV
-    - RACK_ENV
-```
-
-In the above example, if the `$environment` environment variable is not set, `ops` will set `RAILS_ENV` and `RACK_ENV` to `dev`. If `$environment` is set, `ops` will set `$RAILS_ENV` and `RACK_ENV` to the same value as `$environment`.
-
-If any `environment_aliases` are specified in `ops.yml`, `ops` will not change the value of `$environment` unless it is listed as well.
-
-### Environment variables in `ops.yml`
-
-`ops` will set any environment variables you define in the `options` section of `ops.yml` before running any built-in or action.
-
-E.g.:
-
-```json
-options:
-  environment:
-    EJSON_KEYDIR: "./spec/ejson_keys"
-```
-
-The values of these variables are not interpreted by the shell before being set, so variable references like `$environment` will appear literally in the value of the variable.
-
-## Config
-
-`ops` will load the config file `config/$environment/config.json` and set environment variables for any values found in the "environment" section of the file.
-
-```json
-{
-  "environment": {
-    "KEY": "VALUE"
-  }
-}
-```
-
-`ops` will load these config variables every time it runs; prior to all builtins and actions.
-
-Unlike environment variables defined in the `options.environment` section of `ops.yml`, these variables can be different for dev, production, or staging, since `ops` will load a different file depending on the value of `$environment`.
-
-You can override the path to the config file in `options`. E.g.:
-
-```json
-options:
-  config:
-    path: config/$environment.json
-```
-
-## Secrets
-
-`ops` will optionally load secrets from [`.ejson`](https://github.com/Shopify/ejson) files into environment variables before running actions.
-
-`ops` _will not_ load secrets by default, to help a user avoid leaking secrets unintentionally. An `action` can be configured to load secrets by setting `load_secrets: true` in the `action` definition.
-
-By default secrets are loaded from `config/$environment/secrets.ejson`, where `$environment` is set to the current environment, like `dev`, `prod`, `staging`, or any other string. If the variable is not set, `ops` assumes the `dev` environment.
-
-For example, given this secrets file at `config/dev/secrets.ejson`:
-
-```json
-  "_public_key": "740ec2a8a5ace01055b682326c437bb3d976c1d35ad7e6434f72bf0334023e15",
-  "environment": {
-    "API_TOKEN": "EJ[1:VNdUPtGzDAN+LYexKTR1cVzbE397Jnl6oxV7dqCbETA=:OBey+AO8/K/CG37BzU7BLW+vSsvnFCBN:lmj5L4ipt4YGYABlk+peePrgs5ZMY/kmRystcC+pJdk=]"
-  }
-}
-```
-
-the environment variable `API_TOKEN` can be set automatically when an action is run by specifying `load_secrets: true` in that action definition:
-
-```yaml
-actions:
-  post:
-    command: curl -X POST "https://example.com/api?token=$API_TOKEN"
-    load_secrets: true
-```
-
-The secret remains encrypted by `ejson` in your repo, but if you have the private key to decrypt that file available to `ejson` at runtime, the secrets will be decrypted and loaded into your environment, available to actions that need them.
-
-If you want to keep the secrets file in a different location, you can configure the location with the following option in your `ops.yml` file:
-
-```yaml
-options:
-  secrets:
-    path: "secrets/$environment.ejson"
-```
-
-Environment variables are expanded by `ops` when loading this path, due to the high likelihood of the environment name being somewhere in the path.
-
-If `ops` looks for an `ejson` secrets file and cannot find it, it will fall back to the equivalent `.json` file. This allows you to keep a secrets file for your development environment that is not encrypted, for easier editing and debugging.
-
-### Secrets and the `exec` builtin
-
-The `exec` builtin executes a shell command from within the `ops` environment; that is, with `$environment` and any environment variables defined in config and options set. This can be useful for testing that config and secrets are being loaded correctly.
-
-By default, `exec` does not load secrets. This can be overridden with the following option:
-
-```yaml
-options:
-  exec:
-    load_secrets: true
-```
+For more information about `ops` and environment variables, see [Environment Variables](docs/environment.md).
 
 ## Contributing
 
 Submit a PR that meets the following super-strict criteria:
 
 - tests have been added or updated for your code changes
-- `rspec` passes
-- `rubocop` passes
+- `ops test` passes
+- `ops lint` passes
