@@ -52,6 +52,15 @@ RSpec.describe Environment do
 				result
 			end
 		end
+
+		context "when variable values contain environment variable references" do
+			let(:variables) { { "namespace" => "nick-$environment" } }
+
+			it "expands the variables" do
+				expect(ENV).to receive(:[]=).with("namespace", "nick-test")
+				result
+			end
+		end
 	end
 
 	describe "#environment" do

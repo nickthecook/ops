@@ -71,6 +71,7 @@ options:
     load_secrets: true
   environment:
     EJSON_KEYDIR: "./spec/ejson_keys"
+    NAMESPACE: "$USER-$environment"
   environment_aliases:
     - environment
     - ENV

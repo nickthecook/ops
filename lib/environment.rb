@@ -30,7 +30,7 @@ class Environment
 
 	def set_configured_variables
 		@env_hash.each do |key, value|
-			ENV[key] = value.to_s
+			ENV[key] = `echo #{value}`.chomp
 		end
 	end
 end

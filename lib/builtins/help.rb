@@ -35,7 +35,10 @@ module Builtins
 
 		def actions
 			@config["actions"].map do |name, value|
-				format("%<name>-35s %<desc>s", name: name.yellow, desc: value["description"] || value["command"])
+				format("%<name>-35s %<desc>s",
+					name: name.yellow,
+					desc: value["description"] || value["command"]
+				)
 			end
 		end
 	end

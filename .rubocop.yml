@@ -31,3 +31,9 @@ Style/RegexpLiteral:
   Enabled: false
 Layout/RescueEnsureAlignment:
   Enabled: false
+Layout/MultilineMethodCallBraceLayout:
+  Enabled: false
+Layout/ArgumentAlignment:
+  Enabled: false
+Layout/ClosingParenthesisIndentation:
+  Enabled: false

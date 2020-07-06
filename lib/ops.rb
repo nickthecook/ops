@@ -49,7 +49,7 @@ class Ops
 
 	def run_action
 		environment.set_variables
-		app_config.load
+		AppConfig.load
 
 		return builtin.run if builtin
 
@@ -106,12 +106,8 @@ class Ops
 		@environment ||= Environment.new(env_vars)
 	end
 
-	def app_config_file
-		`echo #{Options.get("config.path")}`.chomp
-	end
-
 	def app_config
-		@app_config ||= AppConfig.new(app_config_file)
+		@app_config ||= AppConfig.new
 	end
 end
 

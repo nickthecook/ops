@@ -8,18 +8,10 @@ require 'options'
 
 class Secrets < AppConfig
 	class << self
-		def load
-			Secrets.new(secrets_path).load
-		end
-
 		private
 
-		def secrets_path
+		def app_config_path
 			expand_path(Options.get("secrets.path"))
-		end
-
-		def expand_path(path)
-			`echo #{path}`.chomp
 		end
 	end
 
