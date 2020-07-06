@@ -1,6 +1,7 @@
 dependencies:
   brew:
     - docker-compose
+    - tmux
   cask:
     - font-anonymice-powerline
   apt:
