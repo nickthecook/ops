@@ -61,6 +61,7 @@ RSpec.describe Dependencies::Sshkey do
 			allow(Open3).to receive(:capture2e).with(/ssh-keygen /).and_return(key_generation_return_value)
 			allow(Net::SSH::KeyFactory).to receive(:load_private_key).and_return(unencrypted_key)
 			allow(Output).to receive(:warn)
+			allow(Ops).to receive(:project_name).and_return("some_project")
 		end
 
 		it "does not create the directory" do
@@ -92,10 +93,10 @@ RSpec.describe Dependencies::Sshkey do
 			result
 		end
 
-		it "adds the key with the directory basename as the comment" do
+		it "adds the key with the project name as the comment" do
 			expect(agent_double).to receive(:add_identity).with(
 				anything,
-				"ops",
+				"some_project",
 				anything
 			)
 			result
@@ -113,21 +114,6 @@ RSpec.describe Dependencies::Sshkey do
 		it "warns the user about passphrase not being set" do
 			expect(Output).to receive(:warn).with("\nNo passphrase set for SSH key '#{priv_key_name}'")
 			result
-		end
-
-		context "when directory is not 'ops'" do
-			before do
-				expect(Dir).to receive(:pwd).and_return("/some/other/dir")
-			end
-
-			it "adds the key with the directory basename as the comment" do
-				expect(agent_double).to receive(:add_identity).with(
-					anything,
-					"dir",
-					anything
-				)
-				result
-			end
 		end
 
 		context "when key generation fails" do

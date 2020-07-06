@@ -23,6 +23,24 @@ RSpec.describe Ops do
 	end
 	let(:options) { {} }
 
+	describe '.project_name' do
+		let(:result) { described_class.project_name }
+
+		it "returns the current directory basename" do
+			expect(result).to eq("ops")
+		end
+
+		context "when directory is not 'ops'" do
+			before do
+				expect(Dir).to receive(:pwd).and_return("/some/other/dir")
+			end
+
+			it "returns the current directory basename" do
+				expect(result).to eq("dir")
+			end
+		end
+	end
+
 	describe '#run' do
 		let(:result) { subject.run }
 		let(:expected_action_args) { [{ "command" => "bundle exec rspec", "alias" => "t" }, args] }

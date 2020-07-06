@@ -10,7 +10,7 @@
 
 `ops` aims to be:
 
-- **simple**: easy to use even for people who know nothing about how the tool works
+- **simple**: easy to use even for people who know nothing about how the tool works; no "namespaces" or DSLs
 - **self-contained**: no references to external resources, just run `git clone` and `ops up`
 - **environment-aware**: make things easy in `dev` while allowing it to co-exist with `production`
 

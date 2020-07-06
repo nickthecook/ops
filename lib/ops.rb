@@ -19,6 +19,12 @@ class Ops
 	INVALID_SYNTAX_EXIT_CODE = 64
 	UNKNOWN_ACTION_EXIT_CODE = 65
 
+	class << self
+		def project_name
+			File.basename(::Dir.pwd)
+		end
+	end
+
 	def initialize(argv)
 		@action_name = argv[0]
 		@args = argv[1..-1]

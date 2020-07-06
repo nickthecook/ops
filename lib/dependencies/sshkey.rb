@@ -57,8 +57,7 @@ module Dependencies
 		end
 
 		def key_comment
-			# the current directory is usually named for the project
-			File.basename(::Dir.pwd)
+			Ops.project_name
 		end
 
 		def dir_name
