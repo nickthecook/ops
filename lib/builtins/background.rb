@@ -6,6 +6,8 @@ require 'builtin'
 
 module Builtins
 	class Background < Builtin
+		SHELL = "bash"
+
 		class << self
 			def description
 				"runs the given command in a background session"
@@ -13,7 +15,13 @@ module Builtins
 		end
 
 		def run
-			exec("tmux", "new", "-d", "ops #{args.join(' ')}")
+			exec("screen", "-L", "-Logfile", log_file, "-dm", "bash", "-c", "ops #{args.join(' ')}")
+		end
+
+		private
+
+		def log_file
+			"/tmp/ops-screenlog"
 		end
 	end
 
