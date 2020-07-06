@@ -16,4 +16,7 @@ module Builtins
 			exec("tmux", "new", "-d", "ops #{args.join(' ')}")
 		end
 	end
+
+	# set an alias
+	Bg = Background
 end
