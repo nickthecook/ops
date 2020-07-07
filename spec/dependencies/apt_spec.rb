@@ -4,6 +4,7 @@ require 'dependencies/apt'
 
 RSpec.describe Dependencies::Apt do
 	subject { described_class.new(name) }
+
 	let(:name) { "some-dependency" }
 
 	describe '#met?' do

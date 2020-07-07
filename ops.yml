@@ -16,6 +16,8 @@ dependencies:
     - ejson
   dir:
     - runtime_data
+  sshkey:
+    - keys/$environment/ops@localhost
   custom:
     - bundle install --quiet
     - "echo this is stdout"
@@ -76,3 +78,8 @@ options:
     - environment
     - ENV
     - RAILS_ENV
+  sshkey:
+    load_secrets: true
+    key_size: 1024
+    key_algo: dsa
+    passphrase: $SSH_KEY_PASSPHRASE

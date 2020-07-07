@@ -29,7 +29,7 @@ module Builtins
 		def meet_dependencies
 			dependency_handler.dependencies.each do |dependency|
 				# don't even output anything for dependencies that shouldn't be considered on this machine
-				next unless dependency.should_meet?
+				next unless dependency&.should_meet?
 
 				Output.status("[#{dependency.type}] #{dependency.name}")
 

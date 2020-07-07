@@ -91,3 +91,25 @@ dependencies:
 
 This dependency will ensure the given directory is created when you run `ops up`. This is handy for directories your app needs, but which contain no checked-in files, since `git` won't save empty directories.
 
+### `sshkey`
+
+E.g.:
+
+```yaml
+dependencies:
+  sshkey:
+    - keys/$environment/user@host
+```
+
+This dependency will create an SSH key pair with key size 2048 and key algorithm "rsa" at `keys/$environment/user@host` and `keys/$environment/user@host.pub`.
+
+The passphrase, key size, and algorithm can be configured, and `sshkey.passphrase` will expand environment variables. Due to the high probability that you don't want to check in your passphrase in plaintext, you can set `load_secrets: true` and use a secret as the passphrase, as in the following example.
+
+```yaml
+options:
+  sshkey:
+    load_secrets: true
+    passphrase: $ENV_VAR_LOADED_FROM_SECRETS
+    key_size: 1024
+    key_algo: dsa
+```

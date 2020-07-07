@@ -9,7 +9,7 @@ module Dependencies
 		end
 
 		def meet
-			execute("#{sudo_string}#{meet_command}")
+			execute("#{sudo_string}apt-get install -y #{name}")
 		end
 
 		def unmeet
@@ -27,10 +27,6 @@ module Dependencies
 			return "" if ENV['USER'] == "root" || Options.get("apt.use_sudo") == false
 
 			"sudo "
-		end
-
-		def meet_command
-			"apt-get install -y #{name}"
 		end
 	end
 end
