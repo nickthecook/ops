@@ -163,6 +163,7 @@ The following dependency types are supported:
 - `docker`: uses `docker-compose` to start and stop a service in a subdirectory of your project
 - `custom`: runs a custom shell command
 - `dir`: creates a local directory (for when your app needs a directory, but there are no checked-in files in it)
+- `sshkey`: creates an SSH key at the given path, if it doesn't already exist; can be configured to encrypt the private key with a passphrase
 
 `ops up` is **idempotent**, so if you're not sure what your local state is, or you've just added one dependency, you can run `ops up` and `ops` will only try to satisfy unsatisfied dependencies.
 
