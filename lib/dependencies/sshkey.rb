@@ -8,7 +8,7 @@ module Dependencies
 	class Sshkey < Dependency
 		DEFAULT_KEY_SIZE = 2048
 		DEFAULT_KEY_ALGO = "rsa"
-		DEFAULT_KEY_LIFETIME_S = 600
+		DEFAULT_KEY_LIFETIME_S = 3600
 
 		def met?
 			# we always need to at least update the key lifetime in the agent

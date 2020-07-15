@@ -104,7 +104,7 @@ RSpec.describe Dependencies::Sshkey do
 			expect(agent_double).to receive(:add_identity).with(
 				anything,
 				anything,
-				lifetime: 600
+				lifetime: 3600
 			)
 			result
 		end
