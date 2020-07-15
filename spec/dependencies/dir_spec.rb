@@ -15,7 +15,7 @@ RSpec.describe Dependencies::Dir do
 
 	describe '#meet' do
 		it "calls mkdir to create the directory" do
-			expect(subject).to receive(:execute).with("mkdir some-directory")
+			expect(subject).to receive(:execute).with("mkdir -p some-directory")
 			subject.meet
 		end
 	end

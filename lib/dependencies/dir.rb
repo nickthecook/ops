@@ -9,7 +9,7 @@ module Dependencies
 		end
 
 		def meet
-			execute("mkdir #{name}")
+			execute("mkdir -p #{name}")
 		end
 
 		def unmeet
