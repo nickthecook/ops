@@ -25,7 +25,7 @@ dependencies:
     - "[ \"$KEY1\" == \"This is key 1\" ] || false"
 actions:
   test:
-    command: bundle exec rspec
+    command: environment=test bundle exec rspec --exclude-pattern 'spec/e2e/*_spec.rb'
     alias: t
     description: runs unit tests
   test-watch:
@@ -50,6 +50,9 @@ actions:
   push:
     command: gem push `ls -t ops_team-*.gem | head -n 1`
     description: pushes the latest local .gem file to rubygems.org
+  yank:
+    command: gem yank ops_team
+    description: yanks the gem with the given version from rubygems.org
   lint:
     command: bundle exec rubocop --safe-auto-correct
     alias: l
@@ -81,5 +84,4 @@ options:
   sshkey:
     load_secrets: true
     key_size: 1024
-    key_algo: dsa
     passphrase: $SSH_KEY_PASSPHRASE

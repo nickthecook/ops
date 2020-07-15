@@ -13,14 +13,14 @@ RSpec.describe Dependencies::Sshkey do
 		let(:result) { subject.met? }
 		let(:priv_key_exists) { true }
 		let(:pub_key_exists) { true }
-	
+
 		before do
 			allow(File).to receive(:exist?).with(priv_key_name).and_return(priv_key_exists)
 			allow(File).to receive(:exist?).with(pub_key_name).and_return(pub_key_exists)
 		end
-	
-		it "returns true" do
-			expect(result).to eq(true)
+
+		it "returns false" do
+			expect(result).to eq(false)
 		end
 
 		context "when private key does not exist" do
@@ -43,10 +43,23 @@ RSpec.describe Dependencies::Sshkey do
 	describe "meet" do
 		let(:result) { subject.meet }
 		let(:dir_exists) { true }
+		let(:agent_double) { instance_double(Net::SSH::Authentication::Agent) }
+		let(:unencrypted_key) { "I am an unencrypted SSH key" }
+		let(:key_generation_return_value) do
+			[
+				"command output",
+				OpenStruct.new(exitstatus: key_generation_exit_status)
+			]
+		end
+		let(:key_generation_exit_status) { 0 }
 
 		before do
 			allow(Options).to receive(:get).with(anything).and_call_original
 			allow(File).to receive(:directory?).with("config/test").and_return(dir_exists)
+			allow(Net::SSH::Authentication::Agent).to receive(:connect).and_return(agent_double)
+			allow(agent_double).to receive(:add_identity)
+			allow(Open3).to receive(:capture2e).with(/ssh-keygen /).and_return(key_generation_return_value)
+			allow(Net::SSH::KeyFactory).to receive(:load_private_key).and_return(unencrypted_key)
 		end
 
 		it "does not create the directory" do
@@ -69,9 +82,52 @@ RSpec.describe Dependencies::Sshkey do
 			result
 		end
 
-		it "does not load secrets" do
-			expect(Secrets).not_to receive(:load)
+		it "passes the unencrypted key to the ssh-agent" do
+			expect(agent_double).to receive(:add_identity).with(
+				"I am an unencrypted SSH key",
+				anything,
+				anything
+			)
 			result
+		end
+
+		it "adds the key with the correct comment" do
+			expect(agent_double).to receive(:add_identity).with(
+				anything,
+				"ops",
+				anything
+			)
+			result
+		end
+
+		it "adds the key with the correct lifetime" do
+			expect(agent_double).to receive(:add_identity).with(
+				anything,
+				anything,
+				lifetime: 600
+			)
+			result
+		end
+
+		context "when key generation fails" do
+			let(:key_generation_exit_status) { 1 }
+
+			it "does not attempt to add the SSH key" do
+				expect(Net::SSH::Authentication::Agent).not_to receive(:connect)
+				result
+			end
+		end
+
+		context "when no SSH agent is available" do
+			before do
+				allow(ENV).to receive(:[]).and_call_original
+				allow(ENV).to receive(:[]).with("SSH_AUTH_SOCK").and_return(nil)
+			end
+
+			it "does not attempt to add the SSH key" do
+				expect(Net::SSH::Authentication::Agent).not_to receive(:connect)
+				result
+			end
 		end
 
 		context "when directory does not exist" do
@@ -105,17 +161,6 @@ RSpec.describe Dependencies::Sshkey do
 			end
 		end
 
-		context "when key algorithm is configured" do
-			before do
-				allow(Options).to receive(:get).with("sshkey.key_algo").and_return("afk")
-			end
-
-			it "uses the given key algorithm" do
-				expect(subject).to receive(:execute).with(/-t afk/)
-				result
-			end
-		end
-
 		context "when passphrase is configured" do
 			before do
 				allow(Options).to receive(:get).with("sshkey.passphrase").and_return("ssh af")
@@ -136,6 +181,17 @@ RSpec.describe Dependencies::Sshkey do
 					expect(subject).to receive(:execute).with(/-N 'this is so secret'/)
 					result
 				end
+			end
+		end
+
+		context "when key lifetime is configured" do
+			before do
+				allow(Options).to receive(:get).with("sshkey.key_lifetime").and_return(123)
+			end
+
+			it "uses the configured key lifetime" do
+				expect(agent_double).to receive(:add_identity).with(anything, anything, lifetime: 123)
+				result
 			end
 		end
 	end

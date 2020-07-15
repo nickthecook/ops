@@ -101,15 +101,16 @@ dependencies:
     - keys/$environment/user@host
 ```
 
-This dependency will create an SSH key pair with key size 2048 and key algorithm "rsa" at `keys/$environment/user@host` and `keys/$environment/user@host.pub`.
+This dependency will create an SSH key pair with key size 2048 and key algorithm "rsa" at `keys/$environment/user@host` and `keys/$environment/user@host.pub`. It will also add it to your SSH agent, if `SSH_AUTH_SOCK` is set, with a lifetime of 600 seconds (10 minutes).
 
-The passphrase, key size, and algorithm can be configured, and `sshkey.passphrase` will expand environment variables. Due to the high probability that you don't want to check in your passphrase in plaintext, you can set `load_secrets: true` and use a secret as the passphrase, as in the following example.
+The passphrase, key size, and ssh-agent lifetime (in seconds) can be configured. `sshkey.passphrase` will expand environment variables. Due to the high probability that you don't want to check in your passphrase in plaintext, you can use a secret as the passphrase, as in the following example.
 
 ```yaml
 options:
   sshkey:
-    load_secrets: true
     passphrase: $ENV_VAR_LOADED_FROM_SECRETS
     key_size: 1024
-    key_algo: dsa
+    key_lifetime: 60
 ```
+
+The key algorithm will be RSA. This cannot be configured yet.

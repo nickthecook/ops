@@ -58,3 +58,5 @@ build-iPhoneSimulator/
 .DS_Store
 
 keys
+user@host
+user@host.pub

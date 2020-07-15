@@ -25,6 +25,7 @@ Layout/FirstArrayElementIndentation:
 Metrics/BlockLength:
   Exclude:
     - spec/**/*
+    - ops_team.gemspec
 Style/IfUnlessModifier:
   Enabled: false
 Style/RegexpLiteral:
