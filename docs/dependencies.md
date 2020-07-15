@@ -1,6 +1,6 @@
 # Dependencies
 
-Dependencies listed in the `dependencies` section of `ops.yml` are satisfied when the `ops up` command is run.
+Dependencies listed in the `dependencies` section of `ops.yml` are satisfied when the `ops up` command is run. Some dependencies will be un-satisfied when you run `ops down`; e.g. services will be stopped, but packages won't be uninstalled.
 
 This feature allows developers that are new to a project to get up and running without knowing anything about the app itself. Your `ops.yml` should allow a developer to `ops up && ops start` to run an application.
 
