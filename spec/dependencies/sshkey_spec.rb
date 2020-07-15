@@ -91,7 +91,7 @@ RSpec.describe Dependencies::Sshkey do
 			result
 		end
 
-		it "adds the key with the correct comment" do
+		it "adds the key with the directory basename as the comment" do
 			expect(agent_double).to receive(:add_identity).with(
 				anything,
 				"ops",
@@ -107,6 +107,21 @@ RSpec.describe Dependencies::Sshkey do
 				lifetime: 600
 			)
 			result
+		end
+
+		context "when directory is not 'ops'" do
+			before do
+				expect(Dir).to receive(:pwd).and_return("/some/other/dir")
+			end
+
+			it "adds the key with the directory basename as the comment" do
+				expect(agent_double).to receive(:add_identity).with(
+					anything,
+					"dir",
+					anything
+				)
+				result
+			end
 		end
 
 		context "when key generation fails" do

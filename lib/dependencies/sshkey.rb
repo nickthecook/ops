@@ -41,13 +41,18 @@ module Dependencies
 		def add_key
 			Net::SSH::Authentication::Agent.connect.add_identity(
 				unencrypted_key,
-				"ops",
+				key_comment,
 				lifetime: key_lifetime
 			)
 		end
 
 		def unencrypted_key
 			Net::SSH::KeyFactory.load_private_key(priv_key_name, passphrase)
+		end
+
+		def key_comment
+			# the current directory is usually named for the project
+			File.basename(::Dir.pwd)
 		end
 
 		def dir_name
