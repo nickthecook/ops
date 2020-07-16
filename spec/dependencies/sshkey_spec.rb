@@ -209,5 +209,16 @@ RSpec.describe Dependencies::Sshkey do
 				result
 			end
 		end
+
+		context "when key adding is disabled" do
+			before do
+				allow(Options).to receive(:get).with("sshkey.add_keys").and_return(false)
+			end
+
+			it "does not add the key to the SSH agent" do
+				expect(Net::SSH::Authentication::Agent).not_to receive(:connect)
+				result
+			end
+		end
 	end
 end

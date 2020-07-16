@@ -21,7 +21,7 @@ module Dependencies
 			FileUtils.mkdir_p(dir_name) unless File.directory?(dir_name)
 
 			generate_key unless File.exist?(priv_key_name) && File.exist?(pub_key_name)
-			add_key if success? && ENV["SSH_AUTH_SOCK"]
+			add_key if success? && should_add_key?
 		end
 
 		def unmeet
@@ -35,15 +35,19 @@ module Dependencies
 		private
 
 		def generate_key
-			execute("ssh-keygen -b #{key_size} -t #{key_algo} -f #{priv_key_name} -q -N '#{passphrase}'")
+			execute("ssh-keygen -b #{opt_key_size} -t #{opt_key_algo} -f #{priv_key_name} -q -N '#{passphrase}'")
 		end
 
 		def add_key
 			Net::SSH::Authentication::Agent.connect.add_identity(
 				unencrypted_key,
 				key_comment,
-				lifetime: key_lifetime
+				lifetime: opt_key_lifetime
 			)
+		end
+
+		def should_add_key?
+			ENV["SSH_AUTH_SOCK"] && opt_add_keys?
 		end
 
 		def unencrypted_key
@@ -67,23 +71,27 @@ module Dependencies
 			"#{priv_key_name}.pub"
 		end
 
-		def key_size
+		def opt_key_size
 			Options.get("sshkey.key_size") || DEFAULT_KEY_SIZE
 		end
 
-		def key_algo
+		def opt_key_algo
 			DEFAULT_KEY_ALGO
 		end
 
 		def passphrase
-			`echo #{configured_passphrase}`.chomp
+			`echo #{opt_passphrase}`.chomp
 		end
 
-		def configured_passphrase
+		def opt_passphrase
 			Options.get("sshkey.passphrase")
 		end
 
-		def key_lifetime
+		def opt_add_keys?
+			Options.get("sshkey.add_keys").nil? ? true : Options.get("sshkey.add_keys")
+		end
+
+		def opt_key_lifetime
 			Options.get("sshkey.key_lifetime") || DEFAULT_KEY_LIFETIME_S
 		end
 	end

@@ -103,7 +103,19 @@ dependencies:
 
 This dependency will create an SSH key pair with key size 2048 and key algorithm "rsa" at `keys/$environment/user@host` and `keys/$environment/user@host.pub`. It will also add it to your SSH agent, if `SSH_AUTH_SOCK` is set, with a lifetime of 3600 seconds (one hour).
 
-The passphrase, key size, and ssh-agent lifetime (in seconds) can be configured. `sshkey.passphrase` will expand environment variables. Due to the high probability that you don't want to check in your passphrase in plaintext, you can use a secret as the passphrase, as in the following example.
+The key comment, which is visible in the output of `ssh-add -l`, will be set to the name of the directory that contains `ops.yml`. For example, if the directory is named `heliograf`, you would see the following output:
+
+```shell
+$ ssh-add -l
+2048 SHA256:7n9WwisFkDtemOx8O/+D33myKpjOvrjx3PZcNb9y6/Y heliograf (RSA)
+2048 SHA256:Z6oEPBIoBrHv/acYiBGBRYLe2sEONV17tDor3h5eNtc certitude (RSA)
+```
+
+This output shows that one key from `heliograf` and one key from `certitude` have been loaded.
+
+#### Options
+
+The passphrase, key size, and ssh-agent lifetime (in seconds) can be configured. `sshkey.passphrase` will expand environment variables. Due to the high probability that you don't want to check in your passphrase in plaintext, you can use an environment variable loaded from the secrets file as the passphrase, as in the following example.
 
 ```yaml
 options:
@@ -114,3 +126,13 @@ options:
 ```
 
 The key algorithm will be RSA. This cannot be configured yet.
+
+Adding the key to the SSH agent can be disabled by setting `add_keys: false`:
+
+```yaml
+options:
+  sshkey:
+    add_keys: false
+```
+
+The default behaviour is to add SSH keys to the SSH agent. Keys will still be saved to disk when `add_keys` is `false`.
