@@ -48,7 +48,7 @@ With `ops`, all the info you need to see what command was run with what argument
 
 Do you have to set up a bunch of dependencies when you want to run a new project? Do you ever have to reach out to other developers because when you want to run a project they wrote you get a cryptic error about a missing dependency?
 
-`ops.yml` allows a developer to record dependency info right inside a project.
+`ops.yml` allows a developer to record dependency info inside a project, including what operating system packages are required, and even what custom commands must be run to get a newly-cloned repo into a usable state.
 
 ```yaml
 dependencies:
@@ -63,6 +63,8 @@ dependencies:
     - postgresql-client-10
   gem:
     - ejson
+  custom:
+    - git submodule update --init
 ```
 
 With this configuration in `ops.yml`, all you need to do is `ops up`, and ops will install those dependencies. This project would even have its dependencies satisfied on both MacOS and a Debian-based distribution of Linux.
