@@ -255,6 +255,11 @@ dependencies:
     - ln -sf ../config config
 ```
 
+
+### Terraform
+
+`ops` provides a number of features that make working with `terraform` easier. For details, see [Terraform](docs/terraform.md).
+
 ## Getting started
 
 ### Installing
