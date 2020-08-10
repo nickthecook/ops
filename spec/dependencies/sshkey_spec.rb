@@ -60,6 +60,7 @@ RSpec.describe Dependencies::Sshkey do
 			allow(agent_double).to receive(:add_identity)
 			allow(Open3).to receive(:capture2e).with(/ssh-keygen /).and_return(key_generation_return_value)
 			allow(Net::SSH::KeyFactory).to receive(:load_private_key).and_return(unencrypted_key)
+			allow(Output).to receive(:warn)
 		end
 
 		it "does not create the directory" do
@@ -106,6 +107,11 @@ RSpec.describe Dependencies::Sshkey do
 				anything,
 				lifetime: 3600
 			)
+			result
+		end
+
+		it "warns the user about passphrase not being set" do
+			expect(Output).to receive(:warn).with("\nNo passphrase set for SSH key '#{priv_key_name}'")
 			result
 		end
 
@@ -196,6 +202,18 @@ RSpec.describe Dependencies::Sshkey do
 					expect(subject).to receive(:execute).with(/-N 'this is so secret'/)
 					result
 				end
+			end
+		end
+
+		context "when passphrase_var is configured" do
+			before do
+				allow(Options).to receive(:get).with("sshkey.passphrase_var").and_return("SECRET_PASSPHRASE")
+				ENV["SECRET_PASSPHRASE"] = "this is even secreter"
+			end
+
+			it "expands the variable with the given name" do
+				expect(subject).to receive(:execute).with(/-N 'this is even secreter'/)
+				result
 			end
 		end
 

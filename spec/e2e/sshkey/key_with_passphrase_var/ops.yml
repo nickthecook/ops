@@ -1,0 +1,9 @@
+dependencies:
+  sshkey:
+    - user@host
+options:
+  sshkey:
+    passphrase_var: SSHKEY_PASSPHRASE
+    key_lifetime: 5
+  environment:
+    SSHKEY_PASSPHRASE: "cant hack me"

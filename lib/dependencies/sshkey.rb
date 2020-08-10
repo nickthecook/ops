@@ -35,6 +35,8 @@ module Dependencies
 		private
 
 		def generate_key
+			Output.warn("\nNo passphrase set for SSH key '#{priv_key_name}'") if passphrase.nil? || passphrase.empty?
+
 			execute("ssh-keygen -b #{opt_key_size} -t #{opt_key_algo} -f #{priv_key_name} -q -N '#{passphrase}'")
 		end
 
@@ -84,7 +86,20 @@ module Dependencies
 		end
 
 		def opt_passphrase
-			Options.get("sshkey.passphrase")
+			@opt_passphrase ||= begin
+				return "$#{Options.get('sshkey.passphrase_var')}" if Options.get("sshkey.passphrase_var")
+
+				output_passphrase_warning if Options.get("sshkey.passphrase")
+
+				Options.get("sshkey.passphrase")
+			end
+		end
+
+		def output_passphrase_warning
+			Output.warn(
+				"\n'options.sshkey.passphrase' is deprecated and will be removed in a future release. " \
+				"Use 'options.sshkey.passphrase_var' instead."
+			)
 		end
 
 		def opt_add_keys?
