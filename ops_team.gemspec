@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
 	s.name = 'ops_team'
-	s.version = '0.8.9'
+	s.version = '0.8.10'
 	s.authors = [
 		'nickthecook@gmail.com'
 	]
-	s.date = '2020-05-29'
+	s.date = '2020-08-11'
 	s.summary = 'ops_team handles basic operations tasks for your project, driven by YAML config'
 	s.homepage = 'https://github.com/nickthecook/ops'
 	s.files = Dir[

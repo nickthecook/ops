@@ -13,6 +13,14 @@ RSpec.describe Action do
 		it "appends args to command" do
 			expect(result).to eq("bundle exec rspec spec/file1.rb spec/file2.rb")
 		end
+
+		context "when no args are given" do
+			let(:args) { [] }
+
+			it "returns the command" do
+				expect(result).to eq("bundle exec rspec")
+			end
+		end
 	end
 
 	describe "#run" do

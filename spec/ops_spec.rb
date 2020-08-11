@@ -28,7 +28,7 @@ RSpec.describe Ops do
 		let(:expected_action_args) { [{ "command" => "bundle exec rspec", "alias" => "t" }, args] }
 		let(:options) { nil }
 		let(:action_string) { "bundle exec rspec spec/file1.rb spec/file2.rb" }
-		let(:action_double) { instance_double(Action, run: nil, alias: action_alias) }
+		let(:action_double) { instance_double(Action, run: nil, alias: action_alias, to_s: "test") }
 
 		before do
 			allow(YAML).to receive(:load_file).and_return(ops_config)
@@ -87,6 +87,11 @@ RSpec.describe Ops do
 
 			it "loads ops.yml" do
 				expect(YAML).to receive(:load_file).with("ops.yml")
+				result
+			end
+
+			it "outputs a message saying it's running the action" do
+				expect(Output).to receive(:warn).with(/Running 'test' from /)
 				result
 			end
 		end

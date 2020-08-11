@@ -17,7 +17,7 @@ class Action
 	end
 
 	def to_s
-		"#{command} #{@args.join(' ')}"
+		"#{command} #{@args.join(' ')}".strip
 	end
 
 	def alias
