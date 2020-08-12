@@ -62,8 +62,8 @@ RSpec.describe Ops do
 				allow(Builtins).to receive(:const_get).and_return(builtin_class_double)
 			end
 
-			it "finds the builtin class" do
-				expect(Builtins).to receive(:const_get).with(:Test, false)
+			it "uses Builtin to get the builtin class" do
+				expect(Builtin).to receive(:class_for).with(name: "test")
 				result
 			end
 

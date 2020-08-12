@@ -40,6 +40,8 @@ class Output
 			@err.puts(msg.yellow)
 		end
 
+		alias_method :notice, :warn
+
 		def error(msg)
 			@err.puts(msg.red)
 		end

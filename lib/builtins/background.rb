@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'open3'
-
 require 'builtin'
 
 module Builtins
@@ -12,6 +10,16 @@ module Builtins
 		class << self
 			def description
 				"runs the given command in a background session"
+			end
+
+			def log_filename
+				"#{log_filename_prefix}#{Ops.project_name}"
+			end
+
+			private
+
+			def log_filename_prefix
+				Options.get("background.log_filename_prefix") || DEFAULT_LOG_FILE_PREFIX
 			end
 		end
 
@@ -26,20 +34,12 @@ module Builtins
 		private
 
 		def run_ops(args)
-			Output.warn("Running '#{args.join(' ')}' with stderr and stdout redirected to '#{log_file}'")
+			Output.warn("Running '#{args.join(' ')}' with stderr and stdout redirected to '#{Background.log_filename}'")
 			$stdout.sync = $stderr.sync = true
-			$stdout.reopen(log_file, "w")
+			$stdout.reopen(Background.log_filename, "w")
 			$stderr.reopen($stdout)
 
 			Ops.new(args).run
-		end
-
-		def log_file
-			@log_file ||= "#{log_file_prefix}#{Ops.project_name}"
-		end
-
-		def log_file_prefix
-			Options.get("background.log_file_prefix") || DEFAULT_LOG_FILE_PREFIX
 		end
 
 		def shell
