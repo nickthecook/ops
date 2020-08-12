@@ -38,7 +38,7 @@ RSpec.describe Builtins::Background do
 		end
 
 		it "prints a message about redirecting output" do
-			expect(Output).to receive(:warn).with(/Running .* with stderr and stdout redirected to /)
+			expect(Output).to receive(:notice).with(/Running .* with stderr and stdout redirected to /)
 			result
 		end
 

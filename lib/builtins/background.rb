@@ -34,7 +34,7 @@ module Builtins
 		private
 
 		def run_ops(args)
-			Output.warn("Running '#{args.join(' ')}' with stderr and stdout redirected to '#{Background.log_filename}'")
+			Output.notice("Running '#{args.join(' ')}' with stderr and stdout redirected to '#{Background.log_filename}'")
 			$stdout.sync = $stderr.sync = true
 			$stdout.reopen(Background.log_filename, "w")
 			$stderr.reopen($stdout)

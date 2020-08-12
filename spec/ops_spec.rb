@@ -109,7 +109,7 @@ RSpec.describe Ops do
 			end
 
 			it "outputs a message saying it's running the action" do
-				expect(Output).to receive(:warn).with(/Running 'test' from /)
+				expect(Output).to receive(:notice).with(/Running 'test' from /)
 				result
 			end
 		end
