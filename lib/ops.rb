@@ -33,7 +33,7 @@ class Ops
 	end
 
 	def run
-		exit(INVALID_SYNTAX_EXIT_CODE) unless syntax_valid?
+		return exit(INVALID_SYNTAX_EXIT_CODE) unless syntax_valid?
 
 		run_action
 	rescue UnknownActionError => e
@@ -45,8 +45,7 @@ class Ops
 
 	def syntax_valid?
 		if @action_name.nil?
-			# TODO: output to stderr
-			puts "Usage: ops <action>"
+			Output.error("Usage: ops <action>")
 			false
 		else
 			true

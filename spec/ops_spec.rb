@@ -122,5 +122,23 @@ RSpec.describe Ops do
 				result
 			end
 		end
+
+		context "when no arguments are given" do
+			let(:argv) { [] }
+
+			before do
+				allow(subject).to receive(:exit)
+			end
+
+			it "prints an error" do
+				expect(Output).to receive(:error).with(/^Usage: /)
+				result
+			end
+
+			it "exits with the appropriate error code" do
+				expect(subject).to receive(:exit).with(Ops::INVALID_SYNTAX_EXIT_CODE)
+				result
+			end
+		end
 	end
 end
