@@ -24,18 +24,16 @@ RSpec.describe Builtins::Help do
 			allow(Output).to receive(:out)
 		end
 
-		describe "#run" do
-			it "prints builtins" do
-				expect(Output).to receive(:out).with("Builtins:")
-				expect(Output).to receive(:out).with(/up/)
-				result
-			end
+		it "prints builtins" do
+			expect(Output).to receive(:out).with("Builtins:")
+			expect(Output).to receive(:out).with(/up/)
+			result
+		end
 
-			it "prints actions" do
-				expect(Output).to receive(:out).with("Actions:")
-				expect(Output).to receive(:out).with(/action1/)
-				result
-			end
+		it "prints actions" do
+			expect(Output).to receive(:out).with("Actions:")
+			expect(Output).to receive(:out).with(/action1/)
+			result
 		end
 	end
 end
