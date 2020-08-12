@@ -4,7 +4,6 @@ require 'builtin'
 
 module Builtins
 	class Background < Builtin
-		DEFAULT_SHELL = "bash"
 		DEFAULT_LOG_FILE_PREFIX = "/tmp/ops_bglog_"
 
 		class << self
@@ -13,13 +12,7 @@ module Builtins
 			end
 
 			def log_filename
-				"#{log_filename_prefix}#{Ops.project_name}"
-			end
-
-			private
-
-			def log_filename_prefix
-				Options.get("background.log_filename_prefix") || DEFAULT_LOG_FILE_PREFIX
+				Options.get("background.log_filename") || "#{DEFAULT_LOG_FILE_PREFIX}#{Ops.project_name}"
 			end
 		end
 
@@ -40,10 +33,6 @@ module Builtins
 			$stderr.reopen($stdout)
 
 			Ops.new(args).run
-		end
-
-		def shell
-			Options.get("background.shell") || DEFAULT_SHELL
 		end
 	end
 

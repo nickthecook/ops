@@ -16,8 +16,8 @@ RSpec.describe Builtins::BackgroundLog do
 			allow(File).to receive(:exist?).with('/tmp/ops_bglog_ops').and_return(file_exists)
 		end
 
-		it "runs 'tail' in a shell" do
-			expect(subject).to receive(:exec).with("tail  '/tmp/ops_bglog_ops'")
+		it "runs 'cat' in a shell" do
+			expect(subject).to receive(:exec).with("cat '/tmp/ops_bglog_ops'")
 			result
 		end
 

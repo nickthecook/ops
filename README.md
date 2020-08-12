@@ -117,6 +117,18 @@ To switch to another environment, just `export environment=staging`, and you've 
 
 To see more of how to use the concept of software execution environment with `ops`, see [Environment](docs/environments.md).
 
+### Support for running actions in the background
+
+`ops bg my_action` will run an action in the background, saving its output to a file in `/tmp`. If you run this command from a directory called `myproject`, the file will be named `/tmp/ops-bglog-myproject`. You can override the path to this file with the `options.background.log_filename`, e.g.:
+
+```yaml
+options:
+  background:
+    log_filename: /some/other/path
+```
+
+You can run `ops bglog` to have ops `cat` the file to your terminal. If you provide arguments to `ops bglog`, `ops` will run `tail` instead of `cat` and pass your arguments to `tail`. E.g., to follow the file, run `ops bglog -f`. To follow it and show 100 lines of output instead of the default 10, run `ops bglog -f -n 100`. `ops bglog` just saves you the trouble of telling `cat` or `tail` where the file is.
+
 ## Getting started
 
 ### Installing
@@ -284,13 +296,15 @@ For more details on dependencies, see [Dependencies](docs/dependencies.md).
 Built-in commands are:
 
 ```
-  init                  creates an ops.yml file from a template
-  version               prints the version of ops that is running
+  bg                    runs the given command in a background session
+  bglog                 displays the log from the current or most recent background task from this project
   down                  stops dependent services listed in ops.yml
   env                   prints the current environment, e.g. 'dev', 'production', 'staging', etc.
   exec                  executes the given command in the `ops` environment, i.e. with environment variables set
   help                  displays available builtins and actions
+  init                  creates an ops.yml file from a template
   up                    attempts to meet dependencies listed in ops.yml
+  version               prints the version of ops that is running
 ```
 
 ## Actions

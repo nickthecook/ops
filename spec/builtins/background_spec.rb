@@ -71,5 +71,16 @@ RSpec.describe Builtins::Background do
 			expect($stderr).to receive(:reopen).with($stdout)
 			result
 		end
+
+		context "when log_filename option is given" do
+			before do
+				allow(Options).to receive(:get).with("background.log_filename").and_return("/some/other/path")
+			end
+
+			it "redirects stdout to the correct file" do
+				expect($stdout).to receive(:reopen).with("/some/other/path", "w")
+				result
+			end
+		end
 	end
 end

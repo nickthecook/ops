@@ -89,4 +89,4 @@ options:
     key_size: 1024
     passphrase: $SSH_KEY_PASSPHRASE
   background:
-    log_file_prefix: ./bglog_
+    log_filename: ./bglog

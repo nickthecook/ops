@@ -18,7 +18,17 @@ module Builtins
 			end
 
 			Output.notice("Displaying background log '#{Background.log_filename}'...")
-			exec("tail #{args.join(' ')} '#{Background.log_filename}'")
+			display_file
+		end
+
+		private
+
+		def display_file
+			if args.any?
+				exec("tail #{args.join(' ')} '#{Background.log_filename}'")
+			else
+				exec("cat '#{Background.log_filename}'")
+			end
 		end
 	end
 
