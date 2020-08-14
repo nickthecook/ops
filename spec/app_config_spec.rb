@@ -92,5 +92,37 @@ RSpec.describe AppConfig do
 				result
 			end
 		end
+
+		context "when value is an array" do
+			let(:config) do
+				{
+					"environment" => {
+						"key1" => %w[val1 val2]
+					}
+				}.to_yaml
+			end
+
+			it "encodes the array as JSON" do
+				expect(ENV).to receive(:[]=).with("key1", "[\"val1\",\"val2\"]")
+				result
+			end
+		end
+
+		context "when value is a hash" do
+			let(:config) do
+				{
+					"environment" => {
+						"key1" => {
+							"key2" => "val1"
+						}
+					}
+				}.to_yaml
+			end
+
+			it "encodes the hash as JSON" do
+				expect(ENV).to receive(:[]=).with("key1", "{\"key2\":\"val1\"}")
+				result
+			end
+		end
 	end
 end

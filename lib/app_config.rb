@@ -23,7 +23,7 @@ class AppConfig
 
 	def load
 		config['environment']&.each do |key, value|
-			ENV[key] = value.to_s
+			ENV[key] = value.is_a?(Hash) || value.is_a?(Array) ? value.to_json : value.to_s
 		end
 	end
 
