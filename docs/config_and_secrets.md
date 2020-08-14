@@ -12,6 +12,20 @@
 
 `ops` will load these config variables every time it runs; prior to all builtins and actions.
 
+If a variable is set to a hash or an array, `ops` will JSON-encode the value. E.g. the following JSON:
+
+```json
+{
+  "environment": {
+    "KEY": {
+      "OTHER_KEY": "VALUE"
+    }
+  }
+}
+```
+
+will result in `$KEY` being set to `{\"OTHER_KEY\":\"VALUE\"}`.
+
 Unlike environment variables defined in the `options.environment` section of `ops.yml`, these variables can be different for dev, production, or staging, since `ops` will load a different file depending on the value of `$environment`.
 
 You can override the path to the config file in `options`. E.g.:
