@@ -87,6 +87,6 @@ options:
   sshkey:
     load_secrets: true
     key_size: 1024
-    passphrase: $SSH_KEY_PASSPHRASE
+    passphrase_var: SSH_KEY_PASSPHRASE
   background:
     log_filename: ./bglog
