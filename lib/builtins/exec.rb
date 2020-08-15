@@ -15,7 +15,12 @@ module Builtins
 
 		def run
 			Secrets.load if Options.get("exec.load_secrets")
-			Kernel.exec(@args.join(" "))
+
+			if args.any?
+				Kernel.exec(args.join(" "))
+			else
+				Output.error("Usage: ops exec '<command>'")
+			end
 		end
 	end
 end

@@ -77,8 +77,16 @@ class Ops
 	end
 
 	def actions
-		config["actions"].transform_values do |config|
-			Action.new(config, @args)
+		@actions ||= begin
+			if config["actions"]
+				config["actions"]&.transform_values do |config|
+					Action.new(config, @args)
+				end
+			else
+				# only print this error if ops.yml had something in it
+				Output.warn("'ops.yml' has no 'actions' defined.") if config.any?
+				{}
+			end
 		end
 	end
 
