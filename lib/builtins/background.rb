@@ -18,6 +18,7 @@ module Builtins
 
 		def run
 			subprocess = fork do
+				set_bglog_file_permissions
 				run_ops(args)
 			end
 
@@ -25,6 +26,10 @@ module Builtins
 		end
 
 		private
+
+		def set_bglog_file_permissions
+			File.new(Background.log_filename, "w").chmod(0o600)
+		end
 
 		def run_ops(args)
 			Output.notice("Running '#{args.join(' ')}' with stderr and stdout redirected to '#{Background.log_filename}'")

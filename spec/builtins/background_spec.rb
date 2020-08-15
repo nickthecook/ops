@@ -11,6 +11,7 @@ RSpec.describe Builtins::Background do
 		let(:result) { subject.run }
 		let(:process_double) { instance_double(Process) }
 		let(:ops_double) { instance_double(Ops, run: true) }
+		let(:file_double) { instance_double(File, chmod: nil)}
 
 		def spoon
 			yield
@@ -19,12 +20,18 @@ RSpec.describe Builtins::Background do
 		end
 
 		before do
+			allow(File).to receive(:new).with("/tmp/ops_bglog_some_project", "w").and_return(file_double)
 			allow(subject).to receive(:fork) { |&block| spoon(&block) }
 			allow(Process).to receive(:detach).and_return(true)
 			allow($stdout).to receive(:reopen).and_return(true)
 			allow($stderr).to receive(:reopen).and_return(true)
 			allow(Ops).to receive(:new).and_return(ops_double)
 			allow(Ops).to receive(:project_name).and_return("some_project")
+		end
+
+		it "sets permissions on the file so only the owner can access it" do
+			expect(file_double).to receive(:chmod).with(0o600)
+			result
 		end
 
 		it "forks" do
@@ -75,6 +82,7 @@ RSpec.describe Builtins::Background do
 		context "when log_filename option is given" do
 			before do
 				allow(Options).to receive(:get).with("background.log_filename").and_return("/some/other/path")
+				allow(File).to receive(:new).with("/some/other/path", "w").and_return(file_double)
 			end
 
 			it "redirects stdout to the correct file" do
