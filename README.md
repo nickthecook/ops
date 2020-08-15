@@ -131,6 +131,8 @@ options:
 
 You can run `ops bglog` to have ops `cat` the file to your terminal. If you provide arguments to `ops bglog`, `ops` will run `tail` instead of `cat` and pass your arguments to `tail`. E.g., to follow the file, run `ops bglog -f`. To follow it and show 100 lines of output instead of the default 10, run `ops bglog -f -n 100`. `ops bglog` just saves you the trouble of telling `cat` or `tail` where the file is.
 
+The log file will have permissions set to `600`, so only your current user will be able to read the file, even if it's created in `/tmp`. This ensures that any sensitive output such as passwords are not shared with other users.
+
 ## Getting started
 
 ### Installing
