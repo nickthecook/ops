@@ -1,8 +1,8 @@
-require_relative '../ssh_spec_helper'
-
 # frozen_string_literal: true
 
-RSpec.describe "ssh key with passphrase var" do
+require_relative '../ssh_spec_helper'
+
+RSpec.describe "ssh key with passphrase" do
 	include_context "ops e2e"
 
 	before(:all) do
@@ -16,6 +16,10 @@ RSpec.describe "ssh key with passphrase var" do
 
 	it "succeeds" do
 		expect(@exit_status).to eq(0)
+	end
+
+	it "outputs a warning about deprecated passphrase option" do
+		expect(@output).to match(/^'options.sshkey.passphrase' is deprecated/)
 	end
 
 	include_examples "creates an SSH key", "user@host"
