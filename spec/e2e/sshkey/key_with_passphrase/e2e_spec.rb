@@ -22,5 +22,9 @@ RSpec.describe "ssh key with passphrase" do
 		expect(@output).to match(/^'options.sshkey.passphrase' is deprecated/)
 	end
 
+	it "generates a key with a passphrase" do
+		expect(has_passphrase?("user@host")).to be true
+	end
+
 	include_examples "creates an SSH key", "user@host"
 end

@@ -1,12 +1,11 @@
-require_relative '../ssh_spec_helper'
-
 # frozen_string_literal: true
 
-RSpec.describe "ssh key with passphrase var" do
+require_relative '../ssh_spec_helper'
+
+RSpec.describe "ssh key without passphrase" do
 	include_context "ops e2e"
 
 	before(:all) do
-		# change to the directory containing this file
 		Dir.chdir(__dir__)
 
 		remove_untracked_files
@@ -18,8 +17,8 @@ RSpec.describe "ssh key with passphrase var" do
 		expect(@exit_status).to eq(0)
 	end
 
-	it "generates a key with a passphrase" do
-		expect(has_passphrase?("user@host")).to be true
+	it "generates a key without a passphrase" do
+		expect(has_passphrase?("user@host")).to be false
 	end
 
 	include_examples "creates an SSH key", "user@host"
