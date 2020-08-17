@@ -33,6 +33,12 @@ actions:
     command: rerun -x bin/ops test
     alias: tw
     description: runs unit tests every time a file changes
+  test-e2e:
+    command: rspec spec/e2e
+    alias: e2e
+  test-e2e-watch:
+    command: rerun -x ops test-e2e
+    alias: ew
   tag:
     command: "bin/tag"
     description: tags the branch in github with the version from the gemspec
