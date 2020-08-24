@@ -1,7 +1,5 @@
 # ops
 
-**This gem is still quite new; if you encounter an issue, please open an Issue in this project.**
-
 [![Gem Version](https://badge.fury.io/rb/ops_team.svg)](https://badge.fury.io/rb/ops_team)
 
 [View on RubyGems.org](https://rubygems.org/gems/ops_team)
