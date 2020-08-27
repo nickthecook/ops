@@ -9,8 +9,6 @@ dependencies:
     - sl
   apk:
     - curl
-  docker:
-    - pebble
   gem:
     - bundler
     - rerun
