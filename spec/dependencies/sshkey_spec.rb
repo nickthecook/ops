@@ -52,6 +52,8 @@ RSpec.describe Dependencies::Sshkey do
 			]
 		end
 		let(:key_generation_exit_status) { 0 }
+		let(:priv_key_exists) { false }
+		let(:pub_key_exists) { false }
 
 		before do
 			allow(Options).to receive(:get).with(anything).and_call_original
@@ -62,6 +64,11 @@ RSpec.describe Dependencies::Sshkey do
 			allow(Net::SSH::KeyFactory).to receive(:load_private_key).and_return(unencrypted_key)
 			allow(Output).to receive(:warn)
 			allow(Ops).to receive(:project_name).and_return("some_project")
+
+			# for simulating key exists and key doesn't exist scenarios
+			allow(File).to receive(:exist?)
+			allow(File).to receive(:exist?).with(priv_key_name).and_return(priv_key_exists)
+			allow(File).to receive(:exist?).with(pub_key_name).and_return(pub_key_exists)
 		end
 
 		it "does not create the directory" do
@@ -221,6 +228,16 @@ RSpec.describe Dependencies::Sshkey do
 
 			it "does not add the key to the SSH agent" do
 				expect(Net::SSH::Authentication::Agent).not_to receive(:connect)
+				result
+			end
+		end
+
+		context "when key exists" do
+			let(:priv_key_exists) { true }
+			let(:pub_key_exists) { true }
+
+			it "warns the user about passphrase not being set" do
+				expect(Output).to receive(:warn).with("\nNo passphrase set for SSH key '#{priv_key_name}'")
 				result
 			end
 		end

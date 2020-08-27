@@ -18,8 +18,9 @@ module Dependencies
 		def meet
 			Secrets.load
 
-			FileUtils.mkdir_p(dir_name) unless File.directory?(dir_name)
+			Output.warn("\nNo passphrase set for SSH key '#{priv_key_name}'") if passphrase.nil? || passphrase.empty?
 
+			FileUtils.mkdir_p(dir_name) unless File.directory?(dir_name)
 			generate_key unless File.exist?(priv_key_name) && File.exist?(pub_key_name)
 			add_key if success? && should_add_key?
 		end
@@ -35,8 +36,6 @@ module Dependencies
 		private
 
 		def generate_key
-			Output.warn("\nNo passphrase set for SSH key '#{priv_key_name}'") if passphrase.nil? || passphrase.empty?
-
 			execute("ssh-keygen -b #{opt_key_size} -t #{opt_key_algo} -f #{priv_key_name} -q -N '#{passphrase}'")
 		end
 
