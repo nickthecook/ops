@@ -35,18 +35,6 @@ module Dependencies
 				match.nil? ? nil : match[1]
 			end
 
-			def version_lines
-				@version_lines ||= begin
-					version_table_index = apt_cache_lines.find_index { |line| line.match?(/Version table:/) }
-
-					apt_cache_lines[version_table_index..-1].each_with_object([]) do |line, versions|
-						next unless line.match(/ *(\*\*\*)? .*/)
-
-						versions << line
-					end
-				end
-			end
-
 			def apt_cache_lines
 				@apt_cache_lines ||= `apt-cache policy #{name}`.split("\n")
 			end
