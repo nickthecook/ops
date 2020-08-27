@@ -9,4 +9,5 @@ RUN apt-get install -y keychain
 WORKDIR /ops
 RUN gem install --no-ri --no-rdoc bundler
 
-CMD eval `ssh-agent` && bundle install --quiet && bin/ops up && bin/ops test
+COPY entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]

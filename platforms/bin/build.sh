@@ -35,4 +35,7 @@ for platform in $platforms; do
 		echo 1>&2 "$0: Error building container with docker-compose for platform '$platform'."
 		exit 5
 	}
+
+	# remove existing containers, since image has changed
+	docker rm "$platform"
 done

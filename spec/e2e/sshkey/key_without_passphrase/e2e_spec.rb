@@ -10,7 +10,7 @@ RSpec.describe "ssh key without passphrase" do
 
 		remove_untracked_files
 
-		@output, @output_file, @exit_status = run_ops("ops up")
+		@output, @output_file, @exit_status = run_ops("../../../../bin/ops up")
 	end
 
 	it "succeeds" do

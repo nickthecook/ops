@@ -4,8 +4,11 @@ actions:
     command: bin/build.sh $TEST_PLATFORMS
     alias: b
   test:
-    command: bin/test.sh $TEST_PLATFORMS
+    command: bin/run.sh "bin/ops test" $TEST_PLATFORMS
     alias: t
+  test-e2e:
+    command: bin/run.sh "bin/ops test-e2e" $TEST_PLATFORMS
+    alias: te
 options:
   environment:
-    TEST_PLATFORMS: "`find . -type d -maxdepth 1 -name 'ops-*'`"
+    TEST_PLATFORMS: ops-*
