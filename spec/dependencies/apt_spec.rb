@@ -53,9 +53,11 @@ RSpec.describe Dependencies::Apt do
 
 	describe '#should_meet?' do
 		let(:result) { subject.should_meet? }
+		let(:apt_get_available?) { true }
 
 		before do
 			allow(subject).to receive(:`).with("uname").and_return(uname)
+			allow(subject).to receive(:system).with(/^which apt-get /).and_return(apt_get_available?)
 		end
 
 		context "Darwin kernel is running" do
@@ -69,8 +71,16 @@ RSpec.describe Dependencies::Apt do
 		context "Linux kernel is running" do
 			let(:uname) { "Linux\n" }
 
-			it "returns false" do
+			it "returns true" do
 				expect(result).to be true
+			end
+
+			context "apt-get is not available" do
+				let(:apt_get_available?) { false }
+
+				it "returns false" do
+					expect(result).to be false
+				end
 			end
 		end
 	end

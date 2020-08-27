@@ -20,7 +20,7 @@ module Dependencies
 		end
 
 		def should_meet?
-			system("which apk")
+			`uname`.chomp == "Linux" && system("which apk &>/dev/null")
 		end
 	end
 end

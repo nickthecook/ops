@@ -33,15 +33,28 @@ RSpec.describe Dependencies::Apk do
 		let(:success?) { true }
 
 		before do
-			allow(subject).to receive(:system).with("which apk").and_return(success?)
+			allow(subject).to receive(:`).with("uname").and_return(uname)
+			allow(subject).to receive(:system).with(/^which apk /).and_return(success?)
 		end
 
-		it "returns true" do
-			expect(result).to be true
+		context "kernel is Linux" do
+			let(:uname) { "Linux" }
+
+			it "returns true" do
+				expect(result).to be true
+			end
+
+			context "apk command is not available" do
+				let(:success?) { false }
+
+				it "returns false" do
+					expect(result).to be false
+				end
+			end
 		end
 
-		context "apk command is not available" do
-			let(:success?) { false }
+		context "kernel name is Darwin" do
+			let(:uname) { "Darwin" }
 
 			it "returns false" do
 				expect(result).to be false

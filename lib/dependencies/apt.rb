@@ -18,7 +18,7 @@ module Dependencies
 		end
 
 		def should_meet?
-			`uname`.chomp == "Linux"
+			`uname`.chomp == "Linux" && system("which apt-get &>/dev/null")
 		end
 
 		private
