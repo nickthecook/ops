@@ -22,8 +22,6 @@ dependencies:
   custom:
     - bundle install --quiet
     - "echo this is stdout"
-    - "echo 1>&2 this is stderr && false"
-    - "[ \"$KEY1\" == \"This is key 1\" ] || false"
 actions:
   test:
     command: environment=test bundle exec rspec --exclude-pattern 'spec/e2e/**/*_spec.rb'
@@ -39,6 +37,12 @@ actions:
   test-e2e-watch:
     command: rerun -x ops test-e2e
     alias: ew
+  test-platforms:
+    command: cd platforms && ops test
+    alias: tp
+  test-platform-watch:
+    command: rerun -x ops test-platforms
+    alias: pw
   tag:
     command: "bin/tag"
     description: tags the branch in github with the version from the gemspec
@@ -96,3 +100,5 @@ options:
     passphrase_var: SSH_KEY_PASSPHRASE
   background:
     log_filename: ./bglog
+  apt:
+    use_sudo: false

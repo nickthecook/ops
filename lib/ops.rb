@@ -94,7 +94,8 @@ class Ops
 		@config ||= begin
 			Output.warn("File '#{CONFIG_FILE}' does not exist.") unless File.exist?(CONFIG_FILE)
 			YAML.load_file(CONFIG_FILE)
-		rescue StandardError
+		rescue StandardError => e
+			Output.warn("Error parsing '#{CONFIG_FILE}': #{e}")
 			{}
 		end
 	end

@@ -1,0 +1,11 @@
+dependencies:
+actions:
+  build:
+    command: bin/build.sh $TEST_PLATFORMS
+    alias: b
+  test:
+    command: bin/test.sh $TEST_PLATFORMS
+    alias: t
+options:
+  environment:
+    TEST_PLATFORMS: "`find . -type d -maxdepth 1 -name 'ops-*'`"

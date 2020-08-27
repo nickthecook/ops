@@ -52,6 +52,8 @@ module Builtins
 		end
 
 		def actions
+			return [] unless @config["actions"]
+
 			@config["actions"].map do |name, value|
 				format("%<name>-35s %<desc>s",
 					name: name.yellow,
