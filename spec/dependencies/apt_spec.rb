@@ -6,11 +6,50 @@ RSpec.describe Dependencies::Apt do
 	subject { described_class.new(name) }
 
 	let(:name) { "some-dependency" }
+	let(:policy_double) do
+		instance_double(
+			Dependencies::Helpers::AptCachePolicy,
+			installed_version: installed_version,
+			installed?: true
+		)
+	end
+	let(:installed_version) { "123" }
+
+	before do
+		allow(Dependencies::Helpers::AptCachePolicy).to receive(:new).and_return(policy_double)
+	end
 
 	describe '#met?' do
-		it "calls `dpkg-query` to check if the dependency is installed" do
-			expect(subject).to receive(:execute).with(/^dpkg-query .*/)
-			subject.met?
+		let(:result) { subject.met? }
+
+		it "uses AptCachePolicy to check if the dependency is installed" do
+			expect(policy_double).to receive(:installed?)
+			result
+		end
+
+		it "returns true" do
+			expect(result).to be true
+		end
+
+		context "when specific version is required" do
+			let(:name) { "some-dependency/123" }
+
+			it "uses AptCachePolicy to check if that version of the dependency is installed" do
+				expect(policy_double).to receive(:installed_version)
+				result
+			end
+
+			it "returns true" do
+				expect(result).to be true
+			end
+
+			context "when a different version is installed" do
+				let(:installed_version) { "124" }
+
+				it "returns false" do
+					expect(result).to be false
+				end
+			end
 		end
 	end
 

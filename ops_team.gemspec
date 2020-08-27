@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
 	s.name = 'ops_team'
-	s.version = '0.9.9'
+	s.version = '0.10.0'
 	s.authors = [
 		'nickthecook@gmail.com'
 	]
@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
 		'lib/builtins/*',
 		'lib/builtins/helpers/*',
 		'lib/dependencies/*',
+		'lib/dependencies/helpers/*',
 		'loader.rb',
 		'ops_team.gemspec'
 	]

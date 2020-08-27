@@ -15,7 +15,7 @@ Style/HashTransformKeys:
 Style/HashTransformValues:
   Enabled: true
 Layout/LineLength:
-  Max: 100
+  Max: 120
   Exclude:
     - spec/*
 Layout/FirstHashElementIndentation:
