@@ -23,7 +23,7 @@ module Dependencies
 		end
 
 		def should_meet?
-			`uname`.chomp == "Linux" && system("which apt-get &>/dev/null")
+			`uname`.chomp == "Linux" && system("which apt-get")
 		end
 
 		private
@@ -45,7 +45,7 @@ module Dependencies
 		end
 
 		def sudo_string
-			return "" if ENV['USER'] == "root" || Options.get("apt.use_sudo") == false
+			return "" if ENV['USER'] == "root" || `whoami` == "root" || Options.get("apt.use_sudo") == false
 
 			"sudo "
 		end

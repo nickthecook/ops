@@ -34,7 +34,7 @@ RSpec.describe Dependencies::Apk do
 
 		before do
 			allow(subject).to receive(:`).with("uname").and_return(uname)
-			allow(subject).to receive(:system).with(/^which apk /).and_return(success?)
+			allow(subject).to receive(:system).with("which apk").and_return(success?)
 		end
 
 		context "kernel is Linux" do
