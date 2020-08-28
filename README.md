@@ -197,17 +197,24 @@ $
 
 ```shell
 # from the repo where you wish to use ops
-ops init
+$ ops init
 ```
 
 There are some specialized templates for terraform and ruby projects. You can run:
 
 ```shell
-ops init terraform  # template pre-populated with common terraform configuration
-ops init ruby       # template pre-populated with common ruby configuration
+$ ops init terraform  # template pre-populated with common terraform configuration
+$ ops init ruby       # template pre-populated with common ruby configuration
 ```
 
-*(If you'd like to see a template for another language, please submit a PR.)*
+*(If you'd like to see a template for another language, please submit a PR or create an issue.)*
+
+You can also use your own ops templates, or copy one from another project, by passing a filename:
+
+```shell
+$ ops init ~/src/templates/python.yml
+```
+
 
 Edit `ops.yml` to suit your needs. There will be some examples in there that you will want to change.
 
