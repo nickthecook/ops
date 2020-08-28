@@ -6,6 +6,7 @@ class Environment
 	end
 
 	def set_variables
+		set_ops_variables
 		set_environment_aliases
 		set_configured_variables
 	end
@@ -17,6 +18,10 @@ class Environment
 	end
 
 	private
+
+	def set_ops_variables
+		ENV["OPS_YML_DIR"] = Dir.pwd
+	end
 
 	def set_environment_aliases
 		environment_aliases.each do |alias_name|

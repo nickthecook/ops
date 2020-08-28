@@ -15,6 +15,11 @@ RSpec.describe Environment do
 			allow(ENV).to receive(:[]=).with(kind_of(String), kind_of(String))
 		end
 
+		it "sets OPS_YML_DIR" do
+			expect(ENV).to receive(:[]=).with("OPS_YML_DIR", Dir.pwd)
+			result
+		end
+
 		it "sets the given variables" do
 			expect(ENV).to receive(:[]=).with("var1", "val1")
 			expect(ENV).to receive(:[]=).with("var2", "val2")

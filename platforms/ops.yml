@@ -13,7 +13,7 @@ actions:
     command: bin/run.sh "bin/ops test-e2e" $TEST_PLATFORMS
     alias: e2e
   test-e2e-watch:
-    command: rerun -x "bin/run.sh \"ops test-e2e\" $TEST_PLATFORMS"
+    command: rerun -x "bin/run.sh \"bin/ops test-e2e\" $TEST_PLATFORMS"
     alias: ew
   console:
     command: bin/run.sh bash
