@@ -35,4 +35,11 @@ for platform in $platforms; do
 		echo 1>&2 "$0: Error building container with docker-compose for platform '$platform'."
 		exit 5
 	}
+
+	# remove existing containers, since image has changed
+	echo "$0: removing containers based on the image '$platform'..."
+	containers_based_on_this_image=`docker ps -qaf ancestor=$platform`
+	if [ -n "$containers_based_on_this_image" ]; then
+		docker rm $containers_based_on_this_image
+	fi
 done

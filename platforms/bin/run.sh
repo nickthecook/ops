@@ -25,6 +25,7 @@ else
 fi
 
 echo "$0: Running '$command' on platforms: $platforms"
+echo "$0: Mounting '$VOLUME_DIR' into the container at '/ops'."
 
 for platform in $platforms; do
 	cd "$platform" || {
@@ -32,6 +33,15 @@ for platform in $platforms; do
 		exit 2
 	}
 
-	echo "$0: Mounting '$VOLUME_DIR' into the container at '/ops'."
-	docker run --rm -it -v "$VOLUME_DIR:/ops" --name $platform $platform $command
+	# get a string based on the command that can be included in the container name
+	command_string=`echo "$command" | sed 's/[^a-zA-z0-9]/_/g'`
+	container_name="$platform"_"$command_string"
+	# create a container with the name of the platform if it doesn't already exist
+	if docker ps -a | grep -q $container_name; then
+		echo "$0: Starting existing container '$container_name'..."
+		docker start -a $container_name
+	else
+		echo "$0: Running new container '$container_name' from image '$platform'..."
+		docker run -it -v "$VOLUME_DIR:/ops" --name $container_name $platform $command
+	fi
 done
