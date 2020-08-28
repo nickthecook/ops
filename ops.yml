@@ -41,6 +41,12 @@ actions:
   test-platform-watch:
     command: rerun -x ops test-platforms
     alias: pw
+  test-platform-e2e:
+    command: cd platforms && ops test-e2e
+    alias: tpe
+  test-platform-e2e-watch:
+    command: cd platforms && rerun -x ops test-e2e
+    alias: tpew
   tag:
     command: "bin/tag"
     description: tags the branch in github with the version from the gemspec

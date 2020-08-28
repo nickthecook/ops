@@ -9,6 +9,9 @@ actions:
   test-e2e:
     command: bin/run.sh "bin/ops test-e2e" $TEST_PLATFORMS
     alias: te
+  console:
+    command: bin/run.sh bash
+    alias: c
 options:
   environment:
     TEST_PLATFORMS: ops-*
