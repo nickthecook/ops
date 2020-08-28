@@ -39,3 +39,9 @@ options:
 ```
 
 The values of these variables are not interpreted by the shell before being set, so variable references like `$environment` will appear literally in the value of the variable.
+
+## Built-in environment variables
+
+`ops` will set the following variables when executing any action or builtin:
+
+- `OPS_YML_DIR`: the directory in which `ops` was run and which contains the `ops.yml` file `ops` has loaded
