@@ -1,0 +1,15 @@
+dependencies:
+  sshkey:
+    - user@host
+actions:
+options:
+  sshkey:
+    passphrase_var: SSH_KEY_PASSPHRASE
+  exec:
+    load_secrets: true
+  secrets:
+    path: secrets.ejson
+  config:
+    path: config.json
+  environment:
+    EJSON_KEYDIR: .

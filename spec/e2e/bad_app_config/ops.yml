@@ -1,0 +1,9 @@
+dependencies:
+  custom:
+    - ls
+actions:
+  hello:
+    command: echo hello
+options:
+  config:
+    path: config.json

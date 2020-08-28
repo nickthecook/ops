@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class AppConfig
+	class ParsingError < StandardError; end
+
 	class << self
 		def load
 			new(app_config_path).load
@@ -36,8 +38,7 @@ class AppConfig
 	def config
 		@config ||= file_contents ? YAML.safe_load(file_contents) : {}
 	rescue YAML::SyntaxError => e
-		Output.error("Error parsing config data: #{e}")
-		{}
+		raise ParsingError, "Error parsing config data: #{e}"
 	end
 
 	def file_contents

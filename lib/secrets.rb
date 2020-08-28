@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'json'
+require 'open3'
 
 require 'output'
 require 'app_config'
@@ -38,6 +39,19 @@ class Secrets < AppConfig
 	end
 
 	def file_contents
-		@file_contents ||= @filename.match(/\.ejson$/) ? `ejson decrypt #{@filename}` : super
+		@file_contents ||= begin
+			@filename.match(/\.ejson$/) ? ejson_contents : super
+		end
+	end
+
+	def ejson_contents
+		@ejson_contents ||= begin
+			out, err, _status = Open3.capture3("ejson decrypt #{@filename}")
+
+			# TODO: err is only nil in testing, but I can't figure out why the stubbing isn't working
+			raise ParsingError, "Error decrypting EJSON file: #{err}" unless err.nil? || err.empty?
+
+			out
+		end
 	end
 end

@@ -101,7 +101,7 @@ when you run `ops up`, ops will generate a passphrase-protected SSH key for you 
 
 ##### "But that's just providing a secret in an environment variable instead of providing a secret SSH key!"
 
-True. But ops uses [`ejson`](https://github.com/Shopify/ejson) to make it easy to manage secrets.
+True. But ops uses [`ejson`](https://github.com/Shopify/ejson) to make it easy to manage secrets. Now you only need to provide one secret (the `ejson` private key) and all your other secrets are unlocked.
 
 If you have an encrypted `secrets.ejson` file at `config/dev/secrets.ejson`, and the private key is available to `ejson`, ops will automatically load secrets from that file into environment variables for any action in which you specify `load_secrets: true`. (Secrets are not loaded by default for every action to avoid accidental secret leakage.)
 

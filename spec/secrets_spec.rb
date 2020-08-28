@@ -55,11 +55,11 @@ RSpec.describe Secrets do
 
 		context "when no filename is given" do
 			before do
-				allow(subject).to receive(:`).with(/ejson decrypt .*/).and_return(secrets)
+				allow(Open3).to receive(:capture3).with(/ejson decrypt .*/).and_return(secrets, "error!", nil)
 			end
 
 			it "runs ejson to decrypt secrets" do
-				expect(subject).to receive(:`).with("ejson decrypt config/test/secrets.ejson")
+				expect(Open3).to receive(:capture3).with("ejson decrypt config/test/secrets.ejson")
 				result
 			end
 
@@ -93,6 +93,7 @@ RSpec.describe Secrets do
 					expect(subject).not_to receive(:`).with(/ejson decrypt/)
 					result
 				end
+
 				context "when json file does not exist" do
 					before do
 						allow(File).to receive(:open).with("config/test/secrets.json").and_raise(Errno::ENOENT, "NOPE")
@@ -118,10 +119,11 @@ RSpec.describe Secrets do
 
 			before do
 				allow(File).to receive(:exist?).with(secrets_path).and_return(true)
+				allow(Open3).to receive(:capture3).and_return(secrets, "", nil)
 			end
 
 			it "runs ejson to decrypt the given file" do
-				expect(subject).to receive(:`).with("ejson decrypt secrets/secrets.ejson")
+				expect(::Open3).to receive(:capture3).with("ejson decrypt secrets/secrets.ejson")
 				result
 			end
 		end

@@ -18,6 +18,7 @@ class Ops
 
 	INVALID_SYNTAX_EXIT_CODE = 64
 	UNKNOWN_ACTION_EXIT_CODE = 65
+	ERROR_LOADING_APP_CONFIG_EXIT_CODE = 66
 
 	class << self
 		def project_name
@@ -60,6 +61,9 @@ class Ops
 
 		Output.notice("Running '#{action}' from #{CONFIG_FILE} in environment '#{ENV['environment']}'...")
 		action.run
+	rescue AppConfig::ParsingError => e
+		Output.error("Error parsing app config: #{e}")
+		exit(ERROR_LOADING_APP_CONFIG_EXIT_CODE)
 	end
 
 	def builtin
