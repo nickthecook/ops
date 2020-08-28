@@ -14,12 +14,14 @@ The following dependency types are supported:
 ### `apt`
 
 - specifies that a particular package from `apt` is needed
-- will only run if you're on Linux
+- will only run if the `apt` executable is in the `$PATH`
+- can specify a version with, e.g., `curl/7.52.1-5+deb9u7`
+- run `apt-cache policy curl` to get available versions
 
 ### `apk`
 
 - specifies that a particular package from `apk` is needed
-- will only run if the `apk` command is available (usually only on Alpine linux)
+- will only run if the `apk` command is in the `$PATH` (usually only on Alpine linux)
 
 ### `gem`
 
