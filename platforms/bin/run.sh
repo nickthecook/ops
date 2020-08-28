@@ -7,7 +7,7 @@ function usage {
 	echo 1>&2 "Usage: $0 <command> <platform> [<platform> [...] ]"
 	echo 1>&2
 	echo 1>&2 "  command:  the command to run in the container"
-	echo 1>&2 "  platform: the name of a directory to test"
+	echo 1>&2 "  platform: the name of a platform to run it in (e.g. 'ops-debian')"
 }
 
 if [ "$1" == "-h" ]; then
@@ -37,7 +37,7 @@ for platform in $platforms; do
 	command_string=`echo "$command" | sed 's/[^a-zA-z0-9]/_/g'`
 	container_name="$platform"_"$command_string"
 	# create a container with the name of the platform if it doesn't already exist
-	if docker ps -a | grep -q $container_name; then
+	if docker ps -a | grep -q " $container_name$"; then
 		echo "$0: Starting existing container '$container_name'..."
 		docker start -a $container_name
 	else

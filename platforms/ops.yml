@@ -6,9 +6,15 @@ actions:
   test:
     command: bin/run.sh "bin/ops test" $TEST_PLATFORMS
     alias: t
+  test-watch:
+    command: rerun -x "bin/run.sh \"bin/ops test\" $TEST_PLATFORMS"
+    alias: tw
   test-e2e:
     command: bin/run.sh "bin/ops test-e2e" $TEST_PLATFORMS
-    alias: te
+    alias: e2e
+  test-e2e-watch:
+    command: rerun -x "bin/run.sh \"ops test-e2e\" $TEST_PLATFORMS"
+    alias: ew
   console:
     command: bin/run.sh bash
     alias: c
