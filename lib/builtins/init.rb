@@ -32,12 +32,18 @@ module Builtins
 
 		private
 
-		def template_name_arg
+		def template_name
 			@args[0]
 		end
 
 		def template_path
-			format(OPS_YML_TEMPLATE, template_name: template_name_arg || DEFAULT_TEMPLATE_NAME)
+			return template_name if template_name && File.exist?(template_name)
+
+			builtin_template_path
+		end
+
+		def builtin_template_path
+			format(OPS_YML_TEMPLATE, template_name: template_name || DEFAULT_TEMPLATE_NAME)
 		end
 
 		def template_name_list
