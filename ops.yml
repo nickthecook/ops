@@ -49,6 +49,7 @@ actions:
     alias: tpew
   build-platforms:
     command: cd platforms && ops build
+    alias: bp
   tag:
     command: "bin/tag"
     description: tags the branch in github with the version from the gemspec
