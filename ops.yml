@@ -15,8 +15,6 @@ dependencies:
     - ejson
   dir:
     - runtime_data
-  sshkey:
-    - keys/$environment/ops@localhost
   custom:
     - bundle install --quiet
     - "echo this is stdout"
@@ -30,7 +28,7 @@ actions:
     alias: tw
     description: runs unit tests every time a file changes
   test-e2e:
-    command: rspec spec/e2e
+    command: rspec spec/e2e/e2e_spec_helper.rb spec/e2e
     alias: e2e
   test-e2e-watch:
     command: rerun -x ops test-e2e

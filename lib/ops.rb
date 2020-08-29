@@ -4,6 +4,7 @@
 require 'yaml'
 require 'require_all'
 
+require 'hook_handler'
 require 'action'
 require 'output'
 require 'options'
@@ -54,8 +55,7 @@ class Ops
 	end
 
 	def run_action
-		environment.set_variables
-		AppConfig.load
+		do_before_run_action
 
 		return builtin.run if builtin
 
@@ -64,6 +64,16 @@ class Ops
 	rescue AppConfig::ParsingError => e
 		Output.error("Error parsing app config: #{e}")
 		exit(ERROR_LOADING_APP_CONFIG_EXIT_CODE)
+	end
+
+	def do_before_run_action
+		environment.set_variables
+		AppConfig.load
+		hook_handler.do_hooks("before")
+	end
+
+	def hook_handler
+		@hook_handler ||= HookHandler.new(config)
 	end
 
 	def builtin

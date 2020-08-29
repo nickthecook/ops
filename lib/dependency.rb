@@ -4,11 +4,12 @@ require 'open3'
 require 'English'
 
 require 'output'
+require 'executor'
 
 class Dependency
 	DESCRIPTION_TYPE_WIDTH = 8
 
-	attr_reader :name, :output, :exit_code
+	attr_reader :name
 
 	def initialize(name)
 		@name = name
@@ -45,15 +46,23 @@ class Dependency
 	end
 
 	def success?
-		@exit_code.nil? ? true : @exit_code.zero?
+		@executor.nil? ? true : @executor.success?
+	end
+
+	def output
+		@executor&.output
+	end
+
+	def exit_code
+		@executor&.exit_code
 	end
 
 	private
 
 	def execute(cmd)
-		@output, status = Open3.capture2e(cmd)
-		@exit_code = status.exitstatus
+		@executor = Executor.new(cmd)
+		@executor.execute
 
-		success?
+		@executor.success?
 	end
 end

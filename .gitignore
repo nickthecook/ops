@@ -64,3 +64,6 @@ user@host.pub
 bglog_ops
 bglog
 ops.out
+
+# e2e test artefacts
+spec/e2e/hooks/before_hook_*

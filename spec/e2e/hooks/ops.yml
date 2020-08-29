@@ -1,0 +1,7 @@
+hooks:
+  before:
+    - touch before_hook_1
+    - touch before_hook_2
+  after:
+    - touch after_hook_1
+    - touch after_hook_2

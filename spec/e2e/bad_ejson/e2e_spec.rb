@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative '../e2e_spec'
-
 RSpec.describe "bad ejson contents" do
 	include_context "ops e2e"
 
@@ -14,7 +12,7 @@ RSpec.describe "bad ejson contents" do
 		@output, @output_file, @exit_status = run_ops("../../../bin/ops up")
 	end
 
-	it "succeeds" do
+	it "fails with config error exit code" do
 		expect(@exit_status).to eq(66)
 	end
 
