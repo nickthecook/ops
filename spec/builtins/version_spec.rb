@@ -19,20 +19,5 @@ RSpec.describe Builtins::Version do
 			expect(Output).to receive(:out).with("1.2.3")
 			result
 		end
-
-		context "when gemspec does not exist" do
-			before do
-				allow(Gem::Specification).to receive(:load).and_return(nil)
-			end
-
-			it "prints an error" do
-				expect(Output).to receive(:error)
-				result
-			end
-
-			it "returns false" do
-				expect(result).to be false
-			end
-		end
 	end
 end
