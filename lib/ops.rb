@@ -3,12 +3,14 @@
 
 require 'yaml'
 require 'require_all'
+require "rubygems"
 
 require 'hook_handler'
 require 'action'
 require 'output'
 require 'options'
 require 'environment'
+require 'version'
 require_rel "builtins"
 
 # executes commands based on local `ops.yml`
@@ -20,6 +22,7 @@ class Ops
 	INVALID_SYNTAX_EXIT_CODE = 64
 	UNKNOWN_ACTION_EXIT_CODE = 65
 	ERROR_LOADING_APP_CONFIG_EXIT_CODE = 66
+	MIN_VERSION_NOT_MET_EXIT_CODE = 67
 
 	class << self
 		def project_name
@@ -35,7 +38,9 @@ class Ops
 	end
 
 	def run
+		# "return" is here to allow specs to stub "exit"
 		return exit(INVALID_SYNTAX_EXIT_CODE) unless syntax_valid?
+		return exit(MIN_VERSION_NOT_MET_EXIT_CODE) unless min_version_met?
 
 		run_action
 	rescue UnknownActionError => e
@@ -52,6 +57,21 @@ class Ops
 		else
 			true
 		end
+	end
+
+	def min_version_met?
+		return true unless min_version
+
+		if Version.min_version_met?(min_version)
+			true
+		else
+			Output.error("ops.yml specifies minimum version of #{min_version}, but ops version is #{Version.version}")
+			false
+		end
+	end
+
+	def min_version
+		config["min_version"]
 	end
 
 	def run_action

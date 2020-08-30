@@ -12,6 +12,7 @@ RSpec.describe Ops do
 	let(:command) { "bundle exec rspec" }
 	let(:ops_config) do
 		{
+			"min_version" => min_version,
 			"actions" => {
 				action => {
 					"command" => command,
@@ -22,6 +23,7 @@ RSpec.describe Ops do
 		}
 	end
 	let(:options) { {} }
+	let(:min_version) { "0.0.1" }
 
 	describe '.project_name' do
 		let(:result) { described_class.project_name }
@@ -137,6 +139,24 @@ RSpec.describe Ops do
 
 			it "exits with the appropriate error code" do
 				expect(subject).to receive(:exit).with(Ops::INVALID_SYNTAX_EXIT_CODE)
+				result
+			end
+		end
+
+		context "when min version not met" do
+			let(:min_version) { "99.99.99" }
+
+			before do
+				allow(subject).to receive(:exit)
+			end
+
+			it "exits with the appropriate error code" do
+				expect(subject).to receive(:exit).with(Ops::MIN_VERSION_NOT_MET_EXIT_CODE)
+				result
+			end
+
+			it "prints an error" do
+				expect(Output).to receive(:error).with(/ops.yml specifies minimum version of /)
 				result
 			end
 		end
