@@ -20,6 +20,11 @@ RSpec.describe Environment do
 			result
 		end
 
+		it "sets OPS_VERSION" do
+			expect(ENV).to receive(:[]=).with("OPS_VERSION", /[0-9]+\.[0-9]+\.[0-9]+/)
+			result
+		end
+
 		it "sets the given variables" do
 			expect(ENV).to receive(:[]=).with("var1", "val1")
 			expect(ENV).to receive(:[]=).with("var2", "val2")

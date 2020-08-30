@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'version'
+
 class Environment
 	def initialize(env_hash)
 		@env_hash = env_hash
@@ -21,6 +23,7 @@ class Environment
 
 	def set_ops_variables
 		ENV["OPS_YML_DIR"] = Dir.pwd
+		ENV["OPS_VERSION"] = Version.version.to_s
 	end
 
 	def set_environment_aliases

@@ -45,3 +45,4 @@ The values of these variables are not interpreted by the shell before being set,
 `ops` will set the following variables when executing any action or builtin:
 
 - `OPS_YML_DIR`: the directory in which `ops` was run and which contains the `ops.yml` file `ops` has loaded
+- `OPS_VERSION`: the version of `ops` that is running
