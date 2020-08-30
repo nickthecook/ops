@@ -4,4 +4,4 @@ services:
     build: '.'
     image: 'ops-debian'
     volumes:
-      - '../..:/ops:ro'
+      - '../..:/ops'

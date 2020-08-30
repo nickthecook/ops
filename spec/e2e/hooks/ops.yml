@@ -5,3 +5,6 @@ hooks:
   after:
     - touch after_hook_1
     - touch after_hook_2
+actions:
+  hello:
+    command: echo hello

@@ -2,7 +2,7 @@ min_version: 0.12.0
 dependencies:
 hooks:
   before:
-    - bin/build.sh $TEST_PLATFORMS
+    - for image in $TEST_PLATFORMS; do [ -n "`docker image ls -q $image`" ] || bin/build.sh $image; done
 actions:
   build:
     command: bin/build.sh $TEST_PLATFORMS
@@ -22,8 +22,24 @@ actions:
   console:
     command: bin/run.sh bash
     alias: c
+  list-images:
+    description: lists docker images built by this project
+    command: docker image ls -qf "reference=ops-*"
+    alias: lsi
+    skip_before_hooks: true
+  list-containers:
+    command: docker ps -qaf "name=ops-*"
+    alias: lsc
+    skip_before_hooks: true
   remove-images:
-    command: docker image rm `docker image ls -qf "reference=ops-*"`
+    command: docker image rm `ops lsi`
+    alias: rmi
+    skip_before_hooks: true
+  remove-containers:
+    command: docker rm `ops lsc`
+    alias: rmc
+  remove-all:
+    command: ops rmc && ops rmi
     alias: rm
 options:
   environment:

@@ -32,6 +32,10 @@ class Action
 		@config["description"]
 	end
 
+	def skip_hooks?(name)
+		@config["skip_#{name}_hooks"]
+	end
+
 	private
 
 	def load_secrets?

@@ -3,6 +3,8 @@
 require 'open3'
 
 shared_context "ops e2e" do
+	ENV["OPS_RUNNING"] = nil
+
 	def remove_untracked_files
 		`git ls-files --others | grep -v '.rb$' | grep -v '$.yml' | xargs rm`
 	end

@@ -13,6 +13,7 @@ RSpec.describe Ops do
 	let(:ops_config) do
 		{
 			"min_version" => min_version,
+			"hooks" => hooks,
 			"actions" => {
 				action => {
 					"command" => command,
@@ -23,6 +24,7 @@ RSpec.describe Ops do
 		}
 	end
 	let(:options) { {} }
+	let(:hooks) { {} }
 	let(:min_version) { "0.0.1" }
 
 	describe '.project_name' do
@@ -158,6 +160,52 @@ RSpec.describe Ops do
 			it "prints an error" do
 				expect(Output).to receive(:error).with(/ops.yml specifies minimum version of /)
 				result
+			end
+		end
+
+		context "when before hooks are configured" do
+			let(:hooks) do
+				{
+					"before" => [
+						"echo hello there",
+						"echo and now do you like my hat?"
+					]
+				}
+			end
+
+			before do
+				ENV["OPS_RUNNING"] = nil
+				allow(action_double).to receive(:skip_hooks?).with("before").and_return(false)
+				allow(Executor).to receive(:execute).and_return(["hello there", 0])
+			end
+
+			it "runs the hooks" do
+				expect(Executor).to receive(:execute).with("echo hello there")
+				expect(Executor).to receive(:execute).with("echo and now do you like my hat?")
+				result
+			end
+
+			context "when the action is configured to skip before hooks" do
+				before do
+					allow(action_double).to receive(:skip_hooks?).with("before").and_return(true)
+				end
+
+				it "does not run the hooks" do
+					expect(Executor).not_to receive(:execute).with("echo hello there")
+					result
+				end
+			end
+
+			context "when the action is being run from another ops command" do
+				# i.e. `ops aa` runs `ops apply`; so `ops apply` should skip before hooks, as `ops aa` will have run them
+				before do
+					ENV["OPS_RUNNING"] = "1"
+				end
+
+				it "does not run the hooks" do
+					expect(Executor).not_to receive(:execute).with("echo hello there")
+					result
+				end
 			end
 		end
 	end

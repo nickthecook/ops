@@ -75,9 +75,11 @@ class Ops
 	end
 
 	def run_action
-		do_before_run_action
+		do_before_all
 
 		return builtin.run if builtin
+
+		do_before_action
 
 		Output.notice("Running '#{action}' from #{CONFIG_FILE} in environment '#{ENV['environment']}'...")
 		action.run
@@ -86,10 +88,16 @@ class Ops
 		exit(ERROR_LOADING_APP_CONFIG_EXIT_CODE)
 	end
 
-	def do_before_run_action
+	def do_before_all
 		environment.set_variables
 		AppConfig.load
-		hook_handler.do_hooks("before")
+	end
+
+	def do_before_action
+		hook_handler.do_hooks("before") unless ENV["OPS_RUNNING"] || action.skip_hooks?("before")
+
+		# this prevents before hooks from running in ops executed by ops
+		ENV["OPS_RUNNING"] = "1"
 	end
 
 	def hook_handler
