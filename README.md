@@ -99,9 +99,7 @@ options:
 
 when you run `ops up`, ops will generate a passphrase-protected SSH key for you _and add it to your SSH agent_. You can authorize that key on your server (or provide your own authorized key - if the key exists ops won't overwrite it) and then `ops ssh` will take you to the server. Also, because the key is passphrase-protected, _you can check it in_, so that anyone with the `$SECRET_VARIABLE` can use it.
 
-##### "But that's just providing a secret in an environment variable instead of providing a secret SSH key!"
-
-True. But ops uses [`ejson`](https://github.com/Shopify/ejson) to make it easy to manage secrets. Now you only need to provide one secret (the `ejson` private key) and all your other secrets are unlocked.
+Ops uses [`ejson`](https://github.com/Shopify/ejson) to make it easy to manage secrets. You only need to provide one secret (the `ejson` private key) and all your other secrets are unlocked.
 
 If you have an encrypted `secrets.ejson` file at `config/dev/secrets.ejson`, and the private key is available to `ejson`, ops will automatically load secrets from that file into environment variables for any action in which you specify `load_secrets: true`. (Secrets are not loaded by default for every action to avoid accidental secret leakage.)
 
@@ -114,6 +112,8 @@ For more information on how ops uses config and secrets, see [Config and Secrets
 `ops` has the concept of software execution environment built right in. If the `$environment` variable is not set, `ops` will set it to `dev` for any commands it runs. Use the `$environment` variable in commands and paths in your `ops.yml` to have separate SSH keys, config, and secrets for each environment.
 
 To switch to another environment, just `export environment=staging`, and you've switched from dev config and secrets to staging.
+
+If you chose not to use environment-aware features like automatic config and secret loading, `ops` will not bother you.
 
 To see more of how to use the concept of software execution environment with `ops`, see [Environment](docs/environments.md).
 
@@ -130,6 +130,39 @@ options:
 You can run `ops bglog` to have ops `cat` the file to your terminal. If you provide arguments to `ops bglog`, `ops` will run `tail` instead of `cat` and pass your arguments to `tail`. E.g., to follow the file, run `ops bglog -f`. To follow it and show 100 lines of output instead of the default 10, run `ops bglog -f -n 100`. `ops bglog` just saves you the trouble of telling `cat` or `tail` where the file is.
 
 The log file will have permissions set to `600`, so only your current user will be able to read the file, even if it's created in `/tmp`. This ensures that any sensitive output such as passwords are not shared with other users.
+
+### Version-checking
+
+If you want to use a recent `ops` feature or ensure that a particular bug fix is present before `ops` runs actions from your `ops.yml`, you can use the `min_version` setting:
+
+```yaml
+min_version: 0.12.2
+dependencies:
+  ...
+actions:
+  ...
+```
+
+If an older version of `ops` (v0.12.0 or later) encounters this file, it will print a message like this and exit:
+
+`ops.yml specifies minimum version of 0.12.2, but ops version is 0.12.0`
+
+### Hooks
+
+`ops` can be configured to run commands before executing any action. For example, if you want to ensure a container is built before any action is run, because the actions depend on the container, you could define a before hook like this:
+
+```yaml
+hooks:
+  before:
+    - cd test-container && docker build -t my_app .
+actions:
+  test:
+    command: docker run -it my_app
+```
+
+With this configuration, when a user checks out the repo and runs `ops test`, the container will automatically be built.
+
+For more information on hooks, see [Hooks](docs/hooks.md).
 
 ## Getting started
 
@@ -277,6 +310,9 @@ actions:
     command: ops build && ops install
     alias: bi
     description: builds and installs the gem
+options:
+  exec:
+    load_secrets: true
 ```
 
 ## Dependencies
