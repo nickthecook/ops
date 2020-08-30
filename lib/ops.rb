@@ -19,6 +19,7 @@ require_rel "builtins"
 # executes commands based on local `ops.yml`
 class Ops
 	class UnknownActionError < StandardError; end
+	class ActionConfigError < StandardError; end
 
 	CONFIG_FILE = "ops.yml"
 
@@ -26,6 +27,7 @@ class Ops
 	UNKNOWN_ACTION_EXIT_CODE = 65
 	ERROR_LOADING_APP_CONFIG_EXIT_CODE = 66
 	MIN_VERSION_NOT_MET_EXIT_CODE = 67
+	ACTION_CONFIG_EXIT_CODE = 68
 
 	class << self
 		def project_name
@@ -50,6 +52,12 @@ class Ops
 		Output.error(e.to_s)
 		print_did_you_mean
 		exit(UNKNOWN_ACTION_EXIT_CODE)
+	rescue AppConfig::ParsingError => e
+		Output.error("Error parsing app config: #{e}")
+		exit(ERROR_LOADING_APP_CONFIG_EXIT_CODE)
+	rescue ActionConfigError => e
+		Output.error("Error running action '#{@action_name}': #{e}")
+		exit(ACTION_CONFIG_EXIT_CODE)
 	end
 
 	private
@@ -61,6 +69,29 @@ class Ops
 		else
 			true
 		end
+	end
+
+	def run_action
+		raise ActionConfigError, action.config_errors.join(", ") unless action.config_ok?
+
+		do_before_all
+		return builtin.run if builtin
+
+		do_before_action
+		Output.notice("Running '#{action}' from #{CONFIG_FILE} in environment '#{ENV['environment']}'...")
+		action.run
+	end
+
+	def do_before_all
+		environment.set_variables
+		AppConfig.load
+	end
+
+	def do_before_action
+		hook_handler.do_hooks("before") unless ENV["OPS_RUNNING"] || action.skip_hooks?("before")
+
+		# this prevents before hooks from running in ops executed by ops
+		ENV["OPS_RUNNING"] = "1"
 	end
 
 	def print_did_you_mean
@@ -86,31 +117,6 @@ class Ops
 
 	def min_version
 		config["min_version"]
-	end
-
-	def run_action
-		do_before_all
-
-		return builtin.run if builtin
-
-		do_before_action
-		Output.notice("Running '#{action}' from #{CONFIG_FILE} in environment '#{ENV['environment']}'...")
-		action.run
-	rescue AppConfig::ParsingError => e
-		Output.error("Error parsing app config: #{e}")
-		exit(ERROR_LOADING_APP_CONFIG_EXIT_CODE)
-	end
-
-	def do_before_all
-		environment.set_variables
-		AppConfig.load
-	end
-
-	def do_before_action
-		hook_handler.do_hooks("before") unless ENV["OPS_RUNNING"] || action.skip_hooks?("before")
-
-		# this prevents before hooks from running in ops executed by ops
-		ENV["OPS_RUNNING"] = "1"
 	end
 
 	def hook_handler

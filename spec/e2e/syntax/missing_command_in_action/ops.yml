@@ -1,0 +1,4 @@
+actions:
+  hello:
+    alias: nope
+    load_secrets: true

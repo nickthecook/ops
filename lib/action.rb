@@ -10,6 +10,20 @@ class Action
 		@args = args
 	end
 
+	def config_ok?
+		config_errors.empty?
+	end
+
+	def config_errors
+		@config_errors ||= begin
+			errors = []
+
+			errors << "Missing 'command' field." unless @config["command"]
+
+			errors
+		end
+	end
+
 	def run
 		Secrets.load if load_secrets?
 
