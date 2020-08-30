@@ -9,7 +9,7 @@ In this case, you can use the "hooks feature.
 
 ### Before hooks
 
-Before hooks run before actions. They do not run before builtins like `up` or `exec`.
+"Before hooks" run before actions. They do not run before builtins like `up` or `exec`.
 
 ```yaml
 hooks:
@@ -22,7 +22,7 @@ actions:
 
 You may have some actions that don't need to run before hooks. For example, an action that removes container images to allow a developer to force a clean build from the latest source, or free up disk space.
 
-In this case, you can configure that action to skip the before hooks:
+In this case, you can configure that action to skip the hooks:
 
 ```yaml
 hooks:
@@ -57,8 +57,8 @@ actions:
     load_secrets: true
 ```
 
-These two hooks ensure that `terraform` can always find the appropriate backend for the current software execution environment (e.g. `dev` vs `staging`) environment. However, you don't want the before hooks to be run twice, and it takes a couple of seconds. For this reason, `ops` will run the before hook before executing `ops apply --auto-approve`, but it will not run the hook again before running `terraform apply`, or before running `terraform init ...`.
+These two hooks ensure that `terraform` can always find the appropriate backend for the current software execution environment (e.g. `dev` vs `staging`) environment. However, you don't want the hooks to be run twice, and it takes a couple of seconds. For this reason, `ops` will run the hooks before executing `ops apply --auto-approve`, but it will not run the hooks again before running `terraform apply`, or before running `terraform init ...`.
 
 ### Secrets in hooks
 
-Before hooks are always executed before secrets are loaded. If you would like a before hook to have access to secrets, create an action with `load_secrets: true` and call the action from a before hook.
+"Before hooks" are always executed before secrets are loaded. If you would like a before hook to have access to secrets, create an action with `load_secrets: true` and call the action from a before hook.

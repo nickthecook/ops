@@ -94,10 +94,10 @@ actions:
     alias: ssh
 options:
   sshkey:
-    passphrase: $SECRET_VARIABLE
+    passphrase_var: SECRET_VARIABLE
 ```
 
-when you run `ops up`, ops will generate a passphrase-protected SSH key for you _and add it to your SSH agent_. You can authorize that key on your server (or provide your own authorized key - if the key exists ops won't overwrite it) and then `ops ssh` will take you to the server. Also, because the key is passphrase-protected, _you can check it in_, so that anyone with the `$SECRET_VARIABLE` can use it.
+when you run `ops up`, ops will generate a passphrase-protected SSH key for you _and add it to your SSH agent_. You can authorize that key on your server (or provide your own authorized key - if the key exists ops won't overwrite it) and then `ops ssh` will take you to the server. Also, because the key is passphrase-protected, _you can check it in_. If your `$SECRET_VARIABLE` is set in your `secrets.ejson` file, anyone with the private EJSON key will have the above key automatically decrypted and added to their SSH agent, but it will be impossible to use the key otherwise.
 
 Ops uses [`ejson`](https://github.com/Shopify/ejson) to make it easy to manage secrets. You only need to provide one secret (the `ejson` private key) and all your other secrets are unlocked.
 
