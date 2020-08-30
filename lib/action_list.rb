@@ -18,6 +18,14 @@ class ActionList
 		@aliases[name]
 	end
 
+	def names
+		@actions.keys
+	end
+
+	def aliases
+		@aliases.keys
+	end
+
 	private
 
 	def process_action_list

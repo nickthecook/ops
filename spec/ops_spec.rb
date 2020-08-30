@@ -133,6 +133,37 @@ RSpec.describe Ops do
 			end
 		end
 
+		context "when no builtin or action exists" do
+			let(:input) { "nosuch" }
+
+			before do
+				allow(subject).to receive(:exit)
+			end
+
+			it "outputs an error" do
+				expect(Output).to receive(:error).with("Unknown action: nosuch")
+				result
+			end
+
+			context "when given action name is close to existing action name" do
+				let(:input) { "tst" }
+
+				it "outputs a suggestion" do
+					expect(Output).to receive(:out).with("Did you mean 'test'?")
+					result
+				end
+			end
+
+			context "when given action name is close to builtin name" do
+				let(:input) { "dwn" }
+
+				it "outputs a suggestion" do
+					expect(Output).to receive(:out).with("Did you mean 'down'?")
+					result
+				end
+			end
+		end
+
 		context "when no arguments are given" do
 			let(:argv) { [] }
 

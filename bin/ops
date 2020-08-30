@@ -5,4 +5,6 @@ require_relative "../loader"
 
 require 'ops'
 
+require 'pry-byebug' if ENV['environment'] == 'dev' || ENV['environment'].nil?
+
 Ops.new(ARGV).run

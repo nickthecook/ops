@@ -12,6 +12,7 @@ require 'options'
 require 'environment'
 require 'version'
 require 'action_list'
+require 'action_suggester'
 
 require_rel "builtins"
 
@@ -46,8 +47,8 @@ class Ops
 
 		run_action
 	rescue UnknownActionError => e
-		Output.error("Error: #{e}")
-		Output.out("Did you mean '#{Action}'?")
+		Output.error(e.to_s)
+		print_did_you_mean
 		exit(UNKNOWN_ACTION_EXIT_CODE)
 	end
 
@@ -60,6 +61,16 @@ class Ops
 		else
 			true
 		end
+	end
+
+	def print_did_you_mean
+		suggestions = did_you_mean.check(@action_name)
+
+		Output.out("Did you mean '#{suggestions.join(", ")}'?") if suggestions.any?
+	end
+
+	def did_you_mean
+		ActionSuggester.new(action_list.names + action_list.aliases + builtin_names)
 	end
 
 	def min_version_met?
@@ -111,6 +122,10 @@ class Ops
 	rescue NameError
 		# this means there isn't a builtin with that name in that module
 		nil
+	end
+
+	def builtin_names
+		Builtins.constants.select { |c| Builtins.const_get(c).is_a? Class }.map(&:downcase)
 	end
 
 	def action

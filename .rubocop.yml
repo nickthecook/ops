@@ -38,3 +38,5 @@ Layout/ArgumentAlignment:
   Enabled: false
 Layout/ClosingParenthesisIndentation:
   Enabled: false
+Style/StringLiteralsInInterpolation:
+  Enabled: false
