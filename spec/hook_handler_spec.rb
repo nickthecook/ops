@@ -65,5 +65,19 @@ RSpec.describe(HookHandler) do
 				result
 			end
 		end
+
+		context "when hook list is not a list" do
+			let(:config) do
+				{
+					"hooks" => {
+						"before" => "nope"
+					}
+				}
+			end
+
+			it "raises a HookConfigError" do
+				expect { result }.to raise_error(HookHandler::HookConfigError, "'hooks.before' must be a list")
+			end
+		end
 	end
 end

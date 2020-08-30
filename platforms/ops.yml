@@ -1,4 +1,8 @@
+min_version: 0.12.0
 dependencies:
+hooks:
+  before:
+    - bin/build.sh $TEST_PLATFORMS
 actions:
   build:
     command: bin/build.sh $TEST_PLATFORMS
@@ -18,6 +22,9 @@ actions:
   console:
     command: bin/run.sh bash
     alias: c
+  remove-images:
+    command: docker image rm `docker image ls -qf "reference=ops-*"`
+    alias: rm
 options:
   environment:
     TEST_PLATFORMS: ops-*

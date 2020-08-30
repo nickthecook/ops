@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'output'
+
 class HookHandler
 	class HookConfigError < StandardError; end
 	class HookExecError < StandardError; end
@@ -22,6 +24,7 @@ class HookHandler
 
 	def execute_hooks(name)
 		hooks(name).each do |hook|
+			Output.notice("Running #{name} hook: #{hook}")
 			output, exit_code = Executor.execute(hook)
 
 			next if exit_code.zero?
