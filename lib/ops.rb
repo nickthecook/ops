@@ -11,6 +11,8 @@ require 'output'
 require 'options'
 require 'environment'
 require 'version'
+require 'action_list'
+
 require_rel "builtins"
 
 # executes commands based on local `ops.yml`
@@ -38,13 +40,14 @@ class Ops
 	end
 
 	def run
-		# "return" is here to allow specs to stub "exit"
+		# "return" is here to allow specs to stub "exit" without executing everything after it
 		return exit(INVALID_SYNTAX_EXIT_CODE) unless syntax_valid?
 		return exit(MIN_VERSION_NOT_MET_EXIT_CODE) unless min_version_met?
 
 		run_action
 	rescue UnknownActionError => e
 		Output.error("Error: #{e}")
+		Output.out("Did you mean '#{Action}'?")
 		exit(UNKNOWN_ACTION_EXIT_CODE)
 	end
 
@@ -80,7 +83,6 @@ class Ops
 		return builtin.run if builtin
 
 		do_before_action
-
 		Output.notice("Running '#{action}' from #{CONFIG_FILE} in environment '#{ENV['environment']}'...")
 		action.run
 	rescue AppConfig::ParsingError => e
@@ -112,23 +114,17 @@ class Ops
 	end
 
 	def action
-		return actions[@action_name] if actions[@action_name]
-		return aliases[@action_name] if aliases[@action_name]
+		return action_list.get(@action_name) if action_list.get(@action_name)
+		return action_list.get_by_alias(@action_name) if action_list.get_by_alias(@action_name)
 
 		raise UnknownActionError, "Unknown action: #{@action_name}"
 	end
 
-	def actions
-		@actions ||= begin
-			if config["actions"]
-				config["actions"]&.transform_values do |config|
-					Action.new(config, @args)
-				end
-			else
-				# only print this error if ops.yml had something in it
-				Output.warn("'ops.yml' has no 'actions' defined.") if config.any?
-				{}
-			end
+	def action_list
+		@action_list ||= begin
+			Output.warn("'ops.yml' has no 'actions' defined.") if config.any? && config["actions"].nil?
+
+			ActionList.new(config["actions"], @args)
 		end
 	end
 
@@ -142,24 +138,12 @@ class Ops
 		end
 	end
 
-	def aliases
-		@aliases ||= begin
-			actions.each_with_object({}) do |(_name, action), alias_hash|
-				alias_hash[action.alias] = action if action.alias
-			end
-		end
-	end
-
 	def env_vars
 		@config.dig("options", "environment") || {}
 	end
 
 	def environment
 		@environment ||= Environment.new(env_vars)
-	end
-
-	def app_config
-		@app_config ||= AppConfig.new
 	end
 end
 

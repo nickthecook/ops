@@ -97,6 +97,12 @@ RSpec.describe Ops do
 		end
 
 		context "when no builtin exists" do
+			it "uses ActionList to build a list of actions" do
+				expect(ActionList).to receive(:new).with(ops_config["actions"], args).and_call_original
+				result
+			end
+
+			# TODO: Action-related tests are technically integration tests, since Ops uses ActionList in between
 			it "creates an Action" do
 				expect(Action).to receive(:new).with(*expected_action_args)
 				result
