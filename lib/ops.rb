@@ -27,6 +27,8 @@ class Ops
 	ERROR_LOADING_APP_CONFIG_EXIT_CODE = 66
 	MIN_VERSION_NOT_MET_EXIT_CODE = 67
 
+	RECOMMEND_HELP_TEXT = "Run 'ops help' for a list of builtins and actions."
+
 	class << self
 		def project_name
 			File.basename(::Dir.pwd)
@@ -48,7 +50,7 @@ class Ops
 		run_action
 	rescue UnknownActionError => e
 		Output.error(e.to_s)
-		print_did_you_mean
+		Output.out(RECOMMEND_HELP_TEXT) unless print_did_you_mean
 		exit(UNKNOWN_ACTION_EXIT_CODE)
 	end
 
@@ -57,6 +59,7 @@ class Ops
 	def syntax_valid?
 		if @action_name.nil?
 			Output.error("Usage: ops <action>")
+			Output.out(RECOMMEND_HELP_TEXT)
 			false
 		else
 			true
@@ -67,6 +70,8 @@ class Ops
 		suggestions = did_you_mean.check(@action_name)
 
 		Output.out("Did you mean '#{suggestions.join(", ")}'?") if suggestions.any?
+
+		suggestions.any?
 	end
 
 	def did_you_mean

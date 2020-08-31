@@ -145,11 +145,21 @@ RSpec.describe Ops do
 				result
 			end
 
+			it "recommends running 'help'" do
+				expect(Output).to receive(:out).with("Run 'ops help' for a list of builtins and actions.")
+				result
+			end
+
 			context "when given action name is close to existing action name" do
 				let(:input) { "tst" }
 
 				it "outputs a suggestion" do
 					expect(Output).to receive(:out).with("Did you mean 'test'?")
+					result
+				end
+
+				it "does not recommend running 'help'" do
+					expect(Output).not_to receive(:out).with("Run 'ops help' for a list of builtins and actions.")
 					result
 				end
 			end
@@ -173,6 +183,11 @@ RSpec.describe Ops do
 
 			it "prints an error" do
 				expect(Output).to receive(:error).with(/^Usage: /)
+				result
+			end
+
+			it "recommends running 'help'" do
+				expect(Output).to receive(:out).with("Run 'ops help' for a list of builtins and actions.")
 				result
 			end
 
