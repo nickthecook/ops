@@ -11,7 +11,7 @@ gem "ed25519"
 gem "ejson"
 gem "etc"
 gem "io-console"
-gem "json"
+gem "json", ">= 2.3.0"
 gem "net-ssh"
 gem "require_all"
 
