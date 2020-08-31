@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'pry-byebug'
-
 ENV['environment'] = "test"
 ENV['EJSON_KEYDIR'] = "./spec/ejson_keys"
 
