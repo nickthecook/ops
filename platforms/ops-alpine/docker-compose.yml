@@ -1,0 +1,7 @@
+version: "3"
+services:
+  ops-debian:
+    build: '.'
+    image: 'ops-alpine'
+    volumes:
+      - '../..:/ops'

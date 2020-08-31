@@ -6,8 +6,12 @@ git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 
 gem "bcrypt_pbkdf"
 gem "colorize"
+gem "e2mmap"
 gem "ed25519"
 gem "ejson"
+gem "etc"
+gem "io-console"
+gem "json"
 gem "net-ssh"
 gem "require_all"
 
@@ -17,6 +21,7 @@ group :test do
 end
 
 group :development do
+	gem "irb"
 	gem "pry"
 	gem "pry-byebug"
 	gem "rerun"

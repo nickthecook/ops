@@ -40,6 +40,9 @@ for platform in $platforms; do
 	echo "$0: removing containers based on the image '$platform'..."
 	containers_based_on_this_image=`docker ps -qaf ancestor=$platform`
 	if [ -n "$containers_based_on_this_image" ]; then
+		echo "$0: removing containers: $containers_based_on_this_image..."
 		docker rm $containers_based_on_this_image
 	fi
+	
+	cd ..
 done

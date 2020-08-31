@@ -44,4 +44,6 @@ for platform in $platforms; do
 		echo "$0: Running new container '$container_name' from image '$platform'..."
 		docker run -it -v "$VOLUME_DIR:/ops" --name $container_name $platform $command
 	fi
+
+	cd ..
 done
