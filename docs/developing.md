@@ -25,7 +25,7 @@ There are two kinds of test suite to run against `ops`:
 
 Unit tests are what you'd expect. They're written in RSpec.
 
-End-to-end tests (e2e) run ops with different `ops.yml` files and check the visible outcomes to make sure `ops` did what it should have. For example, some e2e tests list an `sshkey` dependency in the `ops.yml` file and then check that the key got created, that it has a passphrase, etc.
+End-to-end tests (e2e) run `ops` with different `ops.yml` files and check the visible outcomes to make sure `ops` did what it should have. For example, some e2e tests list an `sshkey` dependency in the `ops.yml` file and then check that the key got created, that it has a passphrase, etc.
 
 The term "end-to-end" originates from testing applications with network APIs, but these tests are the same in principle: the code is not being executed by a test framework, it's actually running, and any tests are external to the application, observing its outward effects.
 
@@ -36,7 +36,7 @@ There are also actions to run tests any time a source file is changed:
 - unit tests:       `ops test-watch`
 - end-to-end tests: `ops test-e2e-watch`
 
-Both suites run relatively quickly. At the time of writing (v0.13.3) the unit tests run in about 2s on a Macbook Pro with 16GB of RAM, and the e2e tests run in about 5s. It's easy and helpful to just keep tests running as you work on the code, and "keep the green wall at your back".
+Both suites run relatively quickly. At the time of writing (v0.13.3) the unit tests run in about **2s** on a Macbook Pro with 16GB of RAM, and the e2e tests run in about **5s**. It's easy and helpful to just keep tests running as you work on the code, and "keep the green wall at your back".
 
 ### Testing on various platforms
 
@@ -51,7 +51,7 @@ Currently supported platforms:
 - arch
 - debian
 
-At the time of writing, running e2e tests on all platforms takes under 30s, each platform taking between 8 and 9 seconds.
+At the time of writing, running e2e tests on all platforms takes under **30s**, each platform taking around **9s**.
 
 You can run unit tests on all platforms too, but it would probably be of less value if you're already running unit tests directly on your development machine.
 
