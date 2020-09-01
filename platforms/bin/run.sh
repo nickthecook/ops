@@ -15,9 +15,12 @@ if [ "$1" == "-h" ]; then
 	exit 0
 fi
 
-if [ $# -lt 2 ]; then
+if [ $# -eq 0 ]; then
 	usage
 	exit 1
+elif [ $# -eq 1 ]; then
+	command="$1"
+	platforms="$(ls ops-*)"
 else
 	command="$1"
 	shift

@@ -5,19 +5,19 @@ hooks:
     - for image in $TEST_PLATFORMS; do [ -n "`docker image ls -q $image`" ] || bin/build.sh $image; done
 actions:
   build:
-    command: bin/build.sh $TEST_PLATFORMS
+    command: bin/build.sh
     alias: b
   test:
-    command: bin/run.sh "bin/ops test" $TEST_PLATFORMS
+    command: bin/run.sh "bin/ops test"
     alias: t
   test-watch:
-    command: rerun -x "bin/run.sh \"bin/ops test\" $TEST_PLATFORMS"
+    command: rerun -x "bin/run.sh \"bin/ops test\""
     alias: tw
   test-e2e:
-    command: bin/run.sh "bin/ops test-e2e" $TEST_PLATFORMS
+    command: bin/run.sh "bin/ops test-e2e"
     alias: e2e
   test-e2e-watch:
-    command: rerun -x --dir .. "bin/run.sh \"bin/ops test-e2e\" $TEST_PLATFORMS"
+    command: rerun -x --dir .. "bin/run.sh \"bin/ops test-e2e\""
     alias: ew
   console:
     command: bin/run.sh bash

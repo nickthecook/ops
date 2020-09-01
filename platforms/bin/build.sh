@@ -16,8 +16,7 @@ if [ "$1" == "-h" ]; then
 fi
 
 if [ $# -eq -0 ]; then
-	usage
-	exit 1
+	platforms="$(ls ops-*)"
 else
 	platforms="$*"
 fi
