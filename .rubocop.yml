@@ -40,3 +40,13 @@ Layout/ClosingParenthesisIndentation:
   Enabled: false
 Style/StringLiteralsInInterpolation:
   Enabled: false
+Style/DoubleNegation:
+  Enabled: false
+Metrics/AbcSize:
+  Max: 25
+Metrics/CyclomaticComplexity:
+  Max: 8
+Metrics/PerceivedComplexity:
+  Max: 8
+Metrics/ClassLength:
+  Max: 120

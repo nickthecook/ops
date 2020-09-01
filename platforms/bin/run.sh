@@ -20,14 +20,14 @@ if [ $# -eq 0 ]; then
 	exit 1
 elif [ $# -eq 1 ]; then
 	command="$1"
-	platforms="$(ls ops-*)"
+	platforms="$(ls -d ops-*)"
 else
 	command="$1"
 	shift
 	platforms="$*"
 fi
 
-echo "$0: Running '$command' on platforms: $platforms"
+echo -e "$0: Running '$command' on platforms:\n$platforms"
 echo "$0: Mounting '$VOLUME_DIR' into the container at '/ops'."
 
 for platform in $platforms; do

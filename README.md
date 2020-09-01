@@ -401,8 +401,4 @@ For more information about `ops` and environment variables, see [Environment Var
 
 ## Contributing
 
-Submit a PR that meets the following super-strict criteria:
-
-- tests have been added or updated for your code changes
-- `ops test` passes
-- `ops lint` passes
+See [Developing Ops](docs/developing.md).

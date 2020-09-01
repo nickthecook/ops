@@ -11,7 +11,7 @@ RSpec.describe Builtins::Background do
 		let(:result) { subject.run }
 		let(:process_double) { instance_double(Process) }
 		let(:ops_double) { instance_double(Ops, run: true) }
-		let(:file_double) { instance_double(File, chmod: nil)}
+		let(:file_double) { instance_double(File, chmod: nil) }
 
 		def spoon
 			yield

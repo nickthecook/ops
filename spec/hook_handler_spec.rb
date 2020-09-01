@@ -19,7 +19,7 @@ RSpec.describe(HookHandler) do
 			}
 		}
 	end
-	let(:first_execute_result) { ["before", 0]}
+	let(:first_execute_result) { ["before", 0] }
 	let(:second_execute_result) { ["more before", 0] }
 
 	before do

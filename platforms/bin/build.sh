@@ -16,12 +16,12 @@ if [ "$1" == "-h" ]; then
 fi
 
 if [ $# -eq -0 ]; then
-	platforms="$(ls ops-*)"
+	platforms="$(ls -d ops-*)"
 else
 	platforms="$*"
 fi
 
-echo "$0: Building platforms: $platforms"
+echo -e "$0: Building platforms:\n$platforms"
 
 for platform in $platforms; do
 	cd "$platform" || {

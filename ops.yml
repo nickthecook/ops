@@ -39,10 +39,10 @@ actions:
   test-platform-watch:
     command: rerun -x ops test-platforms
     alias: tpw
-  test-platform-e2e:
+  test-platforms-e2e:
     command: cd platforms && ops test-e2e
     alias: tpe
-  test-platform-e2e-watch:
+  test-platforms-e2e-watch:
     command: cd platforms && ops ew
     alias: tpew
   build-platforms:
