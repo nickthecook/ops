@@ -38,7 +38,7 @@ Now other developers can run `ops help` and see that there is a command to conne
 
 Have you ever tried to run `rake` or `mvn` task, had it fail, and struggled to find the definition of the failed task? Have you ever had to dig through the code to remember the `namespace:of:the:task:you:want`?
 
-There are several automation and dependency-management tools for your repo. However, they often require learning a DSL and using complex features like namespaces or files distributed throughout the repo. (Also, few (if any) of them have built-in support for the many dependency types supported by `ops`.)
+There are several automation and dependency-management tools for your repo. However, they often require learning a DSL and using complex features like namespaces or files distributed throughout the repo. Also few (if any) of them have built-in support for the many dependency types supported by `ops`.)
 
 With `ops`, all the info you need to see what command was run with what arguments is in `ops.yml` in the current directory. It's plain `YAML`; no DSLs here. It's completely self-contained: your `ops.yml` file _will_ include the action you ran that failed, and it will be easy to see exactly what command it ran.
 
@@ -322,7 +322,8 @@ In the above sample file, the `dependencies` section lists things that this proj
 The following dependency types are supported:
 
 - `brew`: installs a package using [Homebrew](https://brew.sh/) if running on a Mac
-- `apt`: installs a package using `apt` if running on linux
+- `cask`: installs a Homebrew cask if running on a Mac
+- `apt`: installs a package using `apt` if running on debian-based linux
 - `apk`: installs a package using `apk` if running on alpine linux
 - `gem`: installs a gem
 - `docker`: uses `docker-compose` to start and stop a service in a subdirectory of your project
