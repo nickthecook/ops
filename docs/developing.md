@@ -57,7 +57,7 @@ You can run unit tests on all platforms too, but it would probably be of less va
 
 ## Process
 
-1. Write the code
+1. Write the code based on the `main` branch (we don't use `master`)
 2. Pass the following test suites:
 
 - `ops lint`
