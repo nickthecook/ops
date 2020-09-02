@@ -6,13 +6,19 @@ require 'dependencies/helpers/apt_cache_policy'
 module Dependencies
 	class Apt < VersionedDependency
 		def met?
-			return apt_cache_policy.installed_version == dep_version if dep_version
-
-			apt_cache_policy.installed?
+			if versioned?
+				apt_cache_policy.installed_version == dep_version
+			else
+				apt_cache_policy.installed?
+			end
 		end
 
 		def meet
-			execute("#{sudo_string}apt-get install -y #{name}")
+			if versioned?
+				execute("#{sudo_string}apt-get install -y #{dep_name}=#{dep_version}")
+			else
+				execute("#{sudo_string}apt-get install -y #{name}")
+			end
 		end
 
 		def unmeet

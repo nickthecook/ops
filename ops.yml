@@ -5,7 +5,7 @@ dependencies:
   cask:
     - font-anonymice-powerline
   apt:
-    - curl
+    - curl 7.64.0-4+deb10u1
     - sl
   apk:
     - curl

@@ -82,6 +82,15 @@ RSpec.describe Dependencies::Apt do
 				result
 			end
 		end
+
+		context "when specific version is required" do
+			let(:name) { "some-dependency 123" }
+
+			it "installs that version" do
+				expect(subject).to receive(:execute).with("apt-get install -y some-dependency=123")
+				result
+			end
+		end
 	end
 
 	describe '#unmeet' do
