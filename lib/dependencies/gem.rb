@@ -4,24 +4,36 @@ require 'dependency'
 require 'options'
 
 module Dependencies
-	class Gem < Dependency
+	class Gem < VersionedDependency
 		def met?
-			execute("gem list -i '^#{name}$'")
+			if versioned?
+				execute("gem list -i '^#{dep_name}$' -v '#{dep_version}'") if versioned?
+			else
+				execute("gem list -i '^#{name}$'")
+			end
 		end
 
 		def meet
-			if Options.get("gem.use_sudo")
-				execute("sudo gem install #{name}")
-			elsif Options.get("gem.user_install")
-				execute("gem install --user-install #{name}")
+			if versioned?
+				execute("#{sudo_string}gem install #{user_install_string}'#{dep_name}' -v '#{dep_version}'")
 			else
-				execute("gem install #{name}")
+				execute("#{sudo_string}gem install #{user_install_string}'#{name}'")
 			end
 		end
 
 		def unmeet
 			# do nothing; we don't want to uninstall packages and reinstall them every time
 			true
+		end
+
+		private
+
+		def sudo_string
+			Options.get("gem.use_sudo") ? "sudo " : ""
+		end
+
+		def user_install_string
+			Options.get("gem.user_install") ? "--user-install " : ""
 		end
 	end
 end

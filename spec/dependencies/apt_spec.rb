@@ -32,7 +32,7 @@ RSpec.describe Dependencies::Apt do
 		end
 
 		context "when specific version is required" do
-			let(:name) { "some-dependency/123" }
+			let(:name) { "some-dependency 123" }
 
 			it "uses AptCachePolicy to check if that version of the dependency is installed" do
 				expect(policy_double).to receive(:installed_version)

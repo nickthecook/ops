@@ -16,9 +16,20 @@ RSpec.describe Dependencies::Gem do
 	end
 
 	describe '#met?' do
+		let(:result) { subject.met? }
+
 		it "runs `gem` to check if the dependency is installed" do
 			expect(subject).to receive(:execute).with("gem list -i '^some-gem$'")
-			subject.met?
+			result
+		end
+
+		context "when version is specified" do
+			let(:name) { "some-gem >=1.0.0" }
+
+			it "runs gem to check if an acceptable version is installed" do
+				expect(subject).to receive(:execute).with("gem list -i '^some-gem$' -v '>=1.0.0'")
+				result
+			end
 		end
 	end
 
@@ -26,7 +37,7 @@ RSpec.describe Dependencies::Gem do
 		let(:result) { subject.meet }
 
 		it "runs `gem` to install the package" do
-			expect(subject).to receive(:execute).with("gem install some-gem")
+			expect(subject).to receive(:execute).with("gem install 'some-gem'")
 			result
 		end
 
@@ -34,7 +45,7 @@ RSpec.describe Dependencies::Gem do
 			let(:use_sudo) { true }
 
 			it "uses sudo to run `gem`" do
-				expect(subject).to receive(:execute).with("sudo gem install some-gem")
+				expect(subject).to receive(:execute).with("sudo gem install 'some-gem'")
 				result
 			end
 		end
@@ -43,7 +54,16 @@ RSpec.describe Dependencies::Gem do
 			let(:user_install) { true }
 
 			it "runs gem with --user-install" do
-				expect(subject).to receive(:execute).with("gem install --user-install some-gem")
+				expect(subject).to receive(:execute).with("gem install --user-install 'some-gem'")
+				result
+			end
+		end
+
+		context "when version is specified" do
+			let(:name) { "some-gem >=1.0.0" }
+
+			it "runs gem to install with the version spec" do
+				expect(subject).to receive(:execute).with("gem install 'some-gem' -v '>=1.0.0'")
 				result
 			end
 		end

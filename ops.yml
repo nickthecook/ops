@@ -10,7 +10,7 @@ dependencies:
   apk:
     - curl
   gem:
-    - bundler
+    - bundler >=2.1.4
     - rerun
     - ejson
   dir:
