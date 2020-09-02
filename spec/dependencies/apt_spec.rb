@@ -96,7 +96,11 @@ RSpec.describe Dependencies::Apt do
 
 		before do
 			allow(subject).to receive(:`).with("uname").and_return(uname)
-			allow(subject).to receive(:system).with("which apt-get").and_return(apt_get_available?)
+			allow(subject).to receive(:system).with(
+				"which apt-get",
+				out: File::NULL,
+				err: File::NULL
+			).and_return(apt_get_available?)
 		end
 
 		context "Darwin kernel is running" do
