@@ -54,4 +54,40 @@ RSpec.describe Action do
 			end
 		end
 	end
+
+	shared_context "missing command" do
+		let(:action_config) { { "alias" => "nope", "description" => "nope" } }
+	end
+
+	describe "#config_valid?" do
+		let(:result) { subject.config_valid? }
+
+		it "returns true" do
+			expect(result).to be true
+		end
+
+		context "when 'command' is missing" do
+			include_context "missing command"
+
+			it "returns false" do
+				expect(result).to be false
+			end
+		end
+	end
+
+	describe "#config_errors" do
+		let(:result) { subject.config_errors }
+
+		it "is empty" do
+			expect(result).to be_empty
+		end
+
+		context "when 'command' is missing" do
+			include_context "missing command"
+
+			it "returns an error about 'command' missing" do
+				expect(result).to include("No 'command' specified in 'action'.")
+			end
+		end
+	end
 end

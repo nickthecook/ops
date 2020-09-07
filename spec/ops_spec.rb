@@ -50,7 +50,18 @@ RSpec.describe Ops do
 		let(:expected_action_args) { [{ "command" => "bundle exec rspec", "alias" => "t" }, args] }
 		let(:options) { nil }
 		let(:action_string) { "bundle exec rspec spec/file1.rb spec/file2.rb" }
-		let(:action_double) { instance_double(Action, run: nil, alias: action_alias, to_s: "test") }
+		let(:action_double) do
+			instance_double(
+				Action,
+				run: nil,
+				alias: action_alias,
+				to_s: "test",
+				config_valid?: action_config_valid?,
+				config_errors: action_config_errors
+			)
+		end
+		let(:action_config_valid?) { true }
+		let(:action_config_errors) { [] }
 
 		before do
 			allow(YAML).to receive(:load_file).and_return(ops_config)
@@ -118,9 +129,28 @@ RSpec.describe Ops do
 				result
 			end
 
+			it "checks that the action is valid" do
+				expect(action_double).to receive(:config_valid?)
+				result
+			end
+
 			it "outputs a message saying it's running the action" do
 				expect(Output).to receive(:notice).with(/Running 'test' from /)
 				result
+			end
+
+			context "when action config is not valid" do
+				let(:action_config_valid?) { false }
+				let(:action_config_errors) { ["Nope", "Still nope"] }
+
+				before do
+					allow(subject).to receive(:exit)
+				end
+
+				it "outputs an error" do
+					expect(Output).to receive(:error).with("Error(s) running action 'test': Nope; Still nope")
+					result
+				end
 			end
 		end
 

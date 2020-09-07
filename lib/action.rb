@@ -36,6 +36,20 @@ class Action
 		@config["skip_#{name}_hooks"]
 	end
 
+	def config_valid?
+		config_errors.empty?
+	end
+
+	def config_errors
+		@config_errors ||= begin
+			errors = []
+
+			errors << "No 'command' specified in 'action'." unless @config['command']
+
+			errors
+		end
+	end
+
 	private
 
 	def load_secrets?

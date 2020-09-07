@@ -19,6 +19,7 @@ require_rel "builtins"
 # executes commands based on local `ops.yml`
 class Ops
 	class UnknownActionError < StandardError; end
+	class ActionConfigError < StandardError; end
 
 	CONFIG_FILE = "ops.yml"
 
@@ -26,6 +27,7 @@ class Ops
 	UNKNOWN_ACTION_EXIT_CODE = 65
 	ERROR_LOADING_APP_CONFIG_EXIT_CODE = 66
 	MIN_VERSION_NOT_MET_EXIT_CODE = 67
+	ACTION_CONFIG_ERROR_EXIT_CODE = 68
 
 	RECOMMEND_HELP_TEXT = "Run 'ops help' for a list of builtins and actions."
 
@@ -52,6 +54,9 @@ class Ops
 		Output.error(e.to_s)
 		Output.out(RECOMMEND_HELP_TEXT) unless print_did_you_mean
 		exit(UNKNOWN_ACTION_EXIT_CODE)
+	rescue ActionConfigError => e
+		Output.error("Error(s) running action '#{@action_name}': #{e}")
+		exit(ACTION_CONFIG_ERROR_EXIT_CODE)
 	end
 
 	private
@@ -97,6 +102,8 @@ class Ops
 		do_before_all
 
 		return builtin.run if builtin
+
+		raise ActionConfigError, action.config_errors.join("; ") unless action.config_valid?
 
 		do_before_action
 		Output.notice("Running '#{action}' from #{CONFIG_FILE} in environment '#{ENV['environment']}'...")

@@ -1,0 +1,4 @@
+actions:
+  hello:
+    alias: h
+    description: this command is not terribly useful
