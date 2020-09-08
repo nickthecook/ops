@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe "hooks" do
+RSpec.describe "action_missing_command" do
 	include_context "ops e2e"
 
 	before(:all) do
@@ -12,7 +12,7 @@ RSpec.describe "hooks" do
 		@output, @output_file, @exit_status = run_ops("../../../../bin/ops hello")
 	end
 
-	it "succeeds" do
+	it "fails with the correct error" do
 		expect(@exit_status).to eq(68)
 	end
 

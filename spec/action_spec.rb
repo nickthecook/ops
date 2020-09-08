@@ -86,7 +86,88 @@ RSpec.describe Action do
 			include_context "missing command"
 
 			it "returns an error about 'command' missing" do
-				expect(result).to include("No 'command' specified in 'action'.")
+				expect(result).to include("No 'command' specified.")
+			end
+		end
+	end
+
+	shared_context "args defined" do
+		let(:action_config) do
+			{
+				"command" => "echo hello",
+				"args" => {
+					"name" => {
+						"desc" => "The name of the person to whom to say 'hello'.",
+						"mandatory" => true
+					}
+				}
+			}
+		end
+	end
+
+	shared_context "no extra args allowed" do
+		let(:action_config) do
+			{
+				"command" => "echo hello",
+				"extra_args_allowed" => false
+			}
+		end
+	end
+
+	describe "#args_valid?" do
+		let(:result) { subject.args_valid? }
+		let(:args) { ["leeroy"] }
+
+		context "when args are defined" do
+			include_context "args defined"
+
+			it "returns true" do
+				expect(result).to be true
+			end
+
+			context "when too many args are given" do
+				let(:args) { %w[leeroy jenkins] }
+
+				it "returns true" do
+					expect(result).to be true
+				end
+			end
+		end
+
+		context "when no extra args are allowed" do
+			let(:args) { ["leeroy"] }
+
+			include_context "no extra args allowed"
+
+			it "returns false" do
+				expect(result).to be false
+			end
+		end
+
+		context "when mandatory arg is missing" do
+			let(:args) { [] }
+
+			it "returns an error" do
+				# expect(result).to include("")
+			end
+		end
+	end
+
+	describe "#arg_errors" do
+		let(:result) { subject.arg_errors }
+		let(:args) { ["leeroy"] }
+
+		include_context "args defined"
+
+		it "is empty" do
+			expect(result).to be_empty
+		end
+
+		context "when too many args are given" do
+			let(:args) { %w[leeroy jenkins] }
+
+			it "returns no errors" do
+				expect(result).to be_empty
 			end
 		end
 	end
