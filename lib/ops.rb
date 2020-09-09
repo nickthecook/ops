@@ -28,6 +28,7 @@ class Ops
 	ERROR_LOADING_APP_CONFIG_EXIT_CODE = 66
 	MIN_VERSION_NOT_MET_EXIT_CODE = 67
 	ACTION_CONFIG_ERROR_EXIT_CODE = 68
+	BUILTIN_SYNTAX_ERROR_EXIT_CODE = 69
 
 	RECOMMEND_HELP_TEXT = "Run 'ops help' for a list of builtins and actions."
 
@@ -108,6 +109,9 @@ class Ops
 		do_before_action
 		Output.notice("Running '#{action}' from #{CONFIG_FILE} in environment '#{ENV['environment']}'...")
 		action.run
+	rescue Builtin::ArgumentError => e
+		Output.error("Error running builtin '#{@action_name}': #{e}")
+		exit(BUILTIN_SYNTAX_ERROR_EXIT_CODE)
 	rescue AppConfig::ParsingError => e
 		Output.error("Error parsing app config: #{e}")
 		exit(ERROR_LOADING_APP_CONFIG_EXIT_CODE)

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Builtin
+	class ArgumentError < StandardError; end
+
 	attr_reader :args, :config
 
 	class << self
