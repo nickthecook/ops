@@ -46,3 +46,58 @@ The values of these variables are not interpreted by the shell before being set,
 
 - `OPS_YML_DIR`: the directory in which `ops` was run and which contains the `ops.yml` file `ops` has loaded
 - `OPS_VERSION`: the version of `ops` that is running
+
+## Comparing environments
+
+While your `staging` and `production` config and secrets files should be checked in, your `dev` config and secrets files should not. This is because each developer wants to have their own dev system, and any changes to that system (URLs, usernames, passwords, etc.) don't warrant a checkin: they shouldn't affect other developers.
+
+When you add new environment variables to checked-in config or secrets, other developers probably need to add those to their `dev` environment in order to use your feature. It can be a bit of a pain to manually compare `dev` secrets to `production` secrets and find the keys that are different, and then to do that for config as well.
+
+That's why `ops` has the `envdiff` builtin:
+
+```shell
+$ ops envdiff dev staging
+Environment 'dev' defines keys that 'staging' does not:
+
+   - [CONFIG] REGISTRY_FQDN
+   - [CONFIG] CONTAINER_TAG
+   - [CONFIG] TF_VAR_container_tag
+   - [CONFIG] TF_VAR_registry_fqdn
+   - [SECRET] REGISTRY_PUSH_USERNAME
+   - [SECRET] REGISTRY_PUSH_PASSWORD
+   - [SECRET] TF_VAR_registry_pull_username
+   - [SECRET] TF_VAR_registry_pull_password
+
+Environment'staging' defines keys that 'dev' does not:
+
+   - backend_config_params
+
+$
+```
+
+This makes it easy for a developer to see what environment variables they need to add to their `dev` config and secrets.
+
+If there's a key you know should be in some environments and not in others, put it in the `envdiff.ignored_keys` option and `ops envdiff` won't mention it again.
+
+```yaml
+options:
+  envdiff:
+    ignored_keys:
+      - backend_config_params
+```
+
+```shell
+$ ops envdiff dev staging
+Environment 'dev' defines keys that 'staging' does not:
+
+   - [CONFIG] REGISTRY_FQDN
+   - [CONFIG] CONTAINER_TAG
+   - [CONFIG] TF_VAR_container_tag
+   - [CONFIG] TF_VAR_registry_fqdn
+   - [SECRET] REGISTRY_PUSH_USERNAME
+   - [SECRET] REGISTRY_PUSH_PASSWORD
+   - [SECRET] TF_VAR_registry_pull_username
+   - [SECRET] TF_VAR_registry_pull_password
+
+$
+```

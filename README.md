@@ -346,6 +346,7 @@ Built-in commands are:
   bglog                 displays the log from the current or most recent background task from this project
   down                  stops dependent services listed in ops.yml
   env                   prints the current environment, e.g. 'dev', 'production', 'staging', etc.
+  envdiff               compares keys present in config and secrets between different environments
   exec                  executes the given command in the `ops` environment, i.e. with environment variables set
   help                  displays available builtins and actions
   init                  creates an ops.yml file from a template
