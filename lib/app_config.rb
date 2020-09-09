@@ -8,6 +8,14 @@ class AppConfig
 			new(app_config_path).load
 		end
 
+		def default_filename
+			config_path_for(Environment.environment)
+		end
+
+		def config_path_for(env)
+			"config/#{env}/config.json"
+		end
+
 		private
 
 		def app_config_path
@@ -20,7 +28,7 @@ class AppConfig
 	end
 
 	def initialize(filename = "")
-		@filename = filename.empty? ? default_filename : filename
+		@filename = filename.empty? ? AppConfig.default_filename : filename
 	end
 
 	def load
@@ -30,10 +38,6 @@ class AppConfig
 	end
 
 	private
-
-	def default_filename
-		"config/#{environment}/config.json"
-	end
 
 	def config
 		@config ||= file_contents ? YAML.safe_load(file_contents) : {}
@@ -47,9 +51,5 @@ class AppConfig
 		rescue Errno::ENOENT
 			nil
 		end
-	end
-
-	def environment
-		ENV['environment']
 	end
 end

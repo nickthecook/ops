@@ -3,6 +3,14 @@
 require 'version'
 
 class Environment
+	class << self
+		def environment
+			return 'dev' if ENV['environment'].nil? || ENV['environment'].empty?
+
+			ENV['environment']
+		end
+	end
+
 	def initialize(env_hash)
 		@env_hash = env_hash
 	end
@@ -11,12 +19,6 @@ class Environment
 		set_ops_variables
 		set_environment_aliases
 		set_configured_variables
-	end
-
-	def environment
-		return 'dev' if ENV['environment'].nil? || ENV['environment'].empty?
-
-		ENV['environment']
 	end
 
 	private
@@ -28,7 +30,7 @@ class Environment
 
 	def set_environment_aliases
 		environment_aliases.each do |alias_name|
-			ENV[alias_name] = environment
+			ENV[alias_name] = Environment.environment
 		end
 	end
 

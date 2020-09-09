@@ -73,8 +73,8 @@ RSpec.describe Environment do
 		end
 	end
 
-	describe "#environment" do
-		let(:result) { subject.environment }
+	describe ".environment" do
+		let(:result) { described_class.environment }
 
 		it "returns the current value of the 'environment' variable" do
 			expect(result).to eq("test")
