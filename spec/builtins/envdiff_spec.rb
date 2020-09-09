@@ -17,32 +17,32 @@ RSpec.describe Builtins::EnvDiff do
 		let(:dev_config) do
 			{
 				"environment" => {
-					"SOME_CONFIG_KEY": "some dev value",
-					"SOME_DEV_CONFIG_KEY": "some other dev value"
+					"SOME_CONFIG_KEY" => "some dev value",
+					"SOME_DEV_CONFIG_KEY" => "some other dev value"
 				}
 			}
 		end
 		let(:staging_config) do
 			{
 				"environment" => {
-					"SOME_CONFIG_KEY": "some staging value",
-					"SOME_STAGING_KEY": "some other staging value"
+					"SOME_CONFIG_KEY" => "some staging value",
+					"SOME_STAGING_KEY" => "some other staging value"
 				}
 			}
 		end
 		let(:dev_secrets) do
 			{
 				"environment" => {
-					"SOME_SECRET_KEY": "some secret value",
-					"SOME_DEV_SECRET_KEY": "some dev secret value"
+					"SOME_SECRET_KEY" => "some secret value",
+					"SOME_DEV_SECRET_KEY" => "some dev secret value"
 				}
 			}
 		end
 		let(:staging_secrets) do
 			{
 				"environment" => {
-					"SOME_SECRET_KEY": "some secret value",
-					"SOME_STAGING_SECRET_KEY": "some staging secret value"
+					"SOME_SECRET_KEY" => "some secret value",
+					"SOME_STAGING_SECRET_KEY" => "some staging secret value"
 				}
 			}
 		end
@@ -170,6 +170,17 @@ RSpec.describe Builtins::EnvDiff do
 
 			it "raises a usage error" do
 				expect { result }.to raise_error(Builtin::ArgumentError, "Usage: ops envdiff <env_one> <env_two>")
+			end
+		end
+
+		context "when envdiff.ignored_keys option is given" do
+			before do
+				allow(Options).to receive(:get).with("envdiff.ignored_keys").and_return(["SOME_DEV_CONFIG_KEY"])
+			end
+
+			it "does not warn about the ignored key" do
+				expect(Output).not_to receive(:warn).with(/SOME_DEV_CONFIG_KEY/)
+				result
 			end
 		end
 	end

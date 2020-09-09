@@ -49,19 +49,27 @@ module Builtins
 		end
 
 		def keys_for(env)
-			config_keys_for(env) | secrets_keys_for(env)
+			tagged_config_keys_for(env) + tagged_secrets_keys_for(env)
 		end
 
-		def config_keys_for(env)
-			(config_for(env)["environment"]&.keys || []).map do |key|
+		def tagged_config_keys_for(env)
+			config_keys_for(env).map do |key|
 				"[CONFIG] #{key}"
 			end
 		end
 
-		def secrets_keys_for(env)
-			(secrets_for(env)["environment"]&.keys || []).map do |key|
+		def tagged_secrets_keys_for(env)
+			secrets_keys_for(env).map do |key|
 				"[SECRET] #{key}"
 			end
+		end
+
+		def config_keys_for(env)
+			(config_for(env)["environment"]&.keys || []) - ignored_keys
+		end
+
+		def secrets_keys_for(env)
+			(secrets_for(env)["environment"]&.keys || []) - ignored_keys
 		end
 
 		def config_for(env)
@@ -110,6 +118,10 @@ module Builtins
 
 		def secrets_path_for(env)
 			Secrets.config_path_for(env)
+		end
+
+		def ignored_keys
+			Options.get("envdiff.ignored_keys") || []
 		end
 	end
 
