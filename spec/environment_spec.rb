@@ -25,6 +25,16 @@ RSpec.describe Environment do
 			result
 		end
 
+		it "sets OPS_SECRETS_FILE" do
+			expect(ENV).to receive(:[]=).with("OPS_SECRETS_FILE", "config/test/secrets.json")
+			result
+		end
+
+		it "sets OPS_CONFIG_FILE" do
+			expect(ENV).to receive(:[]=).with("OPS_CONFIG_FILE", "config/test/config.json")
+			result
+		end
+
 		it "sets the given variables" do
 			expect(ENV).to receive(:[]=).with("var1", "val1")
 			expect(ENV).to receive(:[]=).with("var2", "val2")

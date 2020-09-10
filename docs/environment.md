@@ -46,6 +46,8 @@ The values of these variables are not interpreted by the shell before being set,
 
 - `OPS_YML_DIR`: the directory in which `ops` was run and which contains the `ops.yml` file `ops` has loaded
 - `OPS_VERSION`: the version of `ops` that is running
+- `OPS_SECRETS_FILE`: the secrets file that ops will use, if it loads secrets
+- `OPS_CONFIG_FILE`: the config file that ops will load
 
 ## Comparing environments
 

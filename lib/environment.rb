@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require 'version'
+require 'secrets'
+require 'app_config'
 
 class Environment
 	class << self
@@ -26,6 +28,8 @@ class Environment
 	def set_ops_variables
 		ENV["OPS_YML_DIR"] = Dir.pwd
 		ENV["OPS_VERSION"] = Version.version.to_s
+		ENV["OPS_SECRETS_FILE"] = Secrets.config_path_for(Environment.environment)
+		ENV["OPS_CONFIG_FILE"] = AppConfig.config_path_for(Environment.environment)
 	end
 
 	def set_environment_aliases
