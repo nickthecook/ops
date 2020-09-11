@@ -3,5 +3,5 @@ dependencies:
     - user@host
 options:
   sshkey:
-    passphrase: "1234"
+    passphrase: "12345"
     key_lifetime: 5

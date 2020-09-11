@@ -8,7 +8,7 @@ shared_examples "creates an SSH key" do |private_key_file|
 	let(:public_key) { File.read(public_key_file) }
 
 	it "creates the SSH private key" do
-		expect(private_key.split("\n").first).to eq("-----BEGIN OPENSSH PRIVATE KEY-----")
+		expect(private_key.split("\n").first).to match(/-----BEGIN (OPENSSH|RSA) PRIVATE KEY-----/)
 	end
 
 	it "creates the SSH public key" do
