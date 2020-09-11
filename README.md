@@ -216,6 +216,8 @@ ERROR:  Error installing ops_team:
 
 then you need to install the XCode command line tools on a Mac, the `build-essential` package on a Debian-based distro, or the equivalent package on your Linux distro.
 
+If you're using it on another platform, take a look at the test container Dockerfile for your platform in the `platforms/` directory to see what packages it installs.
+
 ### Testing
 
 To make sure the gem is installed and the `ops` executable is in your `$PATH`:
