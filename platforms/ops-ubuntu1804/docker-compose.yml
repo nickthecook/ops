@@ -1,0 +1,7 @@
+version: "3"
+services:
+  ops-debian:
+    build: '.'
+    image: 'ops-ubuntu1804'
+    volumes:
+      - '../..:/ops'
