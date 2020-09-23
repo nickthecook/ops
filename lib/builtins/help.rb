@@ -54,12 +54,18 @@ module Builtins
 		def actions
 			return [] unless @config["actions"]
 
-			@config["actions"].map do |name, value|
-				format("%<name>-35s %<desc>s",
-					name: name.yellow,
-					desc: value["description"] || value["command"]
+			@config["actions"].map do |name, action_config|
+				format("%<name>-40s %<desc>s",
+					name: "#{name.yellow} #{alias_string_for(action_config)}",
+					desc: action_config["description"] || action_config["command"]
 				)
 			end.sort
+		end
+
+		def alias_string_for(action_config)
+			return "[#{action_config["alias"]}]" if action_config["alias"]
+
+			""
 		end
 	end
 end
