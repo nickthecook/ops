@@ -28,11 +28,15 @@ class ActionList
 
 	private
 
+	def actions_list
+		@actions_list ||= []
+	end
+
 	def process_action_list
 		@actions = {}
 		@aliases = {}
 
-		@actions_list.each do |name, config|
+		actions_list.each do |name, config|
 			action = Action.new(config, @args)
 
 			@actions[name] = action
