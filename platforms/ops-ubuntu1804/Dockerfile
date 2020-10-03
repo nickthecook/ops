@@ -2,7 +2,7 @@ FROM ubuntu:bionic
 
 RUN apt-get update
 # dependencies for installing ops
-RUN apt-get install -y ruby build-essential git
+RUN apt-get install -y ruby ruby-dev build-essential git
 # dependencies for running ops
 RUN apt-get install -y keychain
 

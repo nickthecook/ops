@@ -161,8 +161,12 @@ class Ops
 
 	def config
 		@config ||= begin
-			Output.warn("File '#{CONFIG_FILE}' does not exist.") unless File.exist?(CONFIG_FILE)
-			YAML.load_file(CONFIG_FILE)
+			unless File.exist?(CONFIG_FILE)
+				Output.warn("File '#{CONFIG_FILE}' does not exist.") unless @action_name == "init"
+				{}
+			else
+				YAML.load_file(CONFIG_FILE)
+			end
 		rescue StandardError => e
 			Output.warn("Error parsing '#{CONFIG_FILE}': #{e}")
 			{}
@@ -170,7 +174,7 @@ class Ops
 	end
 
 	def env_vars
-		@config.dig("options", "environment") || {}
+		config.dig("options", "environment") || {}
 	end
 
 	def environment
