@@ -161,11 +161,11 @@ class Ops
 
 	def config
 		@config ||= begin
-			unless File.exist?(CONFIG_FILE)
+			if File.exist?(CONFIG_FILE)
+				YAML.load_file(CONFIG_FILE)
+			else
 				Output.warn("File '#{CONFIG_FILE}' does not exist.") unless @action_name == "init"
 				{}
-			else
-				YAML.load_file(CONFIG_FILE)
 			end
 		rescue StandardError => e
 			Output.warn("Error parsing '#{CONFIG_FILE}': #{e}")
