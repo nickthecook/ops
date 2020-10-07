@@ -254,16 +254,18 @@ RSpec.describe Ops do
 					]
 				}
 			end
+			let(:hook_handler_double) { instance_double(HookHandler) }
 
 			before do
-				ENV["OPS_RUNNING"] = nil
+				allow(ENV).to receive(:[]).and_call_original
+				allow(ENV).to receive(:[]).with("OPS_RUNNING").and_return(nil)
 				allow(action_double).to receive(:skip_hooks?).with("before").and_return(false)
-				allow(Executor).to receive(:execute).and_return(["hello there", 0])
+				allow(HookHandler).to receive(:new).and_return(hook_handler_double)
+				allow(hook_handler_double).to receive(:do_hooks)
 			end
 
 			it "runs the hooks" do
-				expect(Executor).to receive(:execute).with("echo hello there")
-				expect(Executor).to receive(:execute).with("echo and now do you like my hat?")
+				expect(hook_handler_double).to receive(:do_hooks)
 				result
 			end
 
@@ -273,7 +275,7 @@ RSpec.describe Ops do
 				end
 
 				it "does not run the hooks" do
-					expect(Executor).not_to receive(:execute).with("echo hello there")
+					expect(hook_handler_double).not_to receive(:do_hooks)
 					result
 				end
 			end
@@ -281,11 +283,11 @@ RSpec.describe Ops do
 			context "when the action is being run from another ops command" do
 				# i.e. `ops aa` runs `ops apply`; so `ops apply` should skip before hooks, as `ops aa` will have run them
 				before do
-					ENV["OPS_RUNNING"] = "1"
+					allow(ENV).to receive(:[]).with("OPS_RUNNING").and_return("1")
 				end
 
 				it "does not run the hooks" do
-					expect(Executor).not_to receive(:execute).with("echo hello there")
+					expect(hook_handler_double).not_to receive(:do_hooks)
 					result
 				end
 			end

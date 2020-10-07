@@ -84,7 +84,7 @@ actions:
   test-bg:
     command: echo this is stdout; echo 1>&2 this is stderr; echo this is stdout again; echo 1>&2 this is stderr again
   rough:
-    command: "echo that's rough"
+    command: "echo that is rough"
   some_long_method_name:
     command: "echo hi there"
 options:

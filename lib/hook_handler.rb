@@ -25,11 +25,18 @@ class HookHandler
 	def execute_hooks(name)
 		hooks(name).each do |hook|
 			Output.notice("Running #{name} hook: #{hook}")
-			output, exit_code = Executor.execute(hook)
+			output, exit_code = execute_hook(hook)
 
 			next if exit_code.zero?
 
 			raise HookExecError, "#{name} hook '#{hook}' failed with exit code #{exit_code}:\n#{output}"
 		end
+	end
+
+	def execute_hook(name)
+		executor = Executor.new(name)
+		executor.execute
+
+		[executor.output, executor.exit_code]
 	end
 end

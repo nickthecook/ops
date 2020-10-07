@@ -19,34 +19,37 @@ RSpec.describe(HookHandler) do
 			}
 		}
 	end
-	let(:first_execute_result) { ["before", 0] }
-	let(:second_execute_result) { ["more before", 0] }
+	let(:first_execute_result) { 0 }
+	let(:second_execute_result) { 0 }
+	let(:executor_double) { instance_double(Executor) }
 
 	before do
-		allow(Executor).to receive(:execute).and_return(first_execute_result, second_execute_result)
+		allow(Executor).to receive(:new).and_return(executor_double)
+		allow(executor_double).to receive(:execute).and_return(true, true)
+		allow(executor_double).to receive(:exit_code).and_return(first_execute_result, second_execute_result)
+		allow(executor_double).to receive(:output).and_return("before", "more before")
 	end
 
 	describe "#do_hooks" do
 		let(:result) { subject.do_hooks("before") }
 
 		it "runs all hooks with the given name" do
-			expect(Executor).to receive(:execute).with("echo before")
-			expect(Executor).to receive(:execute).with("echo more before")
+			expect(executor_double).to receive(:execute).twice
 			result
 		end
 
 		context "when first hook fails" do
-			let(:first_execute_result) { ["nope", 1] }
+			let(:first_execute_result) { 1 }
 
 			it "raises an exception" do
 				expect { result }.to raise_error(
 					HookHandler::HookExecError,
-					"before hook 'echo before' failed with exit code 1:\nnope"
+					"before hook 'echo before' failed with exit code 1:\nbefore"
 				)
 			end
 
 			it "does not execute the second hook" do
-				expect(Executor).not_to receive(:execute).with("echo more before")
+				expect(Executor).not_to receive(:new).with("more before")
 
 				# this is kind of duplicating the above test, but it's needed to have rspec allow the error to be raised
 				expect { result }.to raise_error(HookHandler::HookExecError)
@@ -61,7 +64,7 @@ RSpec.describe(HookHandler) do
 			end
 
 			it "does not execute any hooks" do
-				expect(Executor).not_to receive(:execute)
+				expect(executor_double).not_to receive(:execute)
 				result
 			end
 		end

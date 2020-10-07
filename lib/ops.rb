@@ -127,10 +127,11 @@ class Ops
 	end
 
 	def do_before_action
-		hook_handler.do_hooks("before") unless ENV["OPS_RUNNING"] || action.skip_hooks?("before")
+		return if ENV["OPS_RUNNING"] || action.skip_hooks?("before")
 
 		# this prevents before hooks from running in ops executed by ops
 		ENV["OPS_RUNNING"] = "1"
+		hook_handler.do_hooks("before")
 	end
 
 	def hook_handler
