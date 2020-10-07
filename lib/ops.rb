@@ -29,6 +29,7 @@ class Ops
 	MIN_VERSION_NOT_MET_EXIT_CODE = 67
 	ACTION_CONFIG_ERROR_EXIT_CODE = 68
 	BUILTIN_SYNTAX_ERROR_EXIT_CODE = 69
+	ACTION_NOT_ALLOWED_IN_ENV_EXIT_CODE = 70
 
 	RECOMMEND_HELP_TEXT = "Run 'ops help' for a list of builtins and actions."
 
@@ -115,6 +116,9 @@ class Ops
 	rescue AppConfig::ParsingError => e
 		Output.error("Error parsing app config: #{e}")
 		exit(ERROR_LOADING_APP_CONFIG_EXIT_CODE)
+	rescue Action::NotAllowedInEnvError => e
+		Output.error("Error running action #{@action_name}: #{e}")
+		exit(ACTION_NOT_ALLOWED_IN_ENV_EXIT_CODE)
 	end
 
 	def do_before_all

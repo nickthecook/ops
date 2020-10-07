@@ -290,5 +290,16 @@ RSpec.describe Ops do
 				end
 			end
 		end
+
+		context "when action is not allowed in env" do
+			before do
+				allow(action_double).to receive(:run).and_raise(Action::NotAllowedInEnvError)
+			end
+
+			it "exits with the appropriate error code" do
+				expect(subject).to receive(:exit).with(Ops::ACTION_NOT_ALLOWED_IN_ENV_EXIT_CODE)
+				result
+			end
+		end
 	end
 end

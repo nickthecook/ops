@@ -29,6 +29,8 @@ actions:
   test-e2e:
     command: rspec spec/e2e/e2e_spec_helper.rb spec/e2e
     alias: e2e
+    not_in_envs:
+      - production
   test-e2e-watch:
     command: rerun -x ops test-e2e
     alias: ew

@@ -30,10 +30,14 @@ RSpec.describe Action do
 			allow(Kernel).to receive(:exec)
 		end
 
-		it "executes the command" do
-			expect(Kernel).to receive(:exec).with("bundle exec rspec spec/file1.rb spec/file2.rb")
-			result
+		shared_examples "executes the command" do
+			it "executes the command" do
+				expect(Kernel).to receive(:exec).with("bundle exec rspec spec/file1.rb spec/file2.rb")
+				result
+			end
 		end
+
+		include_examples "executes the command"
 
 		it "does not load secrets" do
 			expect(Secrets).not_to receive(:new)
@@ -51,6 +55,44 @@ RSpec.describe Action do
 			it "loads secrets" do
 				expect(Secrets).to receive(:load)
 				result
+			end
+		end
+
+		context "when in_envs includes the current environment" do
+			let(:action_config) { { "command" => "bundle exec rspec", "in_envs" => %w[test dev] } }
+
+			include_examples "executes the command"
+		end
+
+		context "when in_envs does not include the current environment" do
+			let(:action_config) { { "command" => "bundle exec rspec", "in_envs" => %w[dev staging] } }
+
+			it "raises an error" do
+				expect { result }.to raise_error(Action::NotAllowedInEnvError)
+			end
+		end
+
+		context "when not_in_envs does not include the current environment" do
+			let(:action_config) { { "command" => "bundle exec rspec", "not_in_envs" => %w[dev production] } }
+
+			include_examples "executes the command"
+		end
+
+		context "when in_envs includes the current environment" do
+			let(:action_config) { { "command" => "bundle exec rspec", "not_in_envs" => %w[test dev] } }
+
+			it "raises an error" do
+				expect { result }.to raise_error(Action::NotAllowedInEnvError)
+			end
+		end
+
+		context "when both in_envs and not_in_envs include current environment" do
+			let(:action_config) do
+				{ "command" => "bundle exec rspec", "in_envs" => %w[test staging], "not_in_envs" => %w[test dev] }
+			end
+
+			it "raises an error" do
+				expect { result }.to raise_error(Action::NotAllowedInEnvError)
 			end
 		end
 	end

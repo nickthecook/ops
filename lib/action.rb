@@ -5,12 +5,18 @@ require 'secrets'
 # represents one action to be performed in the shell
 # can assemble a command line from a command and args
 class Action
+	class NotAllowedInEnvError < StandardError; end
+
 	def initialize(config, args)
 		@config = config
 		@args = args
 	end
 
 	def run
+		unless allowed_in_current_env?
+			raise NotAllowedInEnvError, "Action not allowed in #{Environment.environment} environment."
+		end
+
 		Secrets.load if load_secrets?
 
 		Kernel.exec(to_s)
@@ -54,5 +60,21 @@ class Action
 
 	def load_secrets?
 		@config["load_secrets"]
+	end
+
+	def not_in_envs
+		@config["not_in_envs"] || []
+	end
+
+	def in_envs
+		@config["in_envs"] || []
+	end
+
+	def allowed_in_current_env?
+		return false if not_in_envs.include?(Environment.environment)
+
+		return false if in_envs.any? && !in_envs.include?(Environment.environment)
+
+		true
 	end
 end

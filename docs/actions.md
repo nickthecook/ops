@@ -61,6 +61,34 @@ actions:
     load_secrets: true
 ```
 
-
 For more information on the loading of config and secrets, see [Config and Secrets](docs/config_and_secrets.md).
 
+## Safeguards
+
+Sometimes an action can be destructive when run. This is often fine in environments like `dev`, but not in `production`.
+
+To prevent actions from being used in certain environments, `action` supports `in_envs` and `not_in_envs`.
+
+```yaml
+actions:
+  force-destroy:
+    command: bin/destroy_deployed_infrastructure -f
+    not_in_envs:
+      - production
+      - staging
+```
+
+The above configuration will allow the action to be run in all environments except `production` and `staging`. If `in_envs` is defined, the action will only be allowed in environments that are listed.
+
+```yaml
+actions:
+  force-destroy:
+    command: bin/destroy_deployed_infrastructure -f
+    in_envs:
+      - dev
+      - test
+```
+
+The above configuration will allow the action to be run only in `dev` and `test`.
+
+If both `in_envs` and `not_in_envs` are defined, they will both be checked. If the action appears in `not_in_envs` or does not appear in `in_envs`, it will not be run.
