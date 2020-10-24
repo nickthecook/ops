@@ -1,0 +1,10 @@
+hooks:
+  before:
+    - echo top before hook
+forwards:
+  app: app
+options:
+  config:
+    path: config.json
+  secrets:
+    path: secrets.json

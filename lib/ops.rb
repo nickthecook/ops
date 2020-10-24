@@ -13,6 +13,7 @@ require 'environment'
 require 'version'
 require 'action_list'
 require 'action_suggester'
+require 'forwards'
 
 require_rel "builtins"
 
@@ -101,6 +102,8 @@ class Ops
 	end
 
 	def run_action
+		return forward.run if forward
+
 		do_before_all
 
 		return builtin.run if builtin
@@ -147,6 +150,10 @@ class Ops
 
 	def builtin_names
 		Builtins.constants.select { |c| Builtins.const_get(c).is_a? Class }.map(&:downcase)
+	end
+
+	def forward
+		@forward ||= Forwards.new(@config, @args).get(@action_name)
 	end
 
 	def action
