@@ -186,6 +186,28 @@ With this configuration, when a user checks out the repo and runs `ops test`, th
 
 For more information on hooks, see [Hooks](docs/hooks.md).
 
+### Forwards
+
+Sometimes a project is complex enough to split up into multiple directories. In this case, you may have `ops.yml` files in several places, but still want to provide easy access to these actions from the top-level directory.
+
+```yaml
+forwards:
+  app: app
+  inf: infrastructure
+```
+
+With this config, `ops app test` will have the same effect as running `ops test` from the `app` directory. `ops inf deploy` will be the same as `cd infrastructure && ops deploy`.
+
+When a command is forwarded to another directory, no config, secrets, or environment variables are set based on the current directory's `ops.yml`, and no hooks are run from the current directory's `ops.yml`.
+
+If you want access to the top-level directory's config or secrets from the subdirectory, link it in the subdirectory's `ops.yml`:
+
+```yaml
+dependencies:
+  custom:
+    - ln -sf ../config config
+```
+
 ## Getting started
 
 ### Installing
