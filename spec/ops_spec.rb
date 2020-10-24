@@ -303,5 +303,46 @@ RSpec.describe Ops do
 				result
 			end
 		end
+
+		context "when forwards are configured" do
+			let(:ops_config) do
+				{
+					"forwards" => {
+						"app" => "app",
+						"inf" => "infrastructure"
+					},
+					"actions" => {
+						"app" => {
+							"command" => "nope"
+						}
+					}
+				}
+			end
+			let(:input) { "inf" }
+			let(:forwards_double) { instance_double(Forwards) }
+			let(:forward_double) { instance_double(Forward) }
+			let(:args) { %w[arg_one arg_two]}
+
+			before do
+				allow(Forwards).to receive(:new).and_return(forwards_double)
+				allow(forwards_double).to receive(:get).and_return(forward_double)
+				allow(forward_double).to receive(:run)
+			end
+
+			it "gets the list of Forwards" do
+				expect(Forwards).to receive(:new).with(ops_config, args)
+				result
+			end
+
+			it "gets the correct forward" do
+				expect(forwards_double).to receive(:get).with("inf")
+				result
+			end
+
+			it "runs the forward" do
+				expect(forward_double).to receive(:run)
+				result
+			end
+		end
 	end
 end
