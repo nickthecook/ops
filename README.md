@@ -73,7 +73,7 @@ With this configuration in `ops.yml`, all you need to do is `ops up`, and ops wi
 
 ### Language-independence
 
-`ops` is written in Ruby and distributed as a gem, but it can manage projects written in any language. (Many automation frameworks can technically do this, but they do tend to show their biases, some more heavily than others.)
+`ops` is written in Ruby and distributed as a gem, but it can manage projects written in any language. (Many automation frameworks can technically do this, even if written primarily for one language. However, they do tend to show their biases, some more heavily than others.)
 
 Since its config file is plain ol' `YAML`, and you automate things with shell commands, `ops` assumes nothing about the language in which your project is written.
 
@@ -94,16 +94,27 @@ actions:
     alias: ssh
 options:
   sshkey:
-    passphrase_var: SECRET_VARIABLE
+    passphrase_var: SSH_KEY_PASS
 ```
 
-when you run `ops up`, ops will generate a passphrase-protected SSH key for you _and add it to your SSH agent_. You can authorize that key on your server (or provide your own authorized key - if the key exists ops won't overwrite it) and then `ops ssh` will take you to the server. Also, because the key is passphrase-protected, _you can check it in_. If your `$SECRET_VARIABLE` is set in your `secrets.ejson` file, anyone with the private EJSON key will have the above key automatically decrypted and added to their SSH agent, but it will be impossible to use the key otherwise.
+and a `config/dev/secrets.ejson` like this:
 
-Ops uses [`ejson`](https://github.com/Shopify/ejson) to make it easy to manage secrets. You only need to provide one secret (the `ejson` private key) and all your other secrets are unlocked.
+```yaml
+{
+  "_public_key": "ee44b78aee3f164d49618bb954bd4551418ee4a0397c32bc5f8708295277bc0f",
+  "environment": {
+    "SSH_KEY_PASS": "EJ[1:cHQTD2/i6eAbGV9oVkcuz8GcMrwR1fbRky0u4ckVcnY=:uW8w3TAruReLoLFYe1ok2W89e/qPXTEG:aU5sc+Jvmh7meBgP77+Watk8rihaPKpXzTDDjd7tbFxuGqA3wXosC4SDlQ==]"
+  }
+}
+```
+
+when you run `ops up`, ops will generate a passphrase-protected SSH key for you _and add it to your SSH agent_. You can authorize that key on your server (or provide your own authorized key - if the key exists ops won't overwrite it) and then `ops ssh` will take you to the server. Also, because the key is passphrase-protected, _you can check it in_. With your `$SSH_KEY_PASS` set in your `secrets.ejson` file, anyone with the private EJSON key will have the above key automatically decrypted and added to their SSH agent, but it will be impossible to use the key otherwise.
+
+Ops uses [`ejson`](https://github.com/Shopify/ejson) to make it easy to check in and protect secrets. You only need to provide one secret (the `ejson` private key) and all your other secrets are unlocked.
 
 If you have an encrypted `secrets.ejson` file at `config/dev/secrets.ejson`, and the private key is available to `ejson`, ops will automatically load secrets from that file into environment variables for any action in which you specify `load_secrets: true`. (Secrets are not loaded by default for every action to avoid accidental secret leakage.)
 
-If you set `$environment` to `staging`, `ops` will look for secrets in `config/staging/secrets.ejson`. Give everyone the ejson private key to the `dev` and `staging` secrets files, and guard the key to the `production` ejson file with your life!
+If you set `$environment` to `staging`, `ops` will look for secrets in `config/staging/secrets.ejson`. Give everyone the ejson private key to the `dev` and `staging` secrets files, and guard the key to the `production` ejson file with your life.
 
 For more information on how ops uses config and secrets, see [Config and Secrets](docs/config_and_secrets.md).
 
@@ -114,6 +125,17 @@ For more information on how ops uses config and secrets, see [Config and Secrets
 To switch to another environment, just `export environment=staging`, and you've switched from dev config and secrets to staging.
 
 If you chose not to use environment-aware features like automatic config and secret loading, `ops` will not bother you.
+
+With environment-awareness, you can write your `ops.yml` file like this:
+
+```yaml
+actions:
+  echo "$REGISTRY_PUSH_PASSWORD" | docker login "$REGISTRY_FQDN" --username "$REGISTRY_PUSH_USERNAME" --password-stdin
+    alias: dl
+    load_secrets: true
+```
+
+You can define `REGISTRY_PUSH_PASSWORD` for your `dev` environment in `config/dev/secrets.ejson`, and define the production variables in `config/production/secrets.ejson`. `ops` will use the correct config depending on the value of your `$environment` variable.
 
 To see more of how to use the concept of software execution environment with `ops`, see [Environment](docs/environments.md).
 
