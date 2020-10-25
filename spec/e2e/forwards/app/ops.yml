@@ -11,8 +11,14 @@ actions:
   secret_val:
     command: echo $SECRET_ONE
     load_secrets: true
+  echo_var:
+    command: echo $ENVIRONMENT_OPTION
+  echo_top_var:
+    command: echo $TOP_LEVEL_OPTION
 options:
   config:
     path: config.json
   secrets:
     path: secrets.json
+  environment:
+    ENVIRONMENT_OPTION: app-level value

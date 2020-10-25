@@ -8,3 +8,6 @@ options:
     path: config.json
   secrets:
     path: secrets.json
+  environment:
+    ENVIRONMENT_OPTION: top-level value
+    TOP_LEVEL_OPTION: top-level option
