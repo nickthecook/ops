@@ -9,7 +9,7 @@ class Forwards
 	end
 
 	def get(name)
-		Forward.new(name, @args) if forwards[name]
+		Forward.new(forwards[name], @args) if forwards[name]
 	end
 
 	private

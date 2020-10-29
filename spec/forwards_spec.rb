@@ -18,14 +18,14 @@ RSpec.describe Forwards do
 
 	describe "#get" do
 		let(:result) { subject.get(name) }
-		let(:name) { "app" }
+		let(:name) { "inf" }
 
 		it "returns an instance of Forward" do
 			expect(result).to be_a(Forward)
 		end
 
 		it "create Forward with the correct args" do
-			expect(Forward).to receive(:new).with("app", %w[arg_one arg_two])
+			expect(Forward).to receive(:new).with("infrastructure", %w[arg_one arg_two])
 			result
 		end
 

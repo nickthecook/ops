@@ -17,6 +17,12 @@ dependencies:
   custom:
     - bundle install --quiet
     - "echo this is stdout"
+forwards:
+  app:
+    - test
+    - test-e2e
+forwards:
+  platforms: platforms
 actions:
   test:
     command: environment=test bundle exec rspec --exclude-pattern 'spec/e2e/**/*_spec.rb'
