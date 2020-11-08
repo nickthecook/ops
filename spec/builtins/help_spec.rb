@@ -12,6 +12,9 @@ RSpec.describe Builtins::Help do
 					"command" => "do something",
 					"description" => description
 				}
+			},
+			"forwards" => {
+				"fwd1" => "forward one"
 			}
 		}
 	end
@@ -33,6 +36,12 @@ RSpec.describe Builtins::Help do
 		it "prints actions" do
 			expect(Output).to receive(:out).with("Actions:")
 			expect(Output).to receive(:out).with(/action1/)
+			result
+		end
+
+		it "prints fowards" do
+			expect(Output).to receive(:out).with("Forwards:")
+			expect(Output).to receive(:out).with(/fwd1.*forward one/)
 			result
 		end
 	end

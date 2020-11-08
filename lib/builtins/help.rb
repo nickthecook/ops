@@ -3,12 +3,15 @@
 require 'colorize'
 
 require 'builtin'
+require 'forwards'
 
 module Builtins
 	class Help < Builtin
+		NAME_WIDTH = 35
+
 		class << self
 			def description
-				"displays available builtins and actions"
+				"displays available builtins, actions, and forwards"
 			end
 		end
 
@@ -16,15 +19,24 @@ module Builtins
 			Output.out("Builtins:")
 			Output.out("  #{builtins.join("\n  ")}")
 			Output.out("")
+			Output.out("Forwards:")
+			Output.out("  #{forwards.join("\n  ")}")
+			Output.out("")
 			Output.out("Actions:")
 			Output.out("  #{actions.join("\n  ")}")
 		end
 
 		private
 
+		def forwards
+			Forwards.new(@config).forwards.map do |name, dir|
+				format("%<name>-#{NAME_WIDTH}s %<desc>s" , name: name.yellow, desc: "#{dir}")
+			end
+		end
+
 		def builtins
 			builtin_class_map.map do |klass, name|
-				format("%<name>-35s %<desc>s", name: name.downcase.to_s.yellow, desc: klass.description)
+				format("%<name>-#{NAME_WIDTH}s %<desc>s", name: name.downcase.to_s.yellow, desc: klass.description)
 			end
 		end
 
@@ -55,7 +67,7 @@ module Builtins
 			return [] unless @config["actions"]
 
 			@config["actions"].map do |name, action_config|
-				format("%<name>-40s %<desc>s",
+				format("%<name>-#{NAME_WIDTH}s %<desc>s",
 					name: "#{name.yellow} #{alias_string_for(action_config)}",
 					desc: action_config["description"] || action_config["command"]
 				)

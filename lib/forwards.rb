@@ -3,7 +3,7 @@
 require 'forward'
 
 class Forwards
-	def initialize(config, args)
+	def initialize(config, args = [])
 		@config = config
 		@args = args
 	end
@@ -11,8 +11,6 @@ class Forwards
 	def get(name)
 		Forward.new(forwards[name], @args) if forwards[name]
 	end
-
-	private
 
 	def forwards
 		@forwards ||= @config["forwards"] || {}
