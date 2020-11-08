@@ -57,11 +57,13 @@ RSpec.describe Ops do
 				alias: action_alias,
 				to_s: "test",
 				config_valid?: action_config_valid?,
-				config_errors: action_config_errors
+				config_errors: action_config_errors,
+				load_secrets?: load_secrets
 			)
 		end
 		let(:action_config_valid?) { true }
 		let(:action_config_errors) { [] }
+		let(:load_secrets) { false }
 
 		before do
 			allow(YAML).to receive(:load_file).and_return(ops_config)
@@ -88,7 +90,7 @@ RSpec.describe Ops do
 			end
 
 			it "doesn't run the action" do
-				expect(Action).not_to receive(:new)
+				expect(action_double).not_to receive(:run)
 				result
 			end
 
@@ -139,6 +141,11 @@ RSpec.describe Ops do
 				result
 			end
 
+			it "does not load secrets" do
+				expect(Secrets).not_to receive(:load)
+				result
+			end
+
 			context "when action config is not valid" do
 				let(:action_config_valid?) { false }
 				let(:action_config_errors) { ["Nope", "Still nope"] }
@@ -149,6 +156,15 @@ RSpec.describe Ops do
 
 				it "outputs an error" do
 					expect(Output).to receive(:error).with("Error(s) running action 'test': Nope; Still nope")
+					result
+				end
+			end
+
+			context "when action says to load secrest" do
+				let(:load_secrets) { true }
+
+				it "loads secrets" do
+					expect(Secrets).to receive(:load)
 					result
 				end
 			end

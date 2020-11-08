@@ -108,6 +108,7 @@ class Ops
 
 		return builtin.run if builtin
 
+		raise UnknownActionError, "Unknown action: #{@action_name}" unless action
 		raise ActionConfigError, action.config_errors.join("; ") unless action.config_valid?
 
 		do_before_action
@@ -125,8 +126,9 @@ class Ops
 	end
 
 	def do_before_all
-		environment.set_variables
 		AppConfig.load
+		Secrets.load if action && action.load_secrets?
+		environment.set_variables
 	end
 
 	def do_before_action
@@ -159,8 +161,6 @@ class Ops
 	def action
 		return action_list.get(@action_name) if action_list.get(@action_name)
 		return action_list.get_by_alias(@action_name) if action_list.get_by_alias(@action_name)
-
-		raise UnknownActionError, "Unknown action: #{@action_name}"
 	end
 
 	def action_list

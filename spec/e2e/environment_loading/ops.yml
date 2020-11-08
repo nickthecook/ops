@@ -1,0 +1,12 @@
+actions:
+  print_env:
+    command: env
+    load_secrets: true
+options:
+  config:
+    path: config.json
+  secrets:
+    path: secrets.json
+  environment:
+    ENV_CONFIG_VAR: $CONFIG_VAR
+    ENV_SECRETS_VAR: $SECRETS_VAR

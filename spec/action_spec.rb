@@ -44,20 +44,6 @@ RSpec.describe Action do
 			result
 		end
 
-		context "when command requires secrets" do
-			let(:action_config) { { "command" => "bundle exec rspec", "load_secrets" => true } }
-			let(:secrets_double) { instance_double(Secrets) }
-
-			before do
-				allow(Secrets).to receive(:load).and_return(secrets_double)
-			end
-
-			it "loads secrets" do
-				expect(Secrets).to receive(:load)
-				result
-			end
-		end
-
 		context "when in_envs includes the current environment" do
 			let(:action_config) { { "command" => "bundle exec rspec", "in_envs" => %w[test dev] } }
 
@@ -129,6 +115,32 @@ RSpec.describe Action do
 
 			it "returns an error about 'command' missing" do
 				expect(result).to include("No 'command' specified in 'action'.")
+			end
+		end
+	end
+
+	describe "#load_secrets?" do
+		let(:result) { subject.load_secrets? }
+		let(:action_config) { { "command" => "bundle exec rspec", "load_secrets" => load_secrets } }
+		let(:load_secrets) { true }
+
+		it "returns true" do
+			expect(result).to be true
+		end
+
+		context "when load_secrets is false" do
+			let(:load_secrets) { false }
+
+			it "returns false" do
+				expect(result).to be false
+			end
+		end
+
+		context "when load_secrets is not set" do
+			let(:load_secrets) { nil }
+
+			it "returns false" do
+				expect(result).to be false
 			end
 		end
 	end

@@ -18,10 +18,6 @@ dependencies:
     - bundle install --quiet
     - "echo this is stdout"
 forwards:
-  app:
-    - test
-    - test-e2e
-forwards:
   p: platforms
 actions:
   test:
@@ -40,24 +36,9 @@ actions:
   test-e2e-watch:
     command: rerun -x ops test-e2e
     alias: ew
-  test-platforms:
-    command: cd platforms && ops test
-    alias: tp
-  test-platform-watch:
-    command: rerun -x ops test-platforms
-    alias: tpw
-  test-platforms-e2e:
-    command: cd platforms && ops test-e2e
-    alias: tpe
-  test-platforms-e2e-watch:
-    command: cd platforms && ops ew
-    alias: tpew
-  build-platforms:
-    command: cd platforms && ops build
-    alias: bp
   tag:
     command: "bin/tag"
-    description: tags the branch in github with the version from the gemspec
+    description: tags the branch in git with the version from the gemspec
   build:
     command: gem build ops_team.gemspec
     alias: b

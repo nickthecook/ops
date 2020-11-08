@@ -12,7 +12,54 @@
 - **self-contained**: no references to external resources, just run `git clone` and `ops up`
 - **environment-aware**: make things easy in `dev` while allowing it to co-exist with `production`
 
-![ops up in action](ops.png)
+```yaml
+dependencies:
+  brew:
+    - docker-compose
+    - tmux
+  cask:
+    - font-anonymice-powerline
+  apt:
+    - sl
+  custom:
+    - bundle install --quiet
+forwards:
+  p: platforms
+actions:
+  test:
+    command: environment=test bundle exec rspec --exclude-pattern 'spec/e2e/**/*_spec.rb'
+    alias: t
+    description: runs unit tests
+  test-watch:
+    command: rerun -x bin/ops test
+    alias: tw
+    description: runs unit tests every time a file changes
+  tag:
+    command: "bin/tag"
+    description: tags the branch in git with the version from the gemspec
+  build:
+    command: gem build ops_team.gemspec
+    alias: b
+    description: builds the ops_team gem
+  install:
+    command: gem i `ls -t ops_team-*.gem | head -n 1`
+    alias: i
+    description: installs the ops_team gem from a local gemfile
+  lint:
+    command: bundle exec rubocop --safe-auto-correct
+    alias: l
+    description: runs rubocop with safe autocorrect
+options:
+  environment:
+    EJSON_KEYDIR: "./spec/ejson_keys"
+    NAMESPACE: "$USER-$environment"
+  sshkey:
+    load_secrets: true
+    key_size: 1024
+    passphrase_var: SSH_KEY_PASSPHRASE
+```
+
+![ops in action](ops.png)
 
 `ops` works on MacOS and Linux.
 

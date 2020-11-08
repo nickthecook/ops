@@ -1,0 +1,5 @@
+{
+	"environment": {
+		"CONFIG_VAR": "from config"
+	}
+}

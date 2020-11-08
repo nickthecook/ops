@@ -17,8 +17,6 @@ class Action
 			raise NotAllowedInEnvError, "Action not allowed in #{Environment.environment} environment."
 		end
 
-		Secrets.load if load_secrets?
-
 		Kernel.exec(to_s)
 	end
 
@@ -56,11 +54,11 @@ class Action
 		end
 	end
 
-	private
-
 	def load_secrets?
-		@config["load_secrets"]
+		@config["load_secrets"].nil? ? false : @config["load_secrets"]
 	end
+
+	private
 
 	def not_in_envs
 		@config["not_in_envs"] || []
