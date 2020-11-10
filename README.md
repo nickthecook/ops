@@ -12,6 +12,8 @@
 - **self-contained**: no references to external resources, just run `git clone` and `ops up`
 - **environment-aware**: make things easy in `dev` while allowing it to co-exist with `production`
 
+With this `ops.yml` in your repo root:
+
 ```yaml
 dependencies:
   brew:
@@ -58,6 +60,8 @@ options:
     key_size: 1024
     passphrase_var: SSH_KEY_PASSPHRASE
 ```
+
+You can do this:
 
 ![ops in action](ops.png)
 
