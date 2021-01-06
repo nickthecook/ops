@@ -14,7 +14,7 @@ OptionParser.new do |opts|
 
 	opts.on(
 		"-fFILE",
-		"--file FILE", "Load given ops.yml instead of loading it from the current directory"
+		"--file FILE", "Load given file instead of loading ops.yml from the current directory"
 	) do |f|
 		options[:file] = f
 	end

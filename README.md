@@ -370,6 +370,16 @@ Running 'echo hello world ' from ops.yml in environment 'dev'...
 hello world
 ```
 
+### Command-line options
+
+```
+Usage:
+  ops [options] <action> [<action_args>]
+  ops help
+
+    -f, --file FILE                  Load given file instead of loading ops.yml from the current directory
+```
+
 ### Sample `ops.yml`
 
 The ruby template for `ops.yml` looks something like:
