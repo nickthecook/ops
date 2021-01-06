@@ -14,8 +14,6 @@ require_rel "builtins"
 
 # executes commands based on local `ops.yml`
 class Ops
-	CONFIG_FILE = "ops.yml"
-
 	INVALID_SYNTAX_EXIT_CODE = 64
 	UNKNOWN_ACTION_EXIT_CODE = 65
 	ERROR_LOADING_APP_CONFIG_EXIT_CODE = 66
@@ -32,9 +30,10 @@ class Ops
 		end
 	end
 
-	def initialize(argv)
+	def initialize(argv, config_file: nil)
 		@action_name = argv[0]
 		@args = argv[1..-1]
+		@config_file = config_file || "ops.yml"
 
 		Options.set(config["options"] || {})
 	end
@@ -106,21 +105,21 @@ class Ops
 			if config_file_exists?
 				parsed_config_contents
 			else
-				Output.warn("File '#{CONFIG_FILE}' does not exist.") unless @action_name == "init"
+				Output.warn("File '#{@config_file}' does not exist.") unless @action_name == "init"
 				{}
 			end
 		end
 	end
 
 	def parsed_config_contents
-		YAML.load_file(CONFIG_FILE)
+		YAML.load_file(@config_file)
 	rescue StandardError => e
-		Output.warn("Error parsing '#{CONFIG_FILE}': #{e}")
+		Output.warn("Error parsing '#{@config_file}': #{e}")
 		{}
 	end
 
 	def config_file_exists?
-		File.exist?(CONFIG_FILE)
+		File.exist?(@config_file)
 	end
 end
 

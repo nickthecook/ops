@@ -1,8 +1,26 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require_relative "../loader"
+require 'optparse'
 
+options = {}
+OptionParser.new do |opts|
+	opts.banner = <<~SUMMARY
+		Usage:
+		  ops [options] <action> [<action_args>]
+		  ops help
+
+	SUMMARY
+
+	opts.on(
+		"-fFILE",
+		"--file FILE", "Load given ops.yml instead of loading it from the current directory"
+	) do |f|
+		options[:file] = f
+	end
+end.parse!
+
+require_relative "../loader"
 require 'ops'
 
-Ops.new(ARGV).run
+Ops.new(ARGV, config_file: options[:file]).run

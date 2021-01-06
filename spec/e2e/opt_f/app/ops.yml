@@ -1,0 +1,9 @@
+hooks:
+  before:
+    - echo app before hook
+actions:
+  say-name:
+    command: echo "Hello, my name is $NAME."
+options:
+  environment:
+    NAME: Leeeeeroy
