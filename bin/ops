@@ -5,7 +5,7 @@ require 'optparse'
 
 
 def usage
-	puts "ops [-f|--file <ops_yml>] action [<action args>"
+	puts "Usage: ops [-f|--file <ops_yml>] action [<action args>"
 	puts "  ops_yml:      the config file to load instead of './ops.yml'"
 	puts "  action_args:  arguments to the action loaded from the config file; depends on the action"
 

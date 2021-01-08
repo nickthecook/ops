@@ -4,6 +4,8 @@ hooks:
 actions:
   say-name:
     command: echo "Hello, my name is $NAME."
+  ls:
+    command: ls
 options:
   environment:
     NAME: Leeeeeroy
