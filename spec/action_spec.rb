@@ -81,6 +81,24 @@ RSpec.describe Action do
 				expect { result }.to raise_error(Action::NotAllowedInEnvError)
 			end
 		end
+
+		context "when shell expansion is option is false" do
+			let(:action_config) { { "command" => "bundle exec rspec", "shell_expansion" => false } }
+
+			it "executed the action without shell expansion" do
+				expect(Kernel).to receive(:exec).with("bundle", "exec", "rspec", "spec/file1.rb", "spec/file2.rb")
+				result
+			end
+		end
+
+		context "when shell expansion is option is true" do
+			let(:action_config) { { "command" => "bundle exec rspec", "shell_expansion" => true } }
+
+			it "executed the action with shell expansion" do
+				expect(Kernel).to receive(:exec).with("bundle exec rspec spec/file1.rb spec/file2.rb")
+				result
+			end
+		end
 	end
 
 	shared_context "missing command" do

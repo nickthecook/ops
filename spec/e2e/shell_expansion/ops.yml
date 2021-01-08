@@ -1,0 +1,9 @@
+hooks:
+  before:
+    - echo app before hook
+actions:
+  expansion:
+    command: echo "hello"
+  no-expansion:
+    command: echo "hello"
+    shell_expansion: false

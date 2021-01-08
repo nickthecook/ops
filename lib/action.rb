@@ -17,7 +17,11 @@ class Action
 			raise NotAllowedInEnvError, "Action not allowed in #{Environment.environment} environment."
 		end
 
-		Kernel.exec(to_s)
+		if perform_shell_expansion?
+			Kernel.exec(to_s)
+		else
+			Kernel.exec(*to_a)
+		end
 	end
 
 	def to_s
@@ -60,6 +64,10 @@ class Action
 
 	private
 
+	def to_a
+		command.split(" ").reject(&:nil?) | @args
+	end
+
 	def not_in_envs
 		@config["not_in_envs"] || []
 	end
@@ -74,5 +82,9 @@ class Action
 		return false if in_envs.any? && !in_envs.include?(Environment.environment)
 
 		true
+	end
+
+	def perform_shell_expansion?
+		@config["shell_expansion"].nil? ? true : @config["shell_expansion"]
 	end
 end

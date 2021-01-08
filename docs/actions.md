@@ -63,6 +63,37 @@ actions:
 
 For more information on the loading of config and secrets, see [Config and Secrets](docs/config_and_secrets.md).
 
+## Shell expansion
+
+By default, `ops` executes actions with shell expansion, which means variable references are expanded, file globbing is done, and quotes behave as one would expect.
+
+However, this can get in the way sometimes.
+
+```yaml
+actions:
+  query:
+    command: mysql -h some_host -p some_db_name -e
+```
+
+In this case, the action is meant to allow the user to execute a query from the command line. If it's run with
+
+`ops query 'select * from table;'`
+
+the single quotes will be stripped by the shell in which the user ran the command. Then the command will be subject to shell expansion when executed by `ops`, resulting in a bare `*`, which is not the desired outcome. To execute this command safely, one would need to double-escape the `*`:
+
+`ops query 'select \* from table;'`
+
+Or put both double- and single-quotes around the query. Which is annoying, and possibly dangerous.
+
+For actions like this, one can disable shell expansion, losing variable and glob interpolation and other shell features but gaining some predictability:
+
+```yaml
+actions:
+  query:
+    command: mysql -h some_host -p some_db_name -e
+    shell_expansion: false
+```
+
 ## Safeguards
 
 Sometimes an action can be destructive when run. This is often fine in environments like `dev`, but not in `production`.
