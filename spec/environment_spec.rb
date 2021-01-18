@@ -3,9 +3,10 @@
 require 'environment'
 
 RSpec.describe Environment do
-	subject { described_class.new(variables) }
+	subject { described_class.new(variables, config_path) }
 
 	let(:variables) { { "var1" => "val1", "var2" => "val2" } }
+	let(:config_path) { "some_dir/ops.yml"}
 
 	describe "#set_variables" do
 		let(:result) { subject.set_variables }
@@ -16,7 +17,7 @@ RSpec.describe Environment do
 		end
 
 		it "sets OPS_YML_DIR" do
-			expect(ENV).to receive(:[]=).with("OPS_YML_DIR", Dir.pwd)
+			expect(ENV).to receive(:[]=).with("OPS_YML_DIR", "some_dir")
 			result
 		end
 

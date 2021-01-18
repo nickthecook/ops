@@ -97,7 +97,7 @@ class Ops
 	end
 
 	def runner
-		@runner ||= Runner.new(@action_name, @args, config)
+		@runner ||= Runner.new(@action_name, @args, config, config_file_absolute_path)
 	end
 
 	def config
@@ -120,6 +120,10 @@ class Ops
 
 	def config_file_exists?
 		File.exist?(@config_file)
+	end
+
+	def config_file_absolute_path
+		File.expand_path(@config_file)
 	end
 end
 

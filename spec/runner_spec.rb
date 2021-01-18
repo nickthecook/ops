@@ -3,7 +3,7 @@
 require 'runner'
 
 RSpec.describe Runner do
-	subject { described_class.new(action_name, args, config) }
+	subject { described_class.new(action_name, args, config, config_path) }
 
 	let(:action_name) { 'test' }
 	let(:args) { %w[one two] }
@@ -18,6 +18,7 @@ RSpec.describe Runner do
 			}
 		}
 	end
+	let(:config_path) { "some_dir/ops.yml" }
 	let(:hooks) { {} }
 	let(:action_alias) { "t" }
 	let(:command) { "bundle exec rspec" }

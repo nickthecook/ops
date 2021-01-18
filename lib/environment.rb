@@ -13,8 +13,9 @@ class Environment
 		end
 	end
 
-	def initialize(env_hash)
+	def initialize(env_hash, config_path)
 		@env_hash = env_hash
+		@config_path = config_path
 	end
 
 	def set_variables
@@ -26,7 +27,7 @@ class Environment
 	private
 
 	def set_ops_variables
-		ENV["OPS_YML_DIR"] = Dir.pwd
+		ENV["OPS_YML_DIR"] = File.dirname(@config_path)
 		ENV["OPS_VERSION"] = Version.version.to_s
 		ENV["OPS_SECRETS_FILE"] = Secrets.config_path_for(Environment.environment)
 		ENV["OPS_CONFIG_FILE"] = AppConfig.config_path_for(Environment.environment)

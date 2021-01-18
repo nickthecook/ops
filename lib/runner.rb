@@ -11,10 +11,11 @@ class Runner
 	class UnknownActionError < StandardError; end
 	class ActionConfigError < StandardError; end
 
-	def initialize(action_name, args, config)
+	def initialize(action_name, args, config, config_path)
 		@action_name = action_name
 		@args = args
 		@config = config
+		@config_path = config_path
 	end
 
 	def run
@@ -89,6 +90,6 @@ class Runner
 	end
 
 	def environment
-		@environment ||= Environment.new(env_vars)
+		@environment ||= Environment.new(env_vars, @config_path)
 	end
 end
