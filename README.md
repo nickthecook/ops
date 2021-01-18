@@ -4,13 +4,13 @@
 
 [View on RubyGems.org](https://rubygems.org/gems/ops_team)
 
-`ops` is like an operations team for your project. It allows you to implement simple automation for your project that can be used by both developers and CI.
+`ops` is like an operations team for your project. It allows you to implement automation for your project in a simple and readable way.
 
 `ops` aims to be:
 
 - **simple**: easy to use even for people who know nothing about how the tool works; no "namespaces" or DSLs
-- **self-contained**: no references to external resources, just run `git clone` and `ops up`
-- **environment-aware**: make things easy in `dev` while allowing it to co-exist with `production`
+- **self-contained**: no references to external resources, just run `git clone` and `ops up` to use an `ops`-enabled project
+- **self-documenting**: your `ops` configuration documents how to use your code by automating it; no documentation drift
 
 With this `ops.yml` in your repo root:
 
@@ -25,20 +25,15 @@ dependencies:
     - sl
   custom:
     - bundle install --quiet
-forwards:
-  p: platforms
 actions:
   test:
     command: environment=test bundle exec rspec --exclude-pattern 'spec/e2e/**/*_spec.rb'
     alias: t
     description: runs unit tests
-  test-watch:
-    command: rerun -x bin/ops test
-    alias: tw
-    description: runs unit tests every time a file changes
-  tag:
-    command: "bin/tag"
-    description: tags the branch in git with the version from the gemspec
+  lint:
+    command: bundle exec rubocop --safe-auto-correct
+    alias: l
+    description: runs rubocop with safe autocorrect
   build:
     command: gem build ops_team.gemspec
     alias: b
@@ -47,18 +42,6 @@ actions:
     command: gem i `ls -t ops_team-*.gem | head -n 1`
     alias: i
     description: installs the ops_team gem from a local gemfile
-  lint:
-    command: bundle exec rubocop --safe-auto-correct
-    alias: l
-    description: runs rubocop with safe autocorrect
-options:
-  environment:
-    EJSON_KEYDIR: "./spec/ejson_keys"
-    NAMESPACE: "$USER-$environment"
-  sshkey:
-    load_secrets: true
-    key_size: 1024
-    passphrase_var: SSH_KEY_PASSPHRASE
 ```
 
 You can do this:
@@ -66,6 +49,17 @@ You can do this:
 ![ops in action](ops.png)
 
 `ops` works on MacOS and Linux.
+
+(If you're at Shopify, `ops` is like `dev` but focuses on managing things inside a repo, not your whole computer's dev environment.)
+
+There are a number of features in `ops` beyond basic automation. See details here:
+
+- [environment](docs/environment.md)
+- [config and secrets](docs/config_and_secrets.md)
+- [dependencies](docs/dependencies.md)
+- [hooks](docs/hooks.md)
+- [actions](docs/actions.md)
+- [use with terraform](docs/terraform.md)
 
 ## Why ops?
 
