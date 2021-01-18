@@ -50,12 +50,13 @@ Currently supported platforms:
 - alpine
 - arch
 - debian
+- ubuntu 18.04
 
-At the time of writing, running e2e tests on all platforms takes under **30s**, each platform taking around **9s**.
+At the time of writing, running e2e tests on all platforms takes around **1min**, each platform taking around **15s**.
 
 You can run unit tests on all platforms too, but it would probably be of less value if you're already running unit tests directly on your development machine.
 
-## Process
+## Submitting a PR for `ops`
 
 1. Write the code based on the `main` branch (we don't use `master`)
 2. Pass the following test suites:
