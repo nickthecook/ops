@@ -10,7 +10,7 @@
 
 - **simple**: easy to use even for people who know nothing about how the tool works; no "namespaces" or DSLs
 - **self-contained**: no references to external resources, just run `git clone` and `ops up` to use an `ops`-enabled project
-- **self-documenting**: your `ops` configuration documents how to use your code by automating it; no documentation drift
+- **self-documenting**: your `ops` configuration documents how to use your project as you automate tasks; no documentation drift
 
 With this `ops.yml` in your repo root:
 
