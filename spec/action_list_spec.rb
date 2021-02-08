@@ -13,6 +13,9 @@ RSpec.describe ActionList do
 			"action_two" => {
 				"command" => "echo two",
 				"alias" => "two"
+			},
+			"action_three" => {
+				"comand" => "echo three"
 			}
 		}
 	end
@@ -41,6 +44,14 @@ RSpec.describe ActionList do
 
 		it "returns the correct Action" do
 			expect(result.to_s).to eq("echo one arg_one arg_two")
+		end
+	end
+
+	describe "#aliases" do
+		let(:result) { subject.aliases }
+
+		it "returns a list of valid aliases" do
+			expect(result).to eq(%w[one two])
 		end
 	end
 end

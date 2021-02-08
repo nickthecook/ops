@@ -4,6 +4,7 @@ require 'colorize'
 
 require 'builtin'
 require 'forwards'
+require 'nomenclator'
 
 module Builtins
 	class Help < Builtin
@@ -16,6 +17,18 @@ module Builtins
 		end
 
 		def run
+			if @args[0] == "commands"
+				print_commands
+			else
+				print_help
+			end
+		end
+
+		def print_commands
+			Output.out(nomenclator.commands)
+		end
+
+		def print_help
 			Output.out("Builtins:")
 			Output.out("  #{builtins.join("\n  ")}")
 			Output.out("")
@@ -30,7 +43,7 @@ module Builtins
 
 		def forwards
 			Forwards.new(@config).forwards.map do |name, dir|
-				format("%<name>-#{NAME_WIDTH}s %<desc>s" , name: name.yellow, desc: "#{dir}")
+				format("%<name>-#{NAME_WIDTH}s %<desc>s", name: name.yellow, desc: dir)
 			end
 		end
 
@@ -41,7 +54,7 @@ module Builtins
 		end
 
 		def builtin_class_map
-			builtin_class_names.each_with_object({}) do |name, hash|
+			Builtin.class_names.each_with_object({}) do |name, hash|
 				# get the class reference for this name
 				constant = const_for(name)
 				# check hash for an existing entry for the same class
@@ -53,10 +66,6 @@ module Builtins
 
 				hash[constant] = name
 			end
-		end
-
-		def builtin_class_names
-			@builtin_class_names ||= Builtins.constants.select { |c| const_for(c).is_a?(Class) }.sort
 		end
 
 		def const_for(name)
@@ -78,6 +87,10 @@ module Builtins
 			return "[#{action_config["alias"]}]" if action_config["alias"]
 
 			""
+		end
+
+		def nomenclator
+			@nomenclator ||= Nomenclator.new(@config['actions'])
 		end
 	end
 end
