@@ -14,7 +14,15 @@ class Builtin
 			Builtins.const_get(builtin_class_name_for(name: name), false)
 		end
 
+		def class_names
+			@class_names ||= Builtins.constants.select { |c| const_for(c).is_a?(Class) }.sort
+		end
+
 		private
+
+		def const_for(name)
+			Builtins.const_get(name, false)
+		end
 
 		def builtin_class_name_for(name:)
 			name.capitalize.to_sym

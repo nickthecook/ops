@@ -5,6 +5,7 @@ require 'colorize'
 require 'builtin'
 require 'forwards'
 require 'builtins/helpers/enumerator'
+require 'nomenclator'
 
 module Builtins
 	class Help < Builtin
@@ -17,6 +18,18 @@ module Builtins
 		end
 
 		def run
+			if @args[0] == "commands"
+				print_commands
+			else
+				print_help
+			end
+		end
+
+		def print_commands
+			Output.out(nomenclator.commands)
+		end
+
+		def print_help
 			Output.out("Builtins:")
 			Output.out("  #{builtins.join("\n  ")}")
 			Output.out("")
@@ -31,7 +44,7 @@ module Builtins
 
 		def forwards
 			Forwards.new(@config).forwards.map do |name, dir|
-				format("%<name>-#{NAME_WIDTH}s %<desc>s" , name: name.yellow, desc: "#{dir}")
+				format("%<name>-#{NAME_WIDTH}s %<desc>s", name: name.yellow, desc: dir)
 			end
 		end
 

@@ -23,7 +23,7 @@ class ActionList
 	end
 
 	def aliases
-		@aliases.keys
+		@aliases.keys.compact
 	end
 
 	private
