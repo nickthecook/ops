@@ -1,0 +1,4 @@
+# this is just here because ops needs to load something
+actions:
+  nope:
+    command: nope
