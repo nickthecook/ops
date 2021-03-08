@@ -5,11 +5,11 @@ require 'dependencies/brew'
 module Dependencies
 	class Cask < Brew
 		def met?
-			execute("brew cask list #{name}")
+			execute("brew list --cask #{name}")
 		end
 
 		def meet
-			execute("brew cask install #{name}")
+			execute("brew install --cask #{name}")
 		end
 	end
 end

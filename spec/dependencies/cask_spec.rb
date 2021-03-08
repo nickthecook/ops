@@ -8,14 +8,14 @@ RSpec.describe Dependencies::Cask do
 
 	describe '#met?' do
 		it "calls `brew` to check if the dependency is installed" do
-			expect(subject).to receive(:execute).with("brew cask list some-dependency")
+			expect(subject).to receive(:execute).with("brew list --cask some-dependency")
 			subject.met?
 		end
 	end
 
 	describe '#meet' do
 		it "calls brew to install the package" do
-			expect(subject).to receive(:execute).with("brew cask install some-dependency")
+			expect(subject).to receive(:execute).with("brew install --cask some-dependency")
 			subject.meet
 		end
 	end
