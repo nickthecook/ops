@@ -2,14 +2,31 @@
 # frozen_string_literal: true
 
 require 'optparse'
+require 'English'
 
+BASH_COMPLETION_FILE = File.expand_path("~/.bash_completion")
 
 def usage
-	puts "Usage: ops [-f|--file <ops_yml>] action [<action args>"
-	puts "  ops_yml:      the config file to load instead of './ops.yml'"
-	puts "  action_args:  arguments to the action loaded from the config file; depends on the action"
+	puts "Usage:"
+	puts "  ops [-f|--file <ops_yml>] action [<action args>"
+	puts "    ops_yml:      the config file to load instead of './ops.yml'"
+	puts "    action_args:  arguments to the action loaded from the config file; depends on the action"
+	puts "  ops -C|--completion"
+	puts "    -C: install ops completion in ~/.bash_completion"
 
 	exit(1)
+end
+
+def install_bash_completion
+	if File.exist?(BASH_COMPLETION_FILE) && File.read(BASH_COMPLETION_FILE).match?(/_ops_completions/)
+		puts "ops completion already installed in '#{BASH_COMPLETION_FILE}'."
+		return 0
+	end
+
+	puts "Appending ops completion function to '#{BASH_COMPLETION_FILE}'..."
+	`cat #{__dir__}/../completion/ops-completion.bash >> ~/.bash_completion`
+
+	$CHILD_STATUS.exitstatus
 end
 
 options = {}
@@ -17,9 +34,13 @@ while ARGV[0]&.match(/^-/)
 	opt = ARGV.shift
 	case opt
 	when '-f', '--file'
-		usage unless ARGV.length >= 1
+		usage if ARGV.length.zero?
 
 		options[:file] = ARGV.shift
+	when '-C', '--completion'
+		usage if ARGV.length.positive?
+
+		exit install_bash_completion
 	else
 		usage
 	end

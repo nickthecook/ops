@@ -43,7 +43,7 @@ RSpec.describe "forwards" do
 		end
 
 		it "prints usage" do
-			expect(@output3).to match(/Usage: ops/)
+			expect(@output3).to match(/Usage:\n/)
 		end
 	end
 end
