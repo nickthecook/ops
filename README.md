@@ -11,6 +11,7 @@
 - **simple**: easy to use even for people who know nothing about how the tool works; no "namespaces" or DSLs
 - **self-contained**: no references to external resources, just run `git clone` and `ops up` to use an `ops`-enabled project
 - **self-documenting**: your `ops` configuration documents how to use your project as you automate tasks; no documentation drift
+- **environment-aware**: support different configurations for different environments without implementing support in your code
 
 With this `ops.yml` in your repo root:
 
@@ -136,10 +137,9 @@ hello world
 
 ```
 Usage:
-  ops [options] <action> [<action_args>]
-  ops help
-
-    -f, --file FILE                  Load given file instead of loading ops.yml from the current directory
+Usage: ops [-f|--file <ops_yml>] action [<action args>
+  ops_yml:      the config file to load instead of './ops.yml'
+  action_args:  arguments to the action loaded from the config file; depends on the action
 ```
 
 ### Sample `ops.yml`
