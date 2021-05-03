@@ -47,7 +47,7 @@ module Builtins
 
 		def timer_task
 			@timer_task ||= Concurrent::TimerTask.new(run_now: true, execution_interval: 1) do
-				Output.print("\r#{seconds_left}")
+				Output.print("\r      \r#{seconds_left}")
 			end
 		end
 
