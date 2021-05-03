@@ -9,6 +9,7 @@ module Dependencies
 		DEFAULT_KEY_SIZE = 2048
 		DEFAULT_KEY_ALGO = "rsa"
 		DEFAULT_KEY_LIFETIME_S = 3600
+		DEFAULT_KEY_FILE_COMMENT_COMMAND = "$USER@`hostname -s`"
 
 		def met?
 			# we always need to at least update the key lifetime in the agent
@@ -36,7 +37,9 @@ module Dependencies
 		private
 
 		def generate_key
-			execute("ssh-keygen -b #{opt_key_size} -t #{opt_key_algo} -f #{priv_key_name} -q -N '#{passphrase}'")
+			execute(
+				"ssh-keygen -b #{opt_key_size} -t #{opt_key_algo} -f #{priv_key_name} -q -N '#{passphrase}' -C '#{key_file_comment}'"
+			)
 		end
 
 		def add_key
@@ -57,6 +60,10 @@ module Dependencies
 
 		def key_comment
 			Ops.project_name
+		end
+
+		def key_file_comment
+			`echo #{opt_key_file_comment_command}`.chomp
 		end
 
 		def dir_name
@@ -106,6 +113,10 @@ module Dependencies
 
 		def opt_key_lifetime
 			Options.get("sshkey.key_lifetime") || DEFAULT_KEY_LIFETIME_S
+		end
+
+		def opt_key_file_comment_command
+			Options.get("sshkey.key_file_comment") || DEFAULT_KEY_FILE_COMMENT_COMMAND
 		end
 	end
 end

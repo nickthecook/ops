@@ -1,0 +1,11 @@
+dependencies:
+  sshkey:
+    - user@host
+options:
+  sshkey:
+    passphrase_var: SSHKEY_PASSPHRASE
+    key_lifetime: 5
+    key_file_comment: $MY_ENV_VAR@some_host
+  environment:
+    SSHKEY_PASSPHRASE: "cant hack me"
+    MY_ENV_VAR: bink

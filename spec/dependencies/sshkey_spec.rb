@@ -241,5 +241,16 @@ RSpec.describe Dependencies::Sshkey do
 				result
 			end
 		end
+
+		context "when key comment option is given" do
+			before do
+				allow(Options).to receive(:get).with("sshkey.key_file_comment").and_return("some_team@some_company")
+			end
+
+			it "uses the configured comment" do
+				expect(subject).to receive(:execute).with(/-C 'some_team@some_company'/)
+				result
+			end
+		end
 	end
 end
