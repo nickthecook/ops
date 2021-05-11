@@ -53,7 +53,7 @@ class Secrets < AppConfig
 			out, err, _status = Open3.capture3("ejson decrypt #{@filename}")
 
 			# TODO: err is only nil in testing, but I can't figure out why the stubbing isn't working
-			raise ParsingError, "Error decrypting EJSON file: #{err}" unless err.nil? || err.empty?
+			raise ParsingError, "#{@filename}: #{err}" unless err.nil? || err.empty?
 
 			out
 		end

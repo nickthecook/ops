@@ -33,7 +33,7 @@ RSpec.describe "forwards" do
 		end
 
 		it "gets the expected output" do
-			expect(@output2).to match(/drwxr-xr-x/)
+			expect(@output2).to match(/drwxr.xr-x/)
 		end
 	end
 

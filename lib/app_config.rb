@@ -42,7 +42,7 @@ class AppConfig
 	def config
 		@config ||= file_contents ? YAML.safe_load(file_contents) : {}
 	rescue YAML::SyntaxError => e
-		raise ParsingError, "Error parsing config data: #{e}"
+		raise ParsingError, "#{@filename}: #{e}"
 	end
 
 	def file_contents

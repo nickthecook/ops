@@ -1,0 +1,3 @@
+actions:
+  ls:
+    command: ls

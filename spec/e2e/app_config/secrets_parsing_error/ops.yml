@@ -1,0 +1,4 @@
+actions:
+  ls:
+    command: ls
+    load_secrets: true
