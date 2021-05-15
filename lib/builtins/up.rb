@@ -23,7 +23,7 @@ module Builtins
 		private
 
 		def dependency_handler
-			Helpers::DependencyHandler.new(@config["dependencies"])
+			Helpers::DependencyHandler.new(deps_to_meet)
 		end
 
 		def meet_dependencies
@@ -48,6 +48,12 @@ module Builtins
 				Output.error("Error meeting #{dependency.type} dependency '#{dependency.name}':")
 				Output.out(dependency.output)
 			end
+		end
+
+		def deps_to_meet
+			return @config["dependencies"] if @args.empty?
+
+			return @config["dependencies"].select { |dep, names| @args.include?(dep) }
 		end
 	end
 end

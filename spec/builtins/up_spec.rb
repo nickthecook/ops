@@ -11,6 +11,13 @@ RSpec.describe Builtins::Up do
 			"dependencies" => {
 				"apk" => [
 					"ridiculous_package"
+				],
+				"custom" => [
+					"echo hi",
+					"echo derp"
+				],
+				"dir" => [
+					"directory_of_life"
 				]
 			}
 		}
@@ -90,6 +97,30 @@ RSpec.describe Builtins::Up do
 
 			it "meets the dependency" do
 				expect(dependency_double).to receive(:meet)
+				result
+			end
+		end
+
+		context "args are given" do
+			let(:args) { %w[custom dir] }
+			let(:dep_handler_double) { instance_double(Builtins::Helpers::DependencyHandler, dependencies: []) }
+
+			before do
+				allow(Builtins::Helpers::DependencyHandler).to receive(:new).and_return(dep_handler_double)
+			end
+
+			it "attempts to meet the dir dependency" do
+				expect(Builtins::Helpers::DependencyHandler).to receive(:new).with(hash_including("dir" => anything))
+				result
+			end
+
+			it "attempts to meet the custom dependencies" do
+				expect(Builtins::Helpers::DependencyHandler).to receive(:new).with(hash_including("custom" => anything))
+				result
+			end
+			
+			it "does not attempt to meet the apt dependencies" do
+				expect(Builtins::Helpers::DependencyHandler).to receive(:new).with(hash_not_including("apk" => anything))
 				result
 			end
 		end
