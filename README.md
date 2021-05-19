@@ -205,7 +205,7 @@ The following dependency types are supported:
 - `dir`: creates a local directory (for when your app needs a directory, but there are no checked-in files in it)
 - `sshkey`: creates an SSH key at the given path, if it doesn't already exist; can be configured to encrypt the private key with a passphrase
 
-`ops up` is **idempotent**, so if you're not sure what your local state is, or you've just added one dependency, you can run `ops up` and `ops` will only try to satisfy unsatisfied dependencies.
+`ops up` is **idempotent**, so if you're not sure what your local state is, or you've just added one dependency, you can run `ops up` and `ops` will only try to satisfy unsatisfied dependencies. (You can also run, for example, `ops up custom`, or `ops up brew cask` to have `ops` just satisfy dependencies of certain types. `ops up sshkey` is handy to have `ops` add an SSH key to your agent when you don't want to satisfy all your configured dependencies.)
 
 This feature allows developers that are new to a project to get up and running **without knowing anything about the app itself**. Your `ops.yml` should allow a developer to `ops up && ops start` to run an application.
 
