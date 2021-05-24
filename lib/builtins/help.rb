@@ -4,7 +4,8 @@ require 'colorize'
 
 require 'builtin'
 require 'forwards'
-require 'builtins/helpers/enumerator'
+require 'builtin_list'
+require 'action_list'
 
 module Builtins
 	class Help < Builtin
@@ -17,6 +18,24 @@ module Builtins
 		end
 
 		def run
+			@args.any? ? @args.each { |arg| help(arg) } : help_all
+		end
+
+		private
+
+		def help(arg)
+			if builtin_names.include?(arg)
+				puts "B #{arg}"
+			elsif forward_names.include?(arg)
+				puts "F #{arg}"
+			elsif action_names.include?(arg)
+				puts "A #{arg}"
+			else
+				Output.error("nope")
+			end
+		end
+
+		def help_all
 			Output.out("Builtins:")
 			Output.out("  #{builtins.join("\n  ")}")
 			Output.out("")
@@ -27,29 +46,31 @@ module Builtins
 			Output.out("  #{actions.join("\n  ")}")
 		end
 
-		private
+		def builtins
+			builtin_list.commands.map do |klass, commands|
+				cmds_string = commands.map(&:downcase).map(&:to_s).uniq.join(", ").yellow
 
-		def forwards
-			Forwards.new(@config).forwards.map do |name, dir|
-				format("%<name>-#{NAME_WIDTH}s %<desc>s" , name: name.yellow, desc: "#{dir}")
+				format("%<names>-#{NAME_WIDTH}s %<desc>s", names: cmds_string, desc: klass.description)
 			end
 		end
 
-		def builtins
-			builtin_enumerator.names_by_constant.map do |klass, names|
-				names_string = names.map(&:downcase).map(&:to_s).uniq.join(", ").yellow
+		def builtin_names
+			builtin_list.names
+		end
 
-				format("%<names>-#{NAME_WIDTH}s %<desc>s", names: names_string, desc: klass.description)
-			end
+		def builtin_list
+			@builtin_list ||= BuiltinList.new
 		end
 
 		def actions
 			return [] unless @config["actions"]
 
-			@config["actions"].map do |name, action_config|
+			action_list.names.map do |name|
+				action = action_list.get(name)
+
 				format("%<name>-#{NAME_WIDTH}s %<desc>s",
-					name: "#{name.yellow} #{alias_string_for(action_config)}",
-					desc: action_config["description"] || action_config["command"]
+					name: "#{name.yellow} #{action.alias}",
+					desc: action.description || action.command
 				)
 			end.sort
 		end
@@ -60,8 +81,26 @@ module Builtins
 			""
 		end
 
-		def builtin_enumerator
-			@builtin_enumerator ||= ::Builtins::Helpers::Enumerator
+		def action_names
+			action_list.names + action_list.aliases
+		end
+
+		def action_list
+			@action_list ||= ActionList.new(@config["actions"], [])
+		end
+
+		def forwards
+			forwards_list.forwards.map do |name, dir|
+				format("%<name>-#{NAME_WIDTH}s %<desc>s" , name: name.yellow, desc: "#{dir}")
+			end
+		end
+
+		def forward_names
+			forwards_list.forwards.keys
+		end
+
+		def forwards_list
+			Forwards.new(@config)
 		end
 	end
 end

@@ -10,7 +10,8 @@ RSpec.describe Builtins::Help do
 			"actions" => {
 				"action1" => {
 					"command" => "do something",
-					"description" => description
+					"description" => description,
+					"alias" => "a1"
 				}
 			},
 			"forwards" => {
@@ -43,6 +44,14 @@ RSpec.describe Builtins::Help do
 			expect(Output).to receive(:out).with("Forwards:")
 			expect(Output).to receive(:out).with(/fwd1.*forward one/)
 			result
+		end
+
+		context "when an action name is is given as an arg" do
+			let(:args) { ["action1"] }
+	
+			it "prints info about that action" do
+				expect(result).to match(/A/)
+			end
 		end
 	end
 end

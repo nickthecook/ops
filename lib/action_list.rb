@@ -40,7 +40,7 @@ class ActionList
 			action = Action.new(config, @args)
 
 			@actions[name] = action
-			@aliases[action.alias] = action
+			@aliases[action.alias] = action if action.alias
 		end
 	end
 end
