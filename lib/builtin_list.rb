@@ -28,5 +28,4 @@ class BuiltinList
 			end
 		end
 	end
-
 end

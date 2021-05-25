@@ -48,9 +48,10 @@ RSpec.describe Builtins::Help do
 
 		context "when an action name is is given as an arg" do
 			let(:args) { ["action1"] }
-	
+
 			it "prints info about that action" do
-				expect(result).to match(/A/)
+				expect(Output).to receive(:out).with(/A/)
+				result
 			end
 		end
 	end

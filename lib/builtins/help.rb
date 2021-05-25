@@ -6,6 +6,7 @@ require 'builtin'
 require 'forwards'
 require 'builtin_list'
 require 'action_list'
+require 'builtins/helpers/help_formatter'
 
 module Builtins
 	class Help < Builtin
@@ -24,12 +25,15 @@ module Builtins
 		private
 
 		def help(arg)
+			# puts "BL #{builtin_names}"
+			# puts "AL #{action_names}"
+			# puts "FL #{forward_names}"
 			if builtin_names.include?(arg)
-				puts "B #{arg}"
+				Output.out(formatter.builtin(arg))
 			elsif forward_names.include?(arg)
-				puts "F #{arg}"
+				Output.out("F #{arg}")
 			elsif action_names.include?(arg)
-				puts "A #{arg}"
+				Output.out("A #{arg}")
 			else
 				Output.error("nope")
 			end
@@ -46,16 +50,14 @@ module Builtins
 			Output.out("  #{actions.join("\n  ")}")
 		end
 
-		def builtins
-			builtin_list.commands.map do |klass, commands|
-				cmds_string = commands.map(&:downcase).map(&:to_s).uniq.join(", ").yellow
+		def builtins(names = [])
+			selected_commands = builtin_list.commands.select { |name, _| names.empty? || names.include?(name) }
 
-				format("%<names>-#{NAME_WIDTH}s %<desc>s", names: cmds_string, desc: klass.description)
-			end
+			selected_commands.map { |klass, commands| formatter.builtin(klass, commands) }
 		end
 
 		def builtin_names
-			builtin_list.names
+			builtin_list.names.map(&:downcase).map(&:to_s)
 		end
 
 		def builtin_list
@@ -91,7 +93,7 @@ module Builtins
 
 		def forwards
 			forwards_list.forwards.map do |name, dir|
-				format("%<name>-#{NAME_WIDTH}s %<desc>s" , name: name.yellow, desc: "#{dir}")
+				format("%<name>-#{NAME_WIDTH}s %<desc>s", name: name.yellow, desc: dir.to_s)
 			end
 		end
 
@@ -101,6 +103,10 @@ module Builtins
 
 		def forwards_list
 			Forwards.new(@config)
+		end
+
+		def formatter
+			Helpers::HelpFormatter
 		end
 	end
 end
