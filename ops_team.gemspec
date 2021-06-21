@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
 	s.name = 'ops_team'
-	s.version = '1.5.1'
+	s.version = '1.6.0rc1'
 	s.authors = [
 		'nickthecook@gmail.com'
 	]
-	s.date = '2021-05-05'
+	s.date = '2021-06-21'
 	s.summary = 'ops_team handles basic automation for your project, driven by self-documenting YAML config'
 	s.homepage = 'https://github.com/nickthecook/ops'
 	s.files = Dir[
@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
 		'ops_team.gemspec'
 	]
 	s.executables << 'ops'
-	s.required_ruby_version = '~> 2.5'
+	s.required_ruby_version = '>= 2.5'
 	s.add_runtime_dependency 'bcrypt_pbkdf', '~> 1.0', '>= 1.0.1'
 	s.add_runtime_dependency 'colorize', '~> 0.8', '>= 0.8.1'
 	s.add_runtime_dependency 'concurrent-ruby', '~> 1.1', '>= 1.1.7'
