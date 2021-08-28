@@ -10,7 +10,6 @@ gem 'concurrent-ruby', require: 'concurrent'
 gem "e2mmap"
 gem "ed25519"
 gem "ejson"
-gem "etc"
 gem "io-console"
 gem "json", ">= 2.3.0"
 gem "net-ssh"

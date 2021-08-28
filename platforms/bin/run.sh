@@ -37,7 +37,7 @@ for platform in $platforms; do
 	}
 
 	# get a string based on the command that can be included in the container name
-	command_string=`echo "$command" | sed 's/[^a-zA-z0-9]/_/g'`
+	command_string=`echo "$command" | sed 's/[^a-zA-Z0-9]/_/g'`
 	container_name="$platform"_"$command_string"
 	# create a container with the name of the platform if it doesn't already exist
 	if docker ps -a | grep -q " $container_name$"; then

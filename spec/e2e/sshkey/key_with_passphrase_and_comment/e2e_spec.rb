@@ -19,7 +19,7 @@ RSpec.describe "ssh key with passphrase var" do
 	end
 
 	it "generates a key with a passphrase" do
-		expect(system("grep bink@some_host user@host.pub")).to be true
+		expect(system("grep -q bink@some_host user@host.pub")).to be true
 	end
 
 	include_examples "creates an SSH key", "user@host"

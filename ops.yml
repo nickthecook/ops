@@ -1,22 +1,10 @@
 dependencies:
-  brew:
-    - docker-compose
-    - tmux
-  cask:
-    - font-anonymice-powerline
-  apt:
-    - sl
-  apk:
-    - curl
   gem:
     - bundler >=2.1.4
     - rerun
     - ejson
-  dir:
-    - runtime_data
   custom:
     - bundle install --quiet
-    - "echo this is stdout"
 forwards:
   p: platforms
 actions:

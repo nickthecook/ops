@@ -6,7 +6,8 @@ shared_context "ops e2e" do
 	ENV["OPS_RUNNING"] = nil
 
 	def remove_untracked_files
-		`git ls-files --others | grep -v '.rb$' | grep -v '$.yml' | xargs rm`
+		untracked_files = `git ls-files --others | grep -v '.rb$' | grep -v '$.yml'`.split("\n")
+		untracked_files.each { |file| `rm -f #{file}` }
 	end
 
 	def run_ops(cmd, output_file = "ops.out")
