@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
 	s.name = 'ops_team'
-	s.version = '1.6.0-pre'
+	s.version = '1.6.0'
 	s.authors = [
 		'nickthecook@gmail.com'
 	]
