@@ -1,0 +1,6 @@
+dependencies:
+  sshkey:
+    - user@host
+options:
+  sshkey:
+    key_algo: ed25519

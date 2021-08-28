@@ -12,7 +12,7 @@ shared_examples "creates an SSH key" do |private_key_file|
 	end
 
 	it "creates the SSH public key" do
-		expect(public_key).to match(/^ssh-rsa /)
+		expect(public_key).to match(/^ssh-[a-zA-Z0-9]* /)
 	end
 end
 

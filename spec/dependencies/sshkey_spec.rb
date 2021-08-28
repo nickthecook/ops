@@ -82,7 +82,7 @@ RSpec.describe Dependencies::Sshkey do
 		end
 
 		it "uses the default key size" do
-			expect(subject).to receive(:execute).with(/-b 2048/)
+			expect(subject).to receive(:execute).with(/-b 4096/)
 			result
 		end
 
@@ -206,6 +206,17 @@ RSpec.describe Dependencies::Sshkey do
 
 			it "expands the variable with the given name" do
 				expect(subject).to receive(:execute).with(/-N 'this is even secreter'/)
+				result
+			end
+		end
+
+		context "when key algorithm is configured" do
+			before do
+				allow(Options).to receive(:get).with("sshkey.key_algo").and_return("ed25519")
+			end
+
+			it "uses the configured key algorithm" do
+				expect(subject).to receive(:execute).with(/-t ed25519/)
 				result
 			end
 		end

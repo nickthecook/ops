@@ -6,7 +6,7 @@ require 'dependency'
 
 module Dependencies
 	class Sshkey < Dependency
-		DEFAULT_KEY_SIZE = 2048
+		DEFAULT_KEY_SIZE = 4096
 		DEFAULT_KEY_ALGO = "rsa"
 		DEFAULT_KEY_LIFETIME_S = 3600
 		DEFAULT_KEY_FILE_COMMENT_COMMAND = "$USER@`hostname -s`"
@@ -83,7 +83,7 @@ module Dependencies
 		end
 
 		def opt_key_algo
-			DEFAULT_KEY_ALGO
+			Options.get("sshkey.key_algo") || DEFAULT_KEY_ALGO
 		end
 
 		def passphrase
