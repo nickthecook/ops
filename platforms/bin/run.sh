@@ -1,6 +1,8 @@
 #!/bin/bash
 # tests the given platforms
 
+ZERO="-->"
+
 VOLUME_DIR=`pwd | sed 's:/ops/.*:/ops:'`
 
 function usage {
@@ -27,25 +29,37 @@ else
 	platforms="$*"
 fi
 
-echo -e "$0: Running '$command' on platforms:\n$platforms"
-echo "$0: Mounting '$VOLUME_DIR' into the container at '/ops'."
+echo -e "$ZERO Running '$command' on platforms:"
+echo "$platforms" | sed 's/^/  - /'
+echo
 
 for platform in $platforms; do
+	echo "==> [ $platform ]"
+
 	cd "$platform" || {
-		echo 1>&2 "$0: Unable to cd to '$platform'"
+		echo 1>&2 "$ZERO Unable to cd to '$platform'"
 		exit 2
 	}
 
 	# get a string based on the command that can be included in the container name
 	command_string=`echo "$command" | sed 's/[^a-zA-Z0-9]/_/g'`
 	container_name="$platform"_"$command_string"
+
+	echo "$ZERO Mounting 'entrypoint.sh' at '$PWD/$platform/entrypoint.sh:/entrypoint.sh'..."
+	echo "$ZERO Mounting source dir '$VOLUME_DIR' at '/ops'..."
+
 	# create a container with the name of the platform if it doesn't already exist
 	if docker ps -a | grep -q " $container_name$"; then
-		echo "$0: Starting existing container '$container_name'..."
+		echo "$ZERO Starting existing container '$container_name'..."
 		docker start -a $container_name
 	else
-		echo "$0: Running new container '$container_name' from image '$platform'..."
-		docker run -it -v "$VOLUME_DIR:/ops" --name $container_name $platform $command
+		echo "$ZERO Running new container '$container_name' from image '$platform'..."
+		docker run -it \
+			-v "$PWD/entrypoint.sh:/entrypoint.sh" \
+			-v "$VOLUME_DIR:/ops" \
+			--name $container_name \
+			$platform \
+			$command
 	fi
 
 	cd ..

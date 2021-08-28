@@ -1,6 +1,6 @@
 version: "3"
 services:
-  ops-debian:
+  ops-arch:
     build: '.'
     image: 'ops-arch'
     volumes:

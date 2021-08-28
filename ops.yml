@@ -1,6 +1,6 @@
 dependencies:
   gem:
-    - bundler >=2.1.4
+    - bundler =2.2.22
     - rerun
     - ejson
   custom:
@@ -17,7 +17,7 @@ actions:
     alias: tw
     description: runs unit tests every time a file changes
   test-e2e:
-    command: rspec spec/e2e/e2e_spec_helper.rb spec/e2e
+    command: bundle exec rspec spec/e2e/e2e_spec_helper.rb spec/e2e
     alias: e2e
     not_in_envs:
       - production
@@ -31,8 +31,11 @@ actions:
     command: gem build ops_team.gemspec
     alias: b
     description: builds the ops_team gem
+  latest-gem-file:
+    command: ls -t ops_team-*.gem | head -n 1
+    alias: latest
   install:
-    command: gem i `ls -t ops_team-*.gem | head -n 1`
+    command: gem i `ops latest-gem-file`
     alias: i
     description: installs the ops_team gem from a local gemfile
   build-and-install:

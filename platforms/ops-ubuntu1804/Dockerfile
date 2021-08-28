@@ -7,7 +7,7 @@ RUN apt-get install -y ruby ruby-dev build-essential git
 RUN apt-get install -y keychain
 
 WORKDIR /ops
-RUN gem install --no-ri --no-rdoc bundler
+RUN gem install --no-ri --no-rdoc ops_team
 
 COPY entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]

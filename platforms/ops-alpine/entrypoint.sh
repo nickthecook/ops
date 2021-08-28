@@ -1,12 +1,15 @@
 #!/bin/sh
 # entrypoint for ops test containers
 
-echo "$0: loading SSH agent..."
-eval `ssh-agent`
-echo "$0: running 'bundler install'..."
-bundle install --quiet
-echo "$0: running 'ops up'..."
-bin/ops up
+ZERO="---->"
 
-echo "$0: Running command: $*"
+echo "$ZERO loading SSH agent..."
+eval `ssh-agent`
+
+echo "$ZERO running 'ops up'..."
+ops up
+
+echo "$ZERO Running command: $*"
 "$@"
+# to get a shell in the test container, comment out the above command and uncomment the below:
+# sh
