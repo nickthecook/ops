@@ -42,6 +42,6 @@ for platform in $platforms; do
 		echo "$0: removing containers: $containers_based_on_this_image..."
 		docker rm $containers_based_on_this_image
 	fi
-	
+
 	cd ..
 done

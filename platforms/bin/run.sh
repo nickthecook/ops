@@ -31,9 +31,9 @@ fi
 
 echo -e "$ZERO Running '$command' on platforms:"
 echo "$platforms" | sed 's/^/  - /'
-echo
 
 for platform in $platforms; do
+	echo
 	echo "==> [ $platform ]"
 
 	cd "$platform" || {
