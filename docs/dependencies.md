@@ -103,7 +103,7 @@ dependencies:
     - keys/$environment/user@host
 ```
 
-This dependency will create an SSH key pair with key size 2048 and key algorithm "rsa" at `keys/$environment/user@host` and `keys/$environment/user@host.pub`. It will also add it to your SSH agent, if `SSH_AUTH_SOCK` is set, with a lifetime of 3600 seconds (one hour).
+This dependency will create an SSH key pair with key size 4096 and key algorithm `rsa` at `keys/$environment/user@host` and `keys/$environment/user@host.pub`. It will also add it to your SSH agent, if `SSH_AUTH_SOCK` is set, with a lifetime of 3600 seconds (one hour).
 
 The key comment, which is visible in the output of `ssh-add -l`, will be set to the name of the directory that contains `ops.yml`. For example, if the directory is named `heliograf`, you would see the following output:
 
@@ -113,21 +113,33 @@ $ ssh-add -l
 2048 SHA256:Z6oEPBIoBrHv/acYiBGBRYLe2sEONV17tDor3h5eNtc certitude (RSA)
 ```
 
-This output shows that one key from `heliograf` and one key from `certitude` have been loaded.
+This output shows that one key from a project called `heliograf` and one key from a project called `certitude` have been loaded.
 
 #### Options
 
-The passphrase, key size, and ssh-agent lifetime (in seconds) can be configured. `sshkey.passphrase` will expand environment variables. Due to the high probability that you don't want to check in your passphrase in plaintext, you can use an environment variable loaded from the secrets file as the passphrase, as in the following example.
+The passphrase, key size, key algorithm, and ssh-agent lifetime (in seconds) can be configured.
 
 ```yaml
 options:
   sshkey:
-    passphrase: $ENV_VAR_LOADED_FROM_SECRETS
-    key_size: 1024
+    passphrase_var: ENV_VAR_LOADED_FROM_SECRETS
+    key_size: 8192
+    key_algo: ed25519
     key_lifetime: 60
 ```
 
-The key algorithm will be RSA. This cannot be configured yet.
+_With the "ed25519" algorithm, `key_size` can still be specified, but will be ignored by `ssh-keygen`, since all keys for that algorithm are 256 bits._
+
+`sshkey.passphrase_var` should be the name of an environment variable, without a leading `$`. This allows you to define the passphrase in your `secrets.ejson` file, and avoid storing it or checking it in in plaintext.
+
+The default values are:
+
+```yaml
+key_size: 4096
+key_algo: rsa
+key_lifetime: 3600 # seconds
+passphrase_var: "" # no passphrase var, so no passphrase
+```
 
 Adding the key to the SSH agent can be disabled by setting `add_keys: false`:
 
