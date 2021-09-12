@@ -79,7 +79,7 @@ class Runner
 		end
 
 		unless action.execute_in_env?(Environment.environment)
-			Output.warn("Skipping action '#{action.name}' in environment '#{Environment.environment}.")
+			Output.warn("Skipping action '#{action.name}' in environment #{Environment.environment}.")
 			return true
 		end
 

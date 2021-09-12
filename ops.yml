@@ -65,6 +65,9 @@ actions:
     command: "echo that is rough"
   some_long_method_name:
     command: "echo hi there"
+  install-nodejs:
+    command: nvm install 14
+    skip_in_envs: [ci]
 options:
   gem:
     use_sudo: false

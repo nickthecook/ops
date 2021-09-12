@@ -123,3 +123,26 @@ actions:
 The above configuration will allow the action to be run only in `dev` and `test`.
 
 If both `in_envs` and `not_in_envs` are defined, they will both be checked. If the action appears in `not_in_envs` or does not appear in `in_envs`, it will not be run.
+
+## Skipping actions in certain environments
+
+If you want an action to not run in a certain environment, but don't want to treat it as an error, you can use `skip_in_envs`.
+
+```yaml
+actions:
+  install-nodejs:
+    command: nvm install 14
+    skip_in_envs:
+      # CI already has node installed
+      - ci
+```
+
+This action will run normally in all environments except `ci`, where it will print a warning and exit with 0:
+
+```shell
+$ ops install-nodejs
+Skipping action 'install-nodejs' in environment ci.
+$ echo $?
+0
+$
+```
