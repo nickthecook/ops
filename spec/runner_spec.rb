@@ -29,15 +29,20 @@ RSpec.describe Runner do
 		let(:action_double) do
 			instance_double(
 				Action,
+				name: action_name,
 				run: nil,
 				alias: action_alias,
 				to_s: "test",
 				load_secrets?: load_secrets,
-				config_valid?: true
+				config_valid?: true,
+				allowed_in_env?: allowed_in_env,
+				execute_in_env?: execute_in_env
 			)
 		end
 		let(:load_secrets) { false }
-		let(:expected_action_args) { [{ "command" => "bundle exec rspec", "alias" => "t" }, args] }
+		let(:expected_action_args) { [action_name, { "command" => "bundle exec rspec", "alias" => "t" }, args] }
+		let(:allowed_in_env) { true }
+		let(:execute_in_env) { true }
 
 		before do
 			allow(Action).to receive(:new).and_return(action_double)
@@ -205,6 +210,29 @@ RSpec.describe Runner do
 
 			it "executes the action string for the aliased action" do
 				expect(Action).to receive(:new).with(*expected_action_args)
+				result
+			end
+		end
+
+		context "when not allowed in env" do
+			let(:allowed_in_env) { false }
+
+			it "raises an error instead of running the action" do
+				expect(action_double).not_to receive(:run)
+				expect { result }.to raise_error(Runner::NotAllowedInEnvError)
+			end
+		end
+
+		context "when skipped in env" do
+			let(:execute_in_env) { false }
+
+			it "outputs a warning" do
+				expect(Output).to receive(:warn).with("Skipping action 'test' in environment 'test.")
+				result
+			end
+
+			it "does not run the action" do
+				expect(action_double).not_to receive(:run)
 				result
 			end
 		end

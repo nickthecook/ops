@@ -102,7 +102,7 @@ RSpec.describe Ops do
 
 			before do
 				allow(Runner).to receive(:new).and_return(runner_double)
-				allow(runner_double).to receive(:run).and_raise(Action::NotAllowedInEnvError)
+				allow(runner_double).to receive(:run).and_raise(Runner::NotAllowedInEnvError)
 			end
 
 			it "exits with the appropriate error code" do
@@ -111,7 +111,7 @@ RSpec.describe Ops do
 			end
 
 			it "outputs an error" do
-				expect(Output).to receive(:error).with("Error running action test: Action::NotAllowedInEnvError")
+				expect(Output).to receive(:error).with("Error running action test: Runner::NotAllowedInEnvError")
 				result
 			end
 		end

@@ -10,6 +10,7 @@ require 'environment'
 class Runner
 	class UnknownActionError < StandardError; end
 	class ActionConfigError < StandardError; end
+	class NotAllowedInEnvError < StandardError; end
 
 	def initialize(action_name, args, config, config_path)
 		@action_name = action_name
@@ -29,8 +30,8 @@ class Runner
 		raise ActionConfigError, action.config_errors.join("; ") unless action.config_valid?
 
 		do_before_action
-		Output.notice("Running '#{action}' in environment '#{ENV['environment']}'...")
-		action.run
+
+		run_action
 	end
 
 	def suggestions
@@ -70,6 +71,20 @@ class Runner
 
 	def forward
 		@forward ||= Forwards.new(@config, @args).get(@action_name)
+	end
+
+	def run_action
+		unless action.allowed_in_env?(Environment.environment)
+			raise NotAllowedInEnvError, "Action not allowed in #{Environment.environment} environment."
+		end
+
+		unless action.execute_in_env?(Environment.environment)
+			Output.warn("Skipping action '#{action.name}' in environment '#{Environment.environment}.")
+			return true
+		end
+
+		Output.notice("Running '#{action}' in environment '#{ENV['environment']}'...")
+		action.run
 	end
 
 	def action

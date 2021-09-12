@@ -3,7 +3,7 @@
 require 'action'
 
 RSpec.describe Action do
-	subject { described_class.new(action_config, args) }
+	subject { described_class.new("jackson", action_config, args) }
 	let(:action_config) { { "command" => "bundle exec rspec" } }
 	let(:args) { ["spec/file1.rb", "spec/file2.rb"] }
 
@@ -50,36 +50,10 @@ RSpec.describe Action do
 			include_examples "executes the command"
 		end
 
-		context "when in_envs does not include the current environment" do
-			let(:action_config) { { "command" => "bundle exec rspec", "in_envs" => %w[dev staging] } }
-
-			it "raises an error" do
-				expect { result }.to raise_error(Action::NotAllowedInEnvError)
-			end
-		end
-
 		context "when not_in_envs does not include the current environment" do
 			let(:action_config) { { "command" => "bundle exec rspec", "not_in_envs" => %w[dev production] } }
 
 			include_examples "executes the command"
-		end
-
-		context "when in_envs includes the current environment" do
-			let(:action_config) { { "command" => "bundle exec rspec", "not_in_envs" => %w[test dev] } }
-
-			it "raises an error" do
-				expect { result }.to raise_error(Action::NotAllowedInEnvError)
-			end
-		end
-
-		context "when both in_envs and not_in_envs include current environment" do
-			let(:action_config) do
-				{ "command" => "bundle exec rspec", "in_envs" => %w[test staging], "not_in_envs" => %w[test dev] }
-			end
-
-			it "raises an error" do
-				expect { result }.to raise_error(Action::NotAllowedInEnvError)
-			end
 		end
 
 		context "when shell expansion is option is false" do
@@ -156,6 +130,76 @@ RSpec.describe Action do
 
 		context "when load_secrets is not set" do
 			let(:load_secrets) { nil }
+
+			it "returns false" do
+				expect(result).to be false
+			end
+		end
+	end
+
+	describe "#allowed_in_env?" do
+		let(:result) { subject.allowed_in_env?(env) }
+		let(:env) { "production" }
+		let(:action_config) { { "command" => command } }
+		let(:command) { "bundle exec rspec" }
+
+		context "with no in_envs or not_in_envs configured" do
+			it "returns true" do
+				expect(result).to be true
+			end
+		end
+
+		context "when in_envs does not include the given environment" do
+			let(:action_config) { { "command" => command, "in_envs" => %w[dev staging] } }
+
+			it "returns false" do
+				expect(result).to be false
+			end
+		end
+
+		context "when in_envs includes the given environment" do
+			let(:action_config) { { "command" => command, "in_envs" => %w[staging production] } }
+
+			it "returns true" do
+				expect(result).to be true
+			end
+		end
+
+		context "when not_in_envs includes the given environment" do
+			let(:action_config) { { "command" => command, "not_in_envs" => %w[staging production] } }
+
+			it "returns false" do
+				expect(result).to be false
+			end
+		end
+
+		context "when in_envs and not_in_envs include the given environment" do
+			let(:action_config) do
+				{
+					"command" => command,
+					"in_envs" => %w[staging production],
+					"not_in_envs" => %w[staging production]
+				}
+			end
+
+			it "returns false" do
+				expect(result).to be false
+			end
+		end
+	end
+
+	describe "#execute_in_env?" do
+		let(:result) { subject.execute_in_env?(env) }
+		let(:env) { "production" }
+		let(:action_config) { { "command" => command } }
+		let(:command) { "bundle exec rspec" }
+
+		it "returns true" do
+			expect(result).to be true
+		end
+
+		context "when skip_in_envs includes the given environment" do
+			let(:action_config) { { "command" => command, "skip_in_envs" => %w[staging production] } }
 
 			it "returns false" do
 				expect(result).to be false

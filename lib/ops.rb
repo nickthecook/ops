@@ -59,7 +59,7 @@ class Ops
 	rescue AppConfig::ParsingError => e
 		Output.error("Error parsing app config: #{e}")
 		exit(ERROR_LOADING_APP_CONFIG_EXIT_CODE)
-	rescue Action::NotAllowedInEnvError => e
+	rescue Runner::NotAllowedInEnvError => e
 		Output.error("Error running action #{@action_name}: #{e}")
 		exit(ACTION_NOT_ALLOWED_IN_ENV_EXIT_CODE)
 	end

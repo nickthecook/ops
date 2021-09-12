@@ -37,7 +37,7 @@ class ActionList
 		@aliases = {}
 
 		actions_list.each do |name, config|
-			action = Action.new(config, @args)
+			action = Action.new(name, config, @args)
 
 			@actions[name] = action
 			@aliases[action.alias] = action
