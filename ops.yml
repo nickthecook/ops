@@ -8,6 +8,10 @@ dependencies:
 forwards:
   p: platforms
 actions:
+  interp:
+    command: "echo one: $1, two: $2, all: $*."
+  interp2:
+    command: "echo hello"
   test:
     command: environment=test bundle exec rspec --exclude-pattern 'spec/e2e/**/*_spec.rb'
     alias: t

@@ -7,6 +7,8 @@ require 'secrets'
 class Action
 	attr_reader :name
 
+	DEFAULT_SHELL = "/bin/bash"
+
 	def initialize(name, config, args)
 		@name = name
 		@config = config
@@ -15,14 +17,22 @@ class Action
 
 	def run
 		if perform_shell_expansion?
-			Kernel.exec(to_s)
+			Kernel.exec(exec_string)
 		else
 			Kernel.exec(*to_a)
 		end
 	end
 
 	def to_s
-		"#{command} #{@args.join(' ')}".strip
+		# fix "Running ..." output
+		@to_s ||= begin
+			# switch to arg lists
+			if append_args?
+				"#{shell} -c '#{command} #{@args.join(' ')}'"
+			else
+				"#{shell} -c '#{command}' '#{@name}' #{@args.join(' ')}"
+			end
+		end
 	end
 
 	def alias
@@ -72,6 +82,14 @@ class Action
 	end
 
 	private
+
+	def shell
+		ENV["SHELL"] || DEFAULT_SHELL
+	end
+
+	def append_args?
+		@append_args ||= !command.match?(/\$[0-9*@]+/)
+	end
 
 	def to_a
 		command.split(" ").reject(&:nil?) | @args
