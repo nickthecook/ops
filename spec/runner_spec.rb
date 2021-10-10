@@ -227,7 +227,7 @@ RSpec.describe Runner do
 			let(:execute_in_env) { false }
 
 			it "outputs a warning" do
-				expect(Output).to receive(:warn).with("Skipping action 'test' in environment 'test.")
+				expect(Output).to receive(:warn).with("Skipping action 'test' in environment test.")
 				result
 			end
 
