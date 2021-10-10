@@ -80,6 +80,20 @@ custom:
 - therefore, the command should be idempotent
 - it's also a good idea to prevent it from printing output unless it encounters an error, to keep the ops output clean
 
+#### `custom` dependencies with `up` and `down`
+
+If a `custom` dependency is given as a hash, you can define separate `up` and `down` actions that are run when `ops up` or `ops down` are called, respectively.
+
+```yaml
+dependencies:
+  custom:
+    - init file:
+        up: touch file
+        down: rm file
+```
+
+You can also define only the `down` command, which will execute on `ops down`; nothing will be executed by the dependency on `ops up`.
+
 ### `dir`
 
 E.g.:
