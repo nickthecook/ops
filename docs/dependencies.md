@@ -94,6 +94,26 @@ dependencies:
 
 You can also define only the `down` command, which will execute on `ops down`; nothing will be executed by the dependency on `ops up`.
 
+**Note that** the lines with `up` and `down` are indented past the beginning of the text `init file`. YAML considers `- ` in a list to be part of the indentation, and `up` and `down` must be _children_ of the name of the custom depdenceny, not siblings. Therefore, the following is **incorrect**:
+
+```yaml
+dependencies:
+  custom:
+    - init file:
+      up: touch file
+      down: rm file
+```
+
+as it results in a Hash like:
+
+```ruby
+{
+  "init file" => nil,
+  "up" => "touch file",
+  "down" => "touch file"
+}
+```
+
 ### `dir`
 
 E.g.:
