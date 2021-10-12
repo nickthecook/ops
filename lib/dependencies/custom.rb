@@ -31,11 +31,11 @@ module Dependencies
 		private
 
 		def up_command
-			@up_command ||= @definition.is_a?(Hash) ? @config["up"] : name
+			@up_command ||= @definition.is_a?(Hash) ? @config&.dig("up") : name
 		end
 
 		def down_command
-			@down_command ||= @config["down"]
+			@down_command ||= @config && @config&.dig("down") || nil
 		end
 
 		def parse_definition

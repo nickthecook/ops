@@ -38,6 +38,14 @@ RSpec.describe Dependencies::Custom do
 		end
 	end
 
+	shared_context "definition has no commands" do
+		# this is what happens if the user defines
+		# - some_custom_command
+		# - init file:
+		# - next_custom_command
+		let(:definition) { { "init file" => nil } }
+	end
+
 	shared_examples "meet executes" do |command|
 		it "executes the command" do
 			expect(subject).to receive(:execute).with(command)
@@ -45,9 +53,23 @@ RSpec.describe Dependencies::Custom do
 		end
 	end
 
+	shared_examples "meet does not execute" do
+		it "does not execute a command" do
+			expect(subject).not_to receive(:execute)
+			subject.meet
+		end
+	end
+
 	shared_examples "unmeet executes" do |command|
 		it "executes the command" do
 			expect(subject).to receive(:execute).with(command)
+			subject.unmeet
+		end
+	end
+
+	shared_examples "unmeet does not execute" do
+		it "does not execute a command" do
+			expect(subject).not_to receive(:execute)
 			subject.unmeet
 		end
 	end
@@ -75,11 +97,12 @@ RSpec.describe Dependencies::Custom do
 
 		context "when definition has only down defined" do
 			include_context "definition has only down"
+			include_examples "meet does not execute"
+		end
 
-			it "does not execute a command" do
-				expect(subject).not_to receive(:execute)
-				subject.meet
-			end
+		context "when definition has no commands defined" do
+			include_context "definition has no commands"
+			include_examples "meet does not execute"
 		end
 	end
 
@@ -106,6 +129,11 @@ RSpec.describe Dependencies::Custom do
 		context "when definition has only down defined" do
 			include_context "definition has only down"
 			include_examples "unmeet executes", "rm file"
+		end
+
+		context "when definition has no commands defined" do
+			include_context "definition has no commands"
+			include_examples "unmeet does not execute"
 		end
 	end
 end
