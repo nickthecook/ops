@@ -118,7 +118,7 @@ RSpec.describe Builtins::Up do
 				expect(Builtins::Helpers::DependencyHandler).to receive(:new).with(hash_including("custom" => anything))
 				result
 			end
-			
+
 			it "does not attempt to meet the apt dependencies" do
 				expect(Builtins::Helpers::DependencyHandler).to receive(:new).with(hash_not_including("apk" => anything))
 				result
