@@ -3,7 +3,6 @@
 
 require 'optparse'
 
-
 def usage
 	puts "Usage: ops [-f|--file <ops_yml>] action [<action args>"
 	puts "  ops_yml:      the config file to load instead of './ops.yml'"
