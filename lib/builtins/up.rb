@@ -16,21 +16,17 @@ module Builtins
 		end
 
 		def run
-			# TODO: return a success/failure status to the caller
 			meet_dependencies
+
+			return true unless fail_on_error?
+
+			deps_to_meet.all?(&:success?)
 		end
 
 		private
 
-		def dependency_handler
-			Helpers::DependencyHandler.new(deps_to_meet)
-		end
-
 		def meet_dependencies
-			dependency_handler.dependencies.each do |dependency|
-				# don't even output anything for dependencies that shouldn't be considered on this machine
-				next unless dependency&.should_meet?
-
+			deps_to_meet.each do |dependency|
 				Output.status("[#{dependency.type}] #{dependency.name}")
 
 				meet_dependency(dependency)
@@ -38,7 +34,6 @@ module Builtins
 		end
 
 		def meet_dependency(dependency)
-			# TODO: make this simpler, and factor in `should_meet?` above, too
 			dependency.meet if !dependency.met? || dependency.always_act?
 
 			if dependency.success?
@@ -51,9 +46,21 @@ module Builtins
 		end
 
 		def deps_to_meet
+			@deps_to_meet ||= dependency_handler.dependencies.select(&:should_meet?)
+		end
+
+		def dependency_handler
+			Helpers::DependencyHandler.new(dependencies)
+		end
+
+		def dependencies
 			return @config["dependencies"] if @args.empty?
 
-			return @config["dependencies"].select { |dep, names| @args.include?(dep) }
+			@config["dependencies"].select { |dep, _names| @args.include?(dep) }
+		end
+
+		def fail_on_error?
+			Options.get("up.fail_on_error") || false
 		end
 	end
 end

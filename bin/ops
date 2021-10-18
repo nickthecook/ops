@@ -28,4 +28,4 @@ end
 require_relative "../loader"
 require 'ops'
 
-Ops.new(ARGV, config_file: options[:file]).run
+exit Ops.new(ARGV, config_file: options[:file]).run

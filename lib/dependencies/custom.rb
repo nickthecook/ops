@@ -39,11 +39,9 @@ module Dependencies
 		end
 
 		def parse_definition
-			return @definition, {} if @definition.is_a?(String)
 			return @definition.first if @definition.is_a?(Hash)
 
-			raise CustomConfigError, "Expected custom dependency @definition '#{@definition}' " \
-				"to be a String or a Hash; received #{@definition.class}."
+			[@definition.to_s, {}]
 		end
 	end
 end

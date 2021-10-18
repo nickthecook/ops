@@ -1,0 +1,8 @@
+dependencies:
+  custom:
+    - true
+    - false
+    - true
+options:
+  up:
+    fail_on_error: true

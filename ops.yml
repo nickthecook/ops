@@ -4,6 +4,7 @@ dependencies:
     - rerun
     - ejson
   custom:
+    - false
     - bundle install --quiet
 forwards:
   p: platforms
@@ -93,3 +94,5 @@ options:
     log_filename: ./bglog
   apt:
     use_sudo: false
+  up:
+    fail_on_error: true

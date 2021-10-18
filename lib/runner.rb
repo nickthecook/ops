@@ -9,7 +9,9 @@ require 'environment'
 
 class Runner
 	class UnknownActionError < StandardError; end
+
 	class ActionConfigError < StandardError; end
+
 	class NotAllowedInEnvError < StandardError; end
 
 	def initialize(action_name, args, config, config_path)

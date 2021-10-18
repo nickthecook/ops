@@ -74,7 +74,7 @@ RSpec.describe Dependencies::Apt do
 
 		context "when options.apt.sudo is false" do
 			before do
-				Options.set({ "apt" => { "use_sudo" => false } })
+				allow(Options).to receive(:get).with("apt.use_sudo").and_return(false)
 			end
 
 			it "calls apt-get without sudo" do
@@ -87,7 +87,7 @@ RSpec.describe Dependencies::Apt do
 			let(:name) { "some-dependency 123" }
 
 			it "installs that version" do
-				expect(subject).to receive(:execute).with("apt-get install -y some-dependency=123")
+				expect(subject).to receive(:execute).with("sudo apt-get install -y some-dependency=123")
 				result
 			end
 		end

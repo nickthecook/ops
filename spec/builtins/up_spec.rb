@@ -33,14 +33,16 @@ RSpec.describe Builtins::Up do
 				meet: true,
 				should_meet?: should_meet?,
 				always_act?: always_act?,
-				success?: true,
+				success?: dependency_success,
 				name: "ridiculous_package",
-				type: "apk"
+				type: "apk",
+				output: "oops!"
 			)
 		end
 		let(:should_meet?) { true }
 		let(:always_act?) { false }
 		let(:met?) { false }
+		let(:dependency_success) { true }
 
 		before do
 			allow(Dependencies).to receive(:const_get).and_return(dependency_class_double)
@@ -73,6 +75,28 @@ RSpec.describe Builtins::Up do
 			result
 		end
 
+		it "returns true" do
+			expect(result).to be true
+		end
+
+		context "when dependencies fail" do
+			let(:dependency_success) { false }
+
+			it "returns true" do
+				expect(result).to be true
+			end
+
+			context "when configured to fail on error" do
+				before do
+					allow(Options).to receive(:get).with("up.fail_on_error").and_return(true)
+				end
+
+				it "returns false" do
+					expect(result).to be false
+				end
+			end
+		end
+
 		context "dependency already met" do
 			let(:met?) { true }
 
@@ -101,7 +125,7 @@ RSpec.describe Builtins::Up do
 			end
 		end
 
-		context "args are given" do
+		context "when args are given" do
 			let(:args) { %w[custom dir] }
 			let(:dep_handler_double) { instance_double(Builtins::Helpers::DependencyHandler, dependencies: []) }
 

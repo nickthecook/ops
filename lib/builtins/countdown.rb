@@ -25,6 +25,8 @@ module Builtins
 				timer_task.shutdown if task_complete?
 			end
 			Output.out("\rCountdown complete after #{sleep_seconds}s.")
+
+			true
 		end
 
 		private
