@@ -4,7 +4,6 @@ dependencies:
     - rerun
     - ejson
   custom:
-    - false
     - bundle install --quiet
 forwards:
   p: platforms
