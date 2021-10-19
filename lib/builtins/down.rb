@@ -3,56 +3,12 @@
 require 'require_all'
 require_rel "../dependencies"
 
-require 'builtin'
-require 'builtins/helpers/dependency_handler'
+require 'builtins/common/up_down'
 
 module Builtins
-	class Down < Builtin
-		class << self
-			def description
-				"stops dependent services listed in ops.yml"
-			end
-		end
-
-		def run
-			# TODO: return a success/failure status to the caller
-			unmeet_dependencies
-		end
-
-		private
-
-		def dependency_handler
-			Helpers::DependencyHandler.new(deps_to_meet)
-		end
-
-		def unmeet_dependencies
-			dependency_handler.dependencies.each do |dependency|
-				# don't even output anything for dependencies that shouldn't be considered on this machine
-				next unless dependency.should_meet?
-
-				Output.status("[#{dependency.type}] #{dependency.name}")
-
-				unmeet_dependency(dependency)
-			end
-		end
-
-		def unmeet_dependency(dependency)
-			# TODO: make this simpler, and factor in `should_meet?` above, too
-			dependency.unmeet if dependency.met? || dependency.always_act?
-
-			if dependency.success?
-				Output.okay
-			else
-				Output.failed
-				Output.error("Error unmeeting #{dependency.type} dependency '#{dependency.name}':")
-				Output.out(dependency.output)
-			end
-		end
-
-		def deps_to_meet
-			return @config["dependencies"] if @args.empty?
-
-			return @config["dependencies"].select { |dep, names| @args.include?(dep) }
+	class Down < Common::UpDown
+		def handle_dependency(dependency)
+			dependency.unmeet
 		end
 	end
 end
