@@ -25,6 +25,8 @@ module Builtins
 			Output.out("")
 			Output.out("Actions:")
 			Output.out("  #{actions.join("\n  ")}")
+
+			true
 		end
 
 		private

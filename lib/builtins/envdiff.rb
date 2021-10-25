@@ -20,6 +20,8 @@ module Builtins
 
 			output_key_summary(source_only_keys, source_env, dest_env) if source_only_keys.any?
 			output_key_summary(dest_only_keys, dest_env, source_env) if dest_only_keys.any?
+
+			true
 		end
 
 		private

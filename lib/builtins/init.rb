@@ -21,10 +21,14 @@ module Builtins
 		def run
 			if File.exist?(OPS_YML)
 				Output.error("File '#{OPS_YML} exists; not initializing.")
-			else
-				Output.out("Creating '#{OPS_YML} from template...")
-				FileUtils.cp(template_path, OPS_YML)
+
+				return false
 			end
+
+			Output.out("Creating '#{OPS_YML} from template...")
+			FileUtils.cp(template_path, OPS_YML)
+
+			true
 		rescue SystemCallError
 			Output.error(template_not_found_message)
 			exit 1

@@ -13,6 +13,8 @@ module Builtins
 
 		def run
 			Output.print(environment)
+
+			true
 		end
 
 		def environment

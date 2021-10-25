@@ -20,6 +20,7 @@ module Builtins
 				Kernel.exec(args.join(" "))
 			else
 				Output.error("Usage: ops exec '<command>'")
+				false
 			end
 		end
 	end

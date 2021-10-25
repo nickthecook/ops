@@ -13,6 +13,8 @@ module Builtins
 
 		def run
 			Output.out(::Version.version)
+
+			true
 		end
 	end
 end
