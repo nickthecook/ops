@@ -45,6 +45,7 @@ actions:
   push:
     command: gem push `ls -t ops_team-*.gem | head -n 1`
     description: pushes the latest local .gem file to rubygems.org
+    alias: i
   yank:
     command: gem yank ops_team
     description: yanks the gem with the given version from rubygems.org

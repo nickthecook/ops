@@ -40,7 +40,16 @@ class ActionList
 			action = Action.new(name, config, @args)
 
 			@actions[name] = action
-			@aliases[action.alias] = action
+			if action.alias
+				check_duplicate_alias(name, action)
+				@aliases[action.alias] = action
+			end
 		end
+	end
+
+	def check_duplicate_alias(name, action)
+		return if @aliases[action.alias].nil?
+
+		Output.warn("Duplicate alias '#{action.alias}' detected in action '#{name}'.")
 	end
 end

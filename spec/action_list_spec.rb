@@ -29,6 +29,22 @@ RSpec.describe ActionList do
 		it "returns the correct Action" do
 			expect(result.to_s).to eq("echo two arg_one arg_two")
 		end
+
+		context "when duplicate alias exists" do
+			before do
+				action_list.merge!({
+					"action_three" => {
+						"command" => "echo three",
+						"alias" => "two"
+					}
+				})
+			end
+
+			it "warns of duplicate alias" do
+				expect(Output).to receive(:warn).with("Duplicate alias 'two' detected in action 'action_three'.")
+				result
+			end
+		end
 	end
 
 	describe "#get_by_alias" do
