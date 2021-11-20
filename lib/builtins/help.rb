@@ -17,23 +17,24 @@ module Builtins
 		end
 
 		def run
-			Output.out("Builtins:")
-			Output.out("  #{builtins.join("\n  ")}")
-			Output.out("")
-			Output.out("Forwards:")
-			Output.out("  #{forwards.join("\n  ")}")
-			Output.out("")
-			Output.out("Actions:")
-			Output.out("  #{actions.join("\n  ")}")
+			list("Builtins", builtins) if builtins.any?
+			list("Forwards", forwards) if forwards.any?
+			list("Actions", actions) if actions.any?
 
 			true
 		end
 
 		private
 
+		def list(name, items)
+			Output.out("#{name}:")
+			Output.out("  #{items.join("\n  ")}")
+			Output.out("")
+		end
+
 		def forwards
 			Forwards.new(@config).forwards.map do |name, dir|
-				format("%<name>-#{NAME_WIDTH}s %<desc>s" , name: name.yellow, desc: "#{dir}")
+				format("%<name>-#{NAME_WIDTH}s %<desc>s", name: name.yellow, desc: dir.to_s)
 			end
 		end
 
