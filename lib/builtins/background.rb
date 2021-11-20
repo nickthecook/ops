@@ -23,6 +23,8 @@ module Builtins
 			end
 
 			Process.detach(subprocess)
+
+			true
 		end
 
 		private

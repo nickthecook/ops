@@ -7,7 +7,7 @@ require 'dependency'
 module Dependencies
 	class Apk < Dependency
 		def met?
-			execute("apk info | grep -q #{name}")
+			execute("apk info | grep -q '^#{name}'$")
 		end
 
 		def meet

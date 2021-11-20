@@ -22,11 +22,15 @@ RSpec.describe Builtins::Background do
 		before do
 			allow(File).to receive(:new).with("/tmp/ops_bglog_some_project", "w").and_return(file_double)
 			allow(subject).to receive(:fork) { |&block| spoon(&block) }
-			allow(Process).to receive(:detach).and_return(true)
+			allow(Process).to receive(:detach).and_return(nil)
 			allow($stdout).to receive(:reopen).and_return(true)
 			allow($stderr).to receive(:reopen).and_return(true)
 			allow(Ops).to receive(:new).and_return(ops_double)
 			allow(Ops).to receive(:project_name).and_return("some_project")
+		end
+
+		it "returns true" do
+			expect(result).to be true
 		end
 
 		it "sets permissions on the file so only the owner can access it" do
