@@ -6,7 +6,7 @@ RSpec.describe Environment do
 	subject { described_class.new(variables, config_path) }
 
 	let(:variables) { { "var1" => "val1", "var2" => "val2" } }
-	let(:config_path) { "some_dir/ops.yml"}
+	let(:config_path) { "some_dir/ops.yml" }
 
 	describe "#set_variables" do
 		let(:result) { subject.set_variables }

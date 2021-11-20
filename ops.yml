@@ -49,9 +49,9 @@ actions:
     command: gem yank ops_team
     description: yanks the gem with the given version from rubygems.org
   lint:
-    command: bundle exec rubocop --safe-auto-correct
+    command: bundle exec rubocop --auto-correct
     alias: l
-    description: runs rubocop with safe autocorrect
+    description: runs rubocop with autocorrect
   secrets:
     command: bin/print_secrets
     load_secrets: true

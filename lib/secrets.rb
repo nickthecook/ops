@@ -43,9 +43,7 @@ class Secrets < AppConfig
 	end
 
 	def file_contents
-		@file_contents ||= begin
-			@filename.match(/\.ejson$/) ? ejson_contents : super
-		end
+		@file_contents ||= @filename.match(/\.ejson$/) ? ejson_contents : super
 	end
 
 	def ejson_contents

@@ -2,7 +2,7 @@
 
 require 'dependency'
 
-require_relative "test_dependency.rb"
+require_relative 'test_dependency'
 
 RSpec.describe Dependency do
 	subject { described_class.new(name) }

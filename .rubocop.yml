@@ -50,3 +50,5 @@ Metrics/PerceivedComplexity:
   Max: 8
 Metrics/ClassLength:
   Max: 120
+Layout/EndAlignment:
+  EnforcedStyleAlignWith: variable

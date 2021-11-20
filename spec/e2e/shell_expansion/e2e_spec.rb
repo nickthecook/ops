@@ -23,6 +23,6 @@ RSpec.describe "forwards" do
 	end
 
 	it "does not perform shell expansion when disabled in config" do
-		expect(@output2).to match(/\n\"hello\"\n/)
+		expect(@output2).to match(/\n"hello"\n/)
 	end
 end

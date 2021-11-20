@@ -4,6 +4,7 @@ require 'output'
 
 class HookHandler
 	class HookConfigError < StandardError; end
+
 	class HookExecError < StandardError; end
 
 	def initialize(config)

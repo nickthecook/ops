@@ -101,13 +101,11 @@ class Ops
 	end
 
 	def config
-		@config ||= begin
-			if config_file_exists?
-				parsed_config_contents
-			else
-				Output.warn("File '#{@config_file}' does not exist.") unless @action_name == "init"
-				{}
-			end
+		@config ||= if config_file_exists?
+			parsed_config_contents
+		else
+			Output.warn("File '#{@config_file}' does not exist.") unless @action_name == "init"
+			{}
 		end
 	end
 
