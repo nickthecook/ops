@@ -9,12 +9,16 @@ actions:
     alias: t
   test-watch:
     command: rerun -x ops test
-    alias: tw
+    aliases: [tw, rw]
 ```
 
 This snippet shows two actions: `test` and `test-watch`. When `ops test` is run, `ops` will run `bundle exec rspec`.
 
 Note that `test-watch` actually uses rerun to run `ops`; since `ops` is just an executable in your `$PATH`, it can be used in a `command` itself. This technique can be used to avoid duplicating parts of some commands, e.g. the `bundle exec rspec` in `test`.
+
+Multiple aliases can be configured, as in the second action in the example. In this case, `ops tw` and `ops rw` (in case some devs think of it as `rspec-watch`) will both run the `test-watch` action.
+
+`alias` and `aliases` can both be configured; in this case the alias and the aliases will all be valid ways to refer to that action. However, for readability, it's not recommended to set both.
 
 ### Aliases
 

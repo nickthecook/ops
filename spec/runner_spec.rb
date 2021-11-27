@@ -32,6 +32,7 @@ RSpec.describe Runner do
 				name: action_name,
 				run: nil,
 				alias: action_alias,
+				aliases: [action_alias],
 				to_s: "test",
 				load_secrets?: load_secrets,
 				config_valid?: true,

@@ -206,4 +206,73 @@ RSpec.describe Action do
 			end
 		end
 	end
+
+	describe "#alias" do
+		let(:result) { subject.alias }
+		let(:action_config) do
+			{
+				"command" => "bundle exec rspec",
+				"alias" => "t"
+			}
+		end
+
+		it "returns the configured alias" do
+			expect(result).to eq("t")
+		end
+
+		context "when only aliases is set" do
+			let(:action_config) do
+				{
+					"command" => "bundle exec rspec",
+					"aliases" => %w[t rspec]
+				}
+			end
+
+			it "returns the first alias" do
+				expect(result).to eq("t")
+			end
+		end
+	end
+
+	describe "#aliases" do
+		let(:result) { subject.aliases }
+		let(:action_config) do
+			{
+				"command" => "bundle exec rspec",
+				"aliases" => %w[t rspec]
+			}
+		end
+
+		it "returns the list of aliases" do
+			expect(result).to contain_exactly("t", "rspec")
+		end
+
+		context "when alias and aliases are not set" do
+			let(:action_config) do
+				{ "command" => "bundle exec rspec" }
+			end
+
+			it "does not raise an error" do
+				expect { result }.not_to raise_error
+			end
+
+			it "returns an empty list" do
+				expect(result).to be_empty
+			end
+		end
+
+		context "when alias and aliases are set" do
+			let(:action_config) do
+				{
+					"command" => "bundle exec rspec",
+					"alias" => "t",
+					"aliases" => %w[test rspec]
+				}
+			end
+
+			it "returns the combined list" do
+				expect(result).to contain_exactly("t", "test", "rspec")
+			end
+		end
+	end
 end

@@ -26,7 +26,13 @@ class Action
 	end
 
 	def alias
-		@config["alias"]
+		@config["alias"] || @config["aliases"]&.first
+	end
+
+	def aliases
+		return [@config["alias"]].compact unless @config["aliases"]
+
+		([@config["alias"]] + @config["aliases"]).compact
 	end
 
 	def command

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'action'
+
 class ActionList
 	class UnknownActionError < StandardError; end
 
@@ -40,16 +42,16 @@ class ActionList
 			action = Action.new(name, config, @args)
 
 			@actions[name] = action
-			if action.alias
-				check_duplicate_alias(name, action)
-				@aliases[action.alias] = action
+			action.aliases.each do |aliaz|
+				check_duplicate_alias(name, aliaz)
+				@aliases[aliaz] = action
 			end
 		end
 	end
 
-	def check_duplicate_alias(name, action)
-		return if @aliases[action.alias].nil?
+	def check_duplicate_alias(name, aliaz)
+		return if @aliases[aliaz].nil?
 
-		Output.warn("Duplicate alias '#{action.alias}' detected in action '#{name}'.")
+		Output.warn("Duplicate alias '#{aliaz}' detected in action '#{name}'.")
 	end
 end
