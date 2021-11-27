@@ -2,6 +2,10 @@
 
 require 'open3'
 
+OUTPUT_IDX = 0
+OUTPUT_FILE_IDX = 1
+EXIT_CODE_IDX = 2
+
 shared_context "ops e2e" do
 	ENV["OPS_RUNNING"] = nil
 

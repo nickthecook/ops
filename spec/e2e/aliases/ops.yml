@@ -1,0 +1,13 @@
+actions:
+  test:
+    command: echo test
+    alias: t
+  test-watch:
+    command: echo test-watch
+    alias: tw
+    aliases: [rw]
+  test-e2e:
+    command: echo test-e2e
+    aliases:
+      - te
+      - e2e
