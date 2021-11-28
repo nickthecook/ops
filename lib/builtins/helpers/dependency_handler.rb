@@ -18,7 +18,7 @@ module Builtins
 
 				@dependency_set.map do |type, names|
 					dependencies_for(type, names)
-				end.flatten
+				end.flatten.compact
 			end
 
 			def dependencies_for(type, names)
