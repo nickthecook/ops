@@ -3,8 +3,6 @@ dependencies:
     - bundler =2.2.22
     - rerun
     - ejson
-  pip:
-    - numpy
   custom:
     - bundle install --quiet
 forwards:
