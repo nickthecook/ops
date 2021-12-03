@@ -138,6 +138,7 @@ dependencies:
 ```
 
 This dependency ensures that the given Python package is installed.
+
 #### Options
 
 The command used to run `pip` can be configured. By default, it is `python3 -m pip`.
