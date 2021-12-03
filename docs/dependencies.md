@@ -127,6 +127,27 @@ dependencies:
 
 This dependency will ensure the given directory is created when you run `ops up`. This is handy for directories your app needs, but which contain no checked-in files, since `git` won't save empty directories.
 
+### `pip`
+
+E.g.:
+
+```yaml
+dependencies:
+  pip:
+    - requests
+```
+
+This dependency ensures that the given Python package is installed.
+#### Options
+
+The command used to run `pip` can be configured. By default, it is `python3 -m pip`.
+
+```yaml
+options:
+  pip:
+    command: pip3
+```
+
 ### `sshkey`
 
 E.g.:
