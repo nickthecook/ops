@@ -92,6 +92,21 @@ $ ops version
 $
 ```
 
+### Shell Auto Completion
+
+To enable ops' shell autocompletion, the `ops completion` command can be provided a shell flavor and it will output an add-on to that shell's configuration file:
+
+#### Bash Example
+```shell
+$ ops completion bash >> ~/.bashrc
+$ source ~/.bashrc
+```
+#### Zsh Example
+```shell
+$ ops completion zsh >> ~/.zshrc
+$ source ~/.zshrc
+```
+
 ### Running
 
 ```shell

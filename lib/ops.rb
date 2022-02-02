@@ -39,6 +39,8 @@ class Ops
 	# rubocop:disable Metrics/MethodLength
 	# better to have all the rescues in one place
 	def run
+		return completion_list if ENV["OPS_AUTO_COMPLETE"]
+
 		# "return" is here to allow specs to stub "exit" without executing everything after it
 		return exit(INVALID_SYNTAX_EXIT_CODE) unless syntax_valid?
 		return exit(MIN_VERSION_NOT_MET_EXIT_CODE) unless min_version_met?
@@ -64,6 +66,12 @@ class Ops
 	# rubocop:enable Metrics/MethodLength
 
 	private
+
+	def completion_list
+		require 'builtins/completion'
+
+		Builtins::Completion.new(@args, @config).completion
+	end
 
 	def syntax_valid?
 		return true unless @action_name.nil?
