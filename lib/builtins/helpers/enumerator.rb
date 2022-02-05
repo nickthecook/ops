@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'require_all'
-require_rel ".."
+require_rel '..'
 
 module Builtins
 	module Helpers

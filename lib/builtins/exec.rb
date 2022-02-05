@@ -17,9 +17,11 @@ module Builtins
 			Secrets.load if Options.get("exec.load_secrets")
 
 			if args.any?
+				Output.error(Profiler.summary) if Profiler.summary
 				Kernel.exec(args.join(" "))
 			else
 				Output.error("Usage: ops exec '<command>'")
+
 				false
 			end
 		end

@@ -1,14 +1,17 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require 'yaml'
-require 'require_all'
-require "rubygems"
+Profiler.measure("ops:requires_external") do
+	require 'yaml'
+	require "rubygems"
+end
 
-require 'output'
-require 'options'
-require 'version'
-require 'runner'
+Profiler.measure("ops:requires_internal") do
+	require 'output'
+	require 'options'
+	require 'version'
+	require 'runner'
+end
 
 # executes commands based on local `ops.yml`
 class Ops
@@ -43,7 +46,9 @@ class Ops
 		return exit(INVALID_SYNTAX_EXIT_CODE) unless syntax_valid?
 		return exit(MIN_VERSION_NOT_MET_EXIT_CODE) unless min_version_met?
 
-		runner.run
+		Profiler.measure("runner:run") do
+			runner.run
+		end
 	rescue Runner::UnknownActionError => e
 		Output.error(e.to_s)
 		Output.out(RECOMMEND_HELP_TEXT) unless print_did_you_mean

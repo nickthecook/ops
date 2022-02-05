@@ -14,6 +14,8 @@ class Action
 	end
 
 	def run
+		Output.error(Profiler.summary) if Profiler.summary
+
 		if perform_shell_expansion?
 			Kernel.exec(to_s)
 		else

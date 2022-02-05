@@ -22,3 +22,5 @@ end
 
 require 'output'
 Output.silence
+
+require 'profiler'

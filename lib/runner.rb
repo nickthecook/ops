@@ -65,7 +65,12 @@ class Runner
 	end
 
 	def builtin
-		@builtin ||= Builtin.class_for(name: @action_name)&.new(@args, @config)
+		Profiler.measure("runner:require_builtin") do
+			@builtin ||= Builtin.class_for(name: @action_name)&.new(@args, @config)
+		end
+	rescue NameError
+		# this means there isn't a builtin with that name in that module
+		nil
 	end
 
 	def builtin_names

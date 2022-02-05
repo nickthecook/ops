@@ -1,6 +1,9 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+start_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+
+require_relative '../lib/profiler'
 require 'optparse'
 
 def usage
@@ -12,6 +15,8 @@ def usage
 end
 
 options = {}
+status = -1
+
 while ARGV[0]&.match(/^-/)
 	opt = ARGV.shift
 	case opt
@@ -24,7 +29,15 @@ while ARGV[0]&.match(/^-/)
 	end
 end
 
-require_relative "../loader"
-require 'ops'
+Profiler.measure("bin:require") do
+	require_relative "../loader"
+	require 'ops'
+end
 
-exit Ops.new(ARGV, config_file: options[:file]).run
+Profiler.measure("bin:run") do
+	status = Ops.new(ARGV, config_file: options[:file]).run
+end
+
+Profiler.add_measurement("bin:all", Process.clock_gettime(Process::CLOCK_MONOTONIC) - start_time)
+Output.error(Profiler.summary) if Profiler.summary
+exit status
