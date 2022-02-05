@@ -10,8 +10,6 @@ require 'options'
 require 'version'
 require 'runner'
 
-require_rel "builtins"
-
 # executes commands based on local `ops.yml`
 class Ops
 	INVALID_SYNTAX_EXIT_CODE = 64

@@ -146,6 +146,7 @@ RSpec.describe Runner do
 
 			before do
 				allow(Builtins).to receive(:const_get).and_return(builtin_class_double)
+				allow(Builtin).to receive(:class_for).with(name: "test").and_return(builtin_class_double)
 			end
 
 			it "uses Builtin to get the builtin class" do

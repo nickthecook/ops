@@ -6,6 +6,10 @@ require 'action_list'
 require 'action_suggester'
 require 'forwards'
 require 'environment'
+require 'builtin'
+
+module Builtins
+end
 
 class Runner
 	class UnknownActionError < StandardError; end
@@ -61,10 +65,7 @@ class Runner
 	end
 
 	def builtin
-		@builtin ||= Builtin.class_for(name: @action_name).new(@args, @config)
-	rescue NameError
-		# this means there isn't a builtin with that name in that module
-		nil
+		@builtin ||= Builtin.class_for(name: @action_name)&.new(@args, @config)
 	end
 
 	def builtin_names
