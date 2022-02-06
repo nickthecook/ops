@@ -1,3 +1,9 @@
+## 1.14.1
+
+#### Fix `ops help` output
+
+`ops help` was broken in 1.14.0, and listed only one builtin: 'help' itself. This was due to performance optimizations in 1.14.0 not eager loading all builtin classes.
+
 ## 1.14.0
 
 #### Reduce overhead time of ops by 50%
