@@ -14,13 +14,24 @@ class Builtin
 
 		def class_for(name:)
 			file = file_for(name: name)
-			return nil unless File.exist?(file)
+			if File.exist?(file)
+				require file
+			else
+				require 'require_all'
+				require_rel "builtins"
+			end
 
-			require file
-			Builtins.const_get(builtin_class_name_for(name: name), false)
+			get_const(name: builtin_class_name_for(name: name))
 		end
 
 		private
+
+		def get_const(name:)
+			Builtins.const_get(name)
+		rescue NameError
+			# no such constant
+			nil
+		end
 
 		def file_for(name:)
 			File.join(File.dirname(__FILE__), BUILTIN_DIR, "#{name}.rb")
