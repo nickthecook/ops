@@ -8,7 +8,8 @@ COMMANDS = [
 	"version",
 	"env",
 	"help",
-	"exec echo hi"
+	"exec echo hi",
+	"env OPS_AUTO_COMPLETE=true"
 ].freeze
 
 class Runner
@@ -93,7 +94,10 @@ class Benchmark
 end
 
 class Benchmarker
-	COLOUR_THRESHOLD = 0.1
+	CLR_THRESHOLD = 0.1
+	CLR_WIDTH = 14
+	COL_WIDTH = 24
+	CMD_WIDTH = 30
 
 	def initialize(*executables)
 		@executables = executables
@@ -102,9 +106,13 @@ class Benchmarker
 	def summary
 		result_pairs = results.first.zip(results.last)
 
-		output = [header]
+		output = header
 		COMMANDS.length.times do |index|
-			output << format("%20s %20s %34s", COMMANDS[index], *result_strings(result_pairs[index]))
+			output << format(
+				"%#{CMD_WIDTH + CLR_WIDTH}s %#{COL_WIDTH}s %#{COL_WIDTH + CLR_WIDTH}s",
+				COMMANDS[index].white,
+				*result_strings(result_pairs[index])
+			)
 		end
 
 		output.join("\n")
@@ -127,18 +135,23 @@ class Benchmarker
 	end
 
 	def header
-		format("%20s %20s %20s", "", header_for(benchmarks.first), header_for(benchmarks.last))
-	end
-
-	def header_for(benchmark)
-		"#{benchmark.executable} #{benchmark.version}"
+		[
+			format(
+				"%#{CMD_WIDTH}s %#{COL_WIDTH + CLR_WIDTH}s %#{COL_WIDTH + CLR_WIDTH}s",
+				"", *benchmarks.map { |b| b.executable.white }
+			),
+			format(
+				"%#{CMD_WIDTH}s %#{COL_WIDTH + CLR_WIDTH}s %#{COL_WIDTH + CLR_WIDTH}s",
+				"", *benchmarks.map { |b| b.version.white }
+			)
+		]
 	end
 
 	def result_strings(pair)
-		colour = :white
-		if pair.last < (pair.first * (1 - COLOUR_THRESHOLD))
+		colour = :blue
+		if pair.last < (pair.first * (1 - CLR_THRESHOLD))
 			colour = :green
-		elsif pair.last < (pair.first * COLOUR_THRESHOLD)
+		elsif pair.last < (pair.first * CLR_THRESHOLD)
 			colour = :red
 		end
 
