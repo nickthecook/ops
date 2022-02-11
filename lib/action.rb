@@ -9,7 +9,7 @@ class Action
 
 	def initialize(name, config, args)
 		@name = name
-		@config = config
+		@config = config || {}
 		@args = args
 	end
 

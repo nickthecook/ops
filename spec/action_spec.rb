@@ -73,6 +73,14 @@ RSpec.describe Action do
 				result
 			end
 		end
+
+		context "when action config is nil" do
+			let(:action_config) { nil }
+
+			it "does not raise" do
+				expect { result }.not_to raise_exception
+			end
+		end
 	end
 
 	shared_context "missing command" do
@@ -272,6 +280,18 @@ RSpec.describe Action do
 
 			it "returns the combined list" do
 				expect(result).to contain_exactly("t", "test", "rspec")
+			end
+		end
+
+		context "when action config is nil" do
+			let(:action_config) { nil }
+
+			it "does not raise" do
+				expect { result }.not_to raise_exception
+			end
+
+			it "returns an empty list" do
+				expect(result).to be_empty
 			end
 		end
 	end
