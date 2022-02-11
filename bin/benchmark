@@ -1,0 +1,154 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'json'
+require 'colorize'
+
+COMMANDS = [
+	"version",
+	"env",
+	"help",
+	"exec echo hi"
+].freeze
+
+class Runner
+	RUNS = 10
+	WARMUPS = 3
+
+	attr_reader :command, :version
+
+	def initialize(command, version)
+		@command = command
+		@version = version
+	end
+
+	def run
+		unless File.exist?(json_file)
+			system(
+				"hyperfine -m #{RUNS} \
+				--export-json #{json_file} \
+				--export-markdown #{markdown_file} \
+				--warmup #{WARMUPS} \
+				'#{@command}'"
+			)
+		end
+
+		results
+	end
+
+	def results
+		# for now, only ever one result, since we're not having hyperfine vary params
+		@results ||= JSON.parse(results_data)["results"].first
+	end
+
+	def method_missing(method, *_, &_)
+		results[method.to_s]
+	end
+
+	def respond_to_missing?(method, _ = false)
+		results&.keys&.include?(method.to_s)
+	end
+
+	def json_file
+		@json_file ||= "#{output_file}.json"
+	end
+
+	def markdown_file
+		@markdown_file ||= "#{output_file}.md"
+	end
+
+	private
+
+	def output_file
+		"benchmark/#{@version}-#{@command.gsub(" ", "_").gsub("/", "-")}"
+	end
+
+	def results_data
+		File.read(json_file)
+	end
+end
+
+class Benchmark
+	attr_reader :executable
+
+	def initialize(executable)
+		@executable = executable
+	end
+
+	def run
+		runners.map(&:run)
+
+		runners.map(&:mean)
+	end
+
+	def version
+		@version ||= `#{@executable} version`.chomp
+	end
+
+	def runners
+		@runners ||= COMMANDS.map do |cmd|
+			Runner.new("#{@executable} #{cmd}", version)
+		end
+	end
+end
+
+class Benchmarker
+	COLOUR_THRESHOLD = 0.1
+
+	def initialize(*executables)
+		@executables = executables
+	end
+
+	def summary
+		result_pairs = results.first.zip(results.last)
+
+		output = [header]
+		COMMANDS.length.times do |index|
+			output << format("%20s %20s %34s", COMMANDS[index], *result_strings(result_pairs[index]))
+		end
+
+		output.join("\n")
+	end
+
+	def benchmarks
+		@benchmarks ||= @executables.map do |executable|
+			Benchmark.new(executable)
+		end
+	end
+
+	def results
+		@results ||= benchmarks.map(&:run)
+	end
+
+	private
+
+	def result_pairs
+		@result_pairs ||= results.first.zip(results.last)
+	end
+
+	def header
+		format("%20s %20s %20s", "", header_for(benchmarks.first), header_for(benchmarks.last))
+	end
+
+	def header_for(benchmark)
+		"#{benchmark.executable} #{benchmark.version}"
+	end
+
+	def result_strings(pair)
+		colour = :white
+		if pair.last < (pair.first * (1 - COLOUR_THRESHOLD))
+			colour = :green
+		elsif pair.last < (pair.first * COLOUR_THRESHOLD)
+			colour = :red
+		end
+
+		outputs = pair.map { |number| format("%02.3f", number) }
+
+		outputs[1] = outputs.last.send(colour)
+
+		outputs
+	end
+end
+
+`rm -f benchmark/*` unless %w[--skip -s].include?(ARGV[0])
+puts Benchmarker.new("ops", "bin/ops").summary

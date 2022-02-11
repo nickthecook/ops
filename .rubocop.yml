@@ -52,3 +52,7 @@ Metrics/ClassLength:
   Max: 120
 Layout/EndAlignment:
   EnforcedStyleAlignWith: variable
+Style/FormatStringToken:
+  Enabled: false
+Style/TrailingCommaInArrayLiteral:
+  Enabled: false
