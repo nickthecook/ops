@@ -114,6 +114,7 @@ class Benchmarker
 				*result_strings(result_pairs[index])
 			)
 		end
+		output << summary_numbers
 
 		output.join("\n")
 	end
@@ -160,6 +161,23 @@ class Benchmarker
 		outputs[1] = outputs.last.send(colour)
 
 		outputs
+	end
+
+	def summary_numbers
+		format(
+			"%#{CMD_WIDTH + CLR_WIDTH}s %#{COL_WIDTH}s %#{COL_WIDTH + CLR_WIDTH}s",
+			"Avg difference".white, "-", avg_diff_string.white
+		)
+	end
+
+	def avg_diff_string
+		format("%02.3f", avg_diff)
+	end
+
+	def avg_diff
+		result_pairs.each_with_object([]) do |pair, diff|
+			diff << pair.first - pair.last
+		end.sum / result_pairs.length
 	end
 end
 
