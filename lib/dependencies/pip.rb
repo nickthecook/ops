@@ -2,9 +2,6 @@
 
 require 'English'
 
-require 'dependency'
-require 'options'
-
 module Dependencies
 	class Pip < Dependency
 		DEFAULT_PIP = "python3 -m pip"

@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require 'dependency'
-require 'options'
-
 module Dependencies
 	class Gem < VersionedDependency
 		def met?

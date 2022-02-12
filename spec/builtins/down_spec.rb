@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'builtins/down'
-
 RSpec.describe Builtins::Down do
 	subject { described_class.new(args, config) }
 

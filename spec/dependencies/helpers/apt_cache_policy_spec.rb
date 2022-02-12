@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'dependencies/helpers/apt_cache_policy'
-
 RSpec.describe Dependencies::Helpers::AptCachePolicy do
 	subject { described_class.new(package_name) }
 

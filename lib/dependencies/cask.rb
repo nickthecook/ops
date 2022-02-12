@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'dependencies/brew'
-
 module Dependencies
 	class Cask < Brew
 		def met?

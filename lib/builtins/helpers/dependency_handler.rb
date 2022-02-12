@@ -1,11 +1,5 @@
 # frozen_string_literal: true
 
-require 'builtin'
-require 'output'
-
-require 'require_all'
-require_rel "../../dependencies"
-
 module Builtins
 	module Helpers
 		class DependencyHandler

@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-require 'builtins/envdiff'
-
-RSpec.describe Builtins::EnvDiff do
+RSpec.describe Builtins::Envdiff do
 	subject { described_class.new(args, config) }
 
 	let(:args) { %w[dev staging] }

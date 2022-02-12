@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-require 'version'
-require 'secrets'
-require 'app_config'
-
 class Environment
 	class << self
 		def environment

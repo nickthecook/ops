@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'builtins/init'
-
 RSpec.describe Builtins::Init do
 	subject { described_class.new(args, config) }
 

@@ -3,9 +3,6 @@
 require 'open3'
 require 'English'
 
-require 'output'
-require 'executor'
-
 class Dependency
 	DESCRIPTION_TYPE_WIDTH = 8
 

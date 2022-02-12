@@ -3,10 +3,6 @@
 require 'json'
 require 'open3'
 
-require 'output'
-require 'app_config'
-require 'options'
-
 class Secrets < AppConfig
 	class << self
 		def default_filename

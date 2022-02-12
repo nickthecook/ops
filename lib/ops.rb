@@ -7,10 +7,6 @@ Profiler.measure("ops:requires_external") do
 end
 
 Profiler.measure("ops:requires_internal") do
-	require 'output'
-	require 'options'
-	require 'version'
-	require 'runner'
 end
 
 # executes commands based on local `ops.yml`

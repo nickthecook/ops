@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'action_suggester'
-
 RSpec.describe ActionSuggester do
 	subject { described_class.new(words) }
 

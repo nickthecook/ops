@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require 'dependencies/versioned_dependency'
-require 'dependencies/helpers/apt_cache_policy'
-
 module Dependencies
 	class Apt < VersionedDependency
 		def met?

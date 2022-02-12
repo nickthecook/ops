@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-require 'builtin'
-
 module Builtins
-	class EnvDiff < Builtin
+	class Envdiff < Builtin
 		class << self
 			def description
 				"compares keys present in config and secrets between different environments"
@@ -126,6 +124,4 @@ module Builtins
 			Options.get("envdiff.ignored_keys") || []
 		end
 	end
-
-	Envdiff = EnvDiff
 end

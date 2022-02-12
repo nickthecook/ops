@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'dependencies/dir'
-
 RSpec.describe Dependencies::Dir do
 	subject { described_class.new(name) }
 	let(:name) { "some-directory" }

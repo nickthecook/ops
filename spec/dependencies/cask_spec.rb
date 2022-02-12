@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'dependencies/cask'
-
 RSpec.describe Dependencies::Cask do
 	subject { described_class.new(name) }
 	let(:name) { "some-dependency" }

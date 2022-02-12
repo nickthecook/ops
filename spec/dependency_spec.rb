@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'dependency'
-
 require_relative 'test_dependency'
 
 RSpec.describe Dependency do

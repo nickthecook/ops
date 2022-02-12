@@ -1,10 +1,5 @@
 # frozen_string_literal: true
 
-require 'builtin'
-require 'output'
-require 'secrets'
-require 'options'
-
 module Builtins
 	class Exec < Builtin
 		class << self

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'builtins/up'
-
 module Builtins
 	module Common
 		class Sideways < UpDown

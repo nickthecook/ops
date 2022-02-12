@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'dependencies/apt'
-
 RSpec.describe Dependencies::Apt do
 	subject { described_class.new(name) }
 

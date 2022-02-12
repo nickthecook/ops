@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'environment'
-
 RSpec.describe Environment do
 	subject { described_class.new(variables, config_path) }
 

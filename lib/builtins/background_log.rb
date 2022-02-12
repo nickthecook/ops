@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require 'builtin'
-require 'builtins/background'
-
 module Builtins
 	class BackgroundLog < Builtin
 		class << self

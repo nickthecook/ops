@@ -1,12 +1,5 @@
 # frozen_string_literal: true
 
-require 'require_all'
-require_rel "../../dependencies"
-
-require 'builtin'
-require 'builtins/helpers/dependency_handler'
-require 'output'
-
 module Builtins
 	module Common
 		class UpDown < Builtin

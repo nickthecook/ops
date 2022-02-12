@@ -1,13 +1,5 @@
 # frozen_string_literal: true
 
-require 'hook_handler'
-require 'action'
-require 'action_list'
-require 'action_suggester'
-require 'forwards'
-require 'environment'
-require 'builtin'
-
 module Builtins
 end
 

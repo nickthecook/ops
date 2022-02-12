@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'hook_handler'
-
 RSpec.describe(HookHandler) do
 	subject { described_class.new(config) }
 

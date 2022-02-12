@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'action'
-
 class ActionList
 	class UnknownActionError < StandardError; end
 

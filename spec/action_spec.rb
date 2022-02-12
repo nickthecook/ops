@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'action'
-
 RSpec.describe Action do
 	subject { described_class.new("jackson", action_config, args) }
 	let(:action_config) { { "command" => "bundle exec rspec" } }

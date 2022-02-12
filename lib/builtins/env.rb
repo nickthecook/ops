@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require 'builtin'
-require 'output'
-
 module Builtins
 	class Env < Builtin
 		class << self

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'dependencies/custom'
-
 RSpec.describe Dependencies::Custom do
 	subject { described_class.new(definition) }
 

@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require "output"
-require "version"
-
 module Builtins
 	class Version < Builtin
 		class << self

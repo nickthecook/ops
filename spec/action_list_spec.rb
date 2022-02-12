@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'action_list'
-
 RSpec.describe ActionList do
 	subject { described_class.new(action_list, args) }
 	let(:action_list) do

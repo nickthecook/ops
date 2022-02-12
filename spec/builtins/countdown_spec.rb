@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "builtins/countdown"
-
 RSpec.describe Builtins::Countdown do
 	subject { described_class.new(args, config) }
 	let(:args) { [3] }

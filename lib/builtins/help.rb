@@ -2,10 +2,6 @@
 
 require 'colorize'
 
-require 'builtin'
-require 'forwards'
-require 'builtins/helpers/enumerator'
-
 module Builtins
 	class Help < Builtin
 		NAME_WIDTH = 40

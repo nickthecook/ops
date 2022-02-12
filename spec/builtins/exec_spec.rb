@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'builtins/exec'
-
 RSpec.describe Builtins::Exec do
 	subject { described_class.new(args, config) }
 

@@ -2,8 +2,6 @@
 
 require 'English'
 
-require 'dependency'
-
 module Dependencies
 	class Apk < Dependency
 		def met?

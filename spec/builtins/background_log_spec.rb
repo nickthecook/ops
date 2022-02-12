@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'builtins/background_log'
-
 RSpec.describe Builtins::BackgroundLog do
 	subject { described_class.new(args, config) }
 	let(:args) { [] }

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'secrets'
-
 RSpec.describe Secrets do
 	let(:secrets) do
 		{

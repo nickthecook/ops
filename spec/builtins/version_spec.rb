@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "builtins/version"
-
 RSpec.describe Builtins::Version do
 	subject { described_class.new(args, config) }
 	let(:args) { [] }

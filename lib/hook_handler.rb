@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require 'output'
-require 'executor'
-
 class HookHandler
 	class HookConfigError < StandardError; end
 

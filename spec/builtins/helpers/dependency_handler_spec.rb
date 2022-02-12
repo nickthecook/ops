@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'builtins/helpers/dependency_handler'
-
 RSpec.describe Builtins::Helpers::DependencyHandler do
 	subject { described_class.new(dependency_set) }
 

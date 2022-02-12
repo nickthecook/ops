@@ -14,6 +14,7 @@ gem "io-console"
 gem "json", ">= 2.3.0"
 gem "net-ssh"
 gem "require_all"
+gem "zeitwerk"
 
 group :test do
 	gem "fuubar"

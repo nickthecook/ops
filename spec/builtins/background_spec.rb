@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "builtins/background"
-
 RSpec.describe Builtins::Background do
 	subject { described_class.new(args, config) }
 	let(:args) { [] }

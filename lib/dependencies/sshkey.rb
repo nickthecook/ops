@@ -2,8 +2,6 @@
 
 require 'net/ssh'
 
-require 'dependency'
-
 module Dependencies
 	class Sshkey < Dependency
 		DEFAULT_KEY_SIZE = 4096

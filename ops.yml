@@ -7,6 +7,8 @@ dependencies:
     - bundle install --quiet
   brew:
     - hyperfine
+  dir:
+    - benchmark
 forwards:
   p: platforms
 actions:

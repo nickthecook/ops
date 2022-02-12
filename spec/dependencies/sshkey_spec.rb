@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'dependencies/sshkey'
-
 RSpec.describe Dependencies::Sshkey do
 	subject { described_class.new(name) }
 

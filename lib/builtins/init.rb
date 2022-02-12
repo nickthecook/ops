@@ -2,9 +2,6 @@
 
 require 'fileutils'
 
-require 'builtin'
-require 'output'
-
 module Builtins
 	class Init < Builtin
 		OPS_YML = "ops.yml"

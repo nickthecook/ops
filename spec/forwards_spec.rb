@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'forwards'
-
 RSpec.describe Forwards do
 	subject { described_class.new(config, args) }
 

@@ -2,9 +2,6 @@
 
 require 'concurrent'
 
-require 'builtin'
-require 'output'
-
 module Builtins
 	class Countdown < Builtin
 		USAGE_STRING = "Usage: ops countdown <seconds>"

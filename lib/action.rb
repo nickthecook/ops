@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'secrets'
-
 # represents one action to be performed in the shell
 # can assemble a command line from a command and args
 class Action

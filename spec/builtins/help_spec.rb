@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'builtins/help'
-
 RSpec.describe Builtins::Help do
 	subject { described_class.new(args, config) }
 	let(:args) { [] }

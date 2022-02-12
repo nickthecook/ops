@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'builtin'
-
 RSpec.describe Builtin do
 	subject { described_class.new([], {}) }
 

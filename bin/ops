@@ -31,7 +31,6 @@ end
 
 Profiler.measure("bin:require") do
 	require_relative "../loader"
-	require 'ops'
 end
 
 Profiler.measure("bin:run") do

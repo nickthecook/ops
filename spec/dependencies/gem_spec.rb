@@ -2,8 +2,6 @@
 
 require 'ostruct'
 
-require 'dependencies/gem'
-
 RSpec.describe Dependencies::Gem do
 	subject { described_class.new(name) }
 	let(:name) { "some-gem" }

@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
-require 'builtin'
-
 module Builtins
-	class Background < Builtin
+	class Background < ::Builtin
 		DEFAULT_LOG_FILE_PREFIX = "/tmp/ops_bglog_"
 
 		class << self

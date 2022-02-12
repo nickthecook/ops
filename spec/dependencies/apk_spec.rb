@@ -2,8 +2,6 @@
 
 require 'ostruct'
 
-require 'dependencies/apt'
-
 RSpec.describe Dependencies::Apk do
 	subject { described_class.new(name) }
 	let(:name) { "some-dependency" }

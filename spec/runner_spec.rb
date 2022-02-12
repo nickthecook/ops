@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'runner'
-
 RSpec.describe Runner do
 	subject { described_class.new(action_name, args, config, config_path) }
 

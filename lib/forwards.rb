@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'forward'
-
 class Forwards
 	def initialize(config, args = [])
 		@config = config

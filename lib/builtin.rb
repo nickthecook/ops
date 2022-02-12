@@ -14,9 +14,7 @@ class Builtin
 
 		def class_for(name:)
 			file = file_for(name: name)
-			if File.exist?(file)
-				require file
-			else
+			unless File.exist?(file)
 				require 'require_all'
 				require_rel "builtins"
 			end

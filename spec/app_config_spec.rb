@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'app_config'
-
 RSpec.describe AppConfig do
 	let(:config) do
 		{

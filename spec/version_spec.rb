@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'version'
-
 RSpec.describe Version do
 	let(:gemspec_double) { instance_double(Gem::Specification, version: "1.2.3") }
 

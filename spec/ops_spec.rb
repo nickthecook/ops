@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'ops'
-
 RSpec.describe Ops do
 	subject { described_class.new(argv) }
 	let(:input) { "test" }

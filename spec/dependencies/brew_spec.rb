@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'dependencies/brew'
-
 RSpec.describe Dependencies::Brew do
 	subject { described_class.new(name) }
 	let(:name) { "some-dependency" }

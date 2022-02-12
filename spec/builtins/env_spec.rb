@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'builtins/env'
-
 RSpec.describe Builtins::Env do
 	subject { described_class.new(args, config) }
 	let(:args) { [] }

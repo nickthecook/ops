@@ -2,6 +2,8 @@
 
 require 'pry-byebug'
 
+require_relative '../loader.rb'
+
 ENV['environment'] = "test"
 ENV['EJSON_KEYDIR'] = "./spec/ejson_keys"
 
@@ -20,7 +22,4 @@ RSpec.configure do |config|
 	Kernel.srand config.seed
 end
 
-require 'output'
 Output.silence
-
-require 'profiler'

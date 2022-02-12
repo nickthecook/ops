@@ -2,8 +2,6 @@
 
 require 'ostruct'
 
-require 'dependencies/pip'
-
 RSpec.describe Dependencies::Pip do
 	subject { described_class.new(name) }
 	let(:name) { "some-dependency" }
