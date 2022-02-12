@@ -181,5 +181,5 @@ class Benchmarker
 	end
 end
 
-`rm -f benchmark/*` unless %w[--skip -s].include?(ARGV[0])
+`rm -f benchmark/*.json benchmark/*.md` unless %w[--skip -s].include?(ARGV[0])
 puts Benchmarker.new("ops", "bin/ops").summary
