@@ -69,4 +69,5 @@ ops.out
 spec/e2e/hooks/before_hook_*
 
 # performance testing artefacts
-benchmark/*
+benchmark/*.json
+benchmark/*.md

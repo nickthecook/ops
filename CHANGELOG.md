@@ -1,3 +1,47 @@
+## 1.16.0.pre.rc1
+
+#### Use zeitwerk for performance reasons
+
+Here's the new benchmark output against 1.15.0.pre.rc2:
+
+> Green numbers are at least 10% better than in previous version; red are 10% worse.
+
+![](benchmark/bench_1.15_vs_1.16.png)
+
+Against 1.14.1:
+
+![](benchmark/bench_1.14_vs_1.16.png)
+
+Against 1.13.1:
+
+![](benchmark/bench_1.13_vs_1.16.png)
+
+Although that last one is not really fair, as it's comparing the last version without any performance optimization, it does illustrate the gain in switching from just requiring all required files at the top of every source file to zeitwerk.
+
+#### Add profiler
+
+This release also includes the basic profiling code that identified `require`s as the biggest time consumer in `ops`.
+
+Set `OPS_PROFILE` to anything and you will get profiling data on STDERR:
+
+![](changes/profiler.png)
+
+Check the code for specifics, but `bin:` tags are blocks in `bin/ops`. `bin:run` happens inside `bin:all`, and `runner:run` happens inside `bin:run`.
+
+`runner:require_builtin` receives special attention from the profiler since that's where the big hit was in performance. That was over half a second in 1.13.0.
+
+#### Add benchmarks
+
+As seen above, `ops benchmark` was also added in this release. It will use [hyperfine](https://github.com/sharkdp/hyperfine) to benchmark the installed version of `ops` and compare to `bin/ops`.
+
+It's interesting to build and install a gem, then run `ops benchmark`, effectively comparing the same code, but one with gem loading overhead and one without:
+
+![](changes/benchmark.png)
+
+This shows a 100ms overhead to running anything via the gem compared to just running `bin/ops`. The `Avg difference` stat is calculated so you can get a feel for what this overhead is on your machine. Keep it in mind when looking at the output of `ops benchmark`, including the above images.
+
+A future version may build and install `ops` and run the current code as a gem to remove this unfair advantage.
+
 ## 1.14.1
 
 #### Fix `ops help` output
