@@ -25,7 +25,7 @@ class Builtin
 		private
 
 		def get_const(name:)
-			Builtins.const_get(name)
+			Builtins.const_get(name, false)
 		rescue NameError
 			# no such constant
 			nil
