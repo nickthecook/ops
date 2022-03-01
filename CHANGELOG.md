@@ -1,4 +1,4 @@
-## 1.16.0.pre.rc1
+## 1.16.1.pre.rc1
 
 #### Use zeitwerk for performance reasons
 
@@ -17,6 +17,8 @@ Against 1.13.1:
 ![](benchmark/bench_1.13_vs_1.16.png)
 
 Although that last one is not really fair, as it's comparing the last version without any performance optimization, it does illustrate the gain in switching from just requiring all required files at the top of every source file to zeitwerk.
+
+> These benchmarks were run on a machine with a security app that scans every file as its opened. Therefore, performance is a bit worse that it would be otherwise, and the difference between most builtins and `ops help`, which opens a dozen or so more `.rb` files than other builtins, is significantly exaggerated.
 
 #### Add profiler
 
