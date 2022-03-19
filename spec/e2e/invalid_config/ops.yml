@@ -1,0 +1,4 @@
+actions:
+  one:
+    command: echo one
+
