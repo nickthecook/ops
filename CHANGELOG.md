@@ -1,4 +1,4 @@
-## 1.16.1.pre.rc1
+## 1.16.1
 
 #### Use zeitwerk for performance reasons
 
