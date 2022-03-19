@@ -17,7 +17,7 @@ actions:
     alias: t
     description: runs unit tests
   test-watch:
-    command: rerun --no-notify -x bin/ops test
+    command: rerun -qb --no-notify -x bin/ops test
     alias: tw
     description: runs unit tests every time a file changes
   test-e2e:
@@ -26,7 +26,7 @@ actions:
     not_in_envs:
       - production
   test-e2e-watch:
-    command: rerun --no-notify -x ops test-e2e
+    command: rerun -qb --no-notify -x ops test-e2e
     alias: ew
   tag:
     command: "bin/tag"

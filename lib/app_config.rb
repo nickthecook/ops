@@ -42,7 +42,14 @@ class AppConfig
 	private
 
 	def config
-		@config ||= file_contents ? YAML.safe_load(file_contents) : {}
+		@config ||= if file_contents == ""
+			Output.warn("Config file '#{@filename}' exists but is empty.")
+			{}
+		elsif file_contents
+			YAML.safe_load(file_contents)
+		else
+			{}
+		end
 	rescue YAML::SyntaxError => e
 		raise ParsingError, "#{@filename}: #{e}"
 	end

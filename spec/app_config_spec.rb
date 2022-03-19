@@ -32,12 +32,12 @@ RSpec.describe AppConfig do
 			result
 		end
 
-		it "does not set environment variabls for keys outside 'environment'" do
+		it "does not set environment variables for keys outside 'environment'" do
 			expect(ENV).not_to receive(:[]=).with("KEY3", anything)
 			result
 		end
 
-		context "when ejson file does not exist" do
+		context "when json file does not exist" do
 			before do
 				allow(File).to receive(:open).and_raise(Errno::ENOENT, "NOPE")
 			end
@@ -49,6 +49,20 @@ RSpec.describe AppConfig do
 			it "does not set any environment variables" do
 				expect(ENV).not_to receive(:[]=).with("KEY1", anything)
 				expect(ENV).not_to receive(:[]=).with("KEY2", anything)
+				result
+			end
+		end
+
+		context "when file is empty" do
+			let(:config) { "" }
+
+			it "outputs a warning" do
+				expect(Output).to receive(:warn).with("Config file 'config/test/config.json' exists but is empty.")
+				result
+			end
+
+			it "returns an empty config hash" do
+				expect(ENV).not_to receive(:[]=)
 				result
 			end
 		end
