@@ -1,3 +1,20 @@
+## 1.16.2.rc1
+
+#### Output warning instead of stack trace on empty config file
+
+When an environment config or secrets file exists but is empty, `ops` used to print a stack trace and exit (https://github.com/nickthecook/ops/issues/69).
+
+Now `ops` prints a warning and proceeds for empty config and plain JSON secrets files:
+
+```
+$ ops exec 'echo hello, world'
+Config file 'config/test/config.json' exists but is empty.
+Config file 'config/test/secrets.json' exists but is empty.
+hello, world
+```
+
+Empty `secrets.ejson` files did not cause a stack trace or print a warning before, and the behaviour of `ops` in this case is unchanged.
+
 ## 1.16.1
 
 #### Use zeitwerk for performance reasons

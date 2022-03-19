@@ -1,4 +1,6 @@
 actions:
   one:
     command: echo one
-
+options:
+  exec:
+    load_secrets: true

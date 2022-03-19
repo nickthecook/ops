@@ -9,14 +9,19 @@ RSpec.describe "environment_loading" do
 
 		remove_untracked_files
 
-		@output, @output_file, @exit_status = run_ops("../../../bin/ops version")
+		@output, @output_file, @exit_status = run_ops("../../../bin/ops exec 'echo hello'")
 	end
 
 	it "succeeds" do
 		expect(@exit_status).to eq(0)
 	end
 
-	it "outputs a warning" do
+	it "outputs a warning for empty config" do
+		require 'pry-byebug'
 		expect(@output).to match(/Config file 'config\/test\/config.json' exists but is empty./)
+	end
+
+	it "outputs a warning for empty secrets" do
+		expect(@output).to match(/Config file 'config\/test\/secrets.json' exists but is empty./)
 	end
 end

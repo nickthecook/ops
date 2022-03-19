@@ -108,6 +108,26 @@ RSpec.describe Secrets do
 					end
 				end
 			end
+
+			context "when secrets file is empty" do
+				let(:ejson_file_exists) { false }
+				let(:json_file_exists) { true }
+				let(:file_double) { instance_double(File, read: "") }
+
+				before do
+					allow(File).to receive(:open).with("config/test/secrets.json").and_return(file_double)
+				end
+
+				it "outputs a warning" do
+					expect(Output).to receive(:warn).with("Config file 'config/test/secrets.json' exists but is empty.")
+					result
+				end
+
+				it "returns an empty config hash" do
+					expect(ENV).not_to receive(:[]=)
+					result
+				end
+			end
 		end
 
 		context "when given filename" do
