@@ -1,4 +1,4 @@
-## 1.16.2.rc1
+## 1.16.2
 
 #### Output warning instead of stack trace on empty config file
 
