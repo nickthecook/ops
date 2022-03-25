@@ -1,3 +1,20 @@
+## 1.17.0.rc1
+
+#### One-line actions
+
+Actions like this:
+
+```yaml
+test:
+  command: bundle exec rspec
+```
+
+can now be written like this:
+
+```yaml
+test: bundle exec rspec
+```
+
 ## 1.16.2
 
 #### Output warning instead of stack trace on empty config file

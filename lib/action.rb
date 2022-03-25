@@ -36,6 +36,8 @@ class Action
 	end
 
 	def command
+		return @config if @config.is_a?(String)
+
 		@config["command"]
 	end
 
@@ -55,7 +57,7 @@ class Action
 		@config_errors ||= begin
 			errors = []
 
-			errors << "No 'command' specified in 'action'." unless @config['command']
+			errors << "No 'command' specified in 'action'." unless command
 
 			errors
 		end

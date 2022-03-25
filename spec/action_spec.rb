@@ -85,6 +85,10 @@ RSpec.describe Action do
 		let(:action_config) { { "alias" => "nope", "description" => "nope" } }
 	end
 
+	shared_context "config is string" do
+		let(:action_config) { "echo hi there" }
+	end
+
 	describe "#config_valid?" do
 		let(:result) { subject.config_valid? }
 
@@ -97,6 +101,14 @@ RSpec.describe Action do
 
 			it "returns false" do
 				expect(result).to be false
+			end
+		end
+
+		context "when config is just a string" do
+			include_context "config is string"
+
+			it "returns true" do
+				expect(result).to be true
 			end
 		end
 	end
@@ -113,6 +125,14 @@ RSpec.describe Action do
 
 			it "returns an error about 'command' missing" do
 				expect(result).to include("No 'command' specified in 'action'.")
+			end
+		end
+
+		context "when config is just a string" do
+			include_context "config is string"
+
+			it "returns nil" do
+				expect(result).to be_empty
 			end
 		end
 	end

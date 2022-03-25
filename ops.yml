@@ -72,8 +72,7 @@ actions:
   install-nodejs:
     command: nvm install 14
     skip_in_envs: [ci]
-  benchmark:
-    command: bin/benchmark
+  benchmark: bin/benchmark
 options:
   gem:
     use_sudo: false
