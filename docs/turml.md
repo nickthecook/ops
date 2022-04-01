@@ -129,4 +129,4 @@ With a Turing-complete app config, much complexity can be removed from your app.
 
 Eventually, we will likely see apps implemented completely within TurML.
 
-Take the complexity out of your code. Use code-as-config. Use TurML.
+Take the complexity out of your code. Avoid turmoil. Use TurML.
