@@ -53,6 +53,29 @@ With this config, `ops up` will run `gem install ejson` to install the `ejson` g
 
 `user_install: true` causes `ops up` to run `gem install --user-install ejson`.
 
+### `snap`
+
+```yaml
+dependencies:
+  snap:
+    - mosquitto
+```
+
+`snap` seems to require sudo on most distros by default, so `ops` will use `sudo` by default. Options supported by the `snap` dependency are:
+
+```yaml
+options:
+  snap:
+    use_sudo: false  # default is true
+    install: true  # default is false
+```
+
+Unlike `apt`, `brew`, or `apk`, `snap` may be present on any Linux system, and its presence alone probably shouldn't be taken as a sign that `ops` should install every snap listed in `dependencies`. Therefore, `ops` will never install snaps unless the `snap.install` option is `true`.
+
+For example, on Solus Linux, `snap` is necessary to install the `mosquitto` MQTT broker, but on Debian I would `apt install mosquitto-tools` instead. So both of these dependencies would be listed in the `ops.yml`. However, I may still have `snap` present; I just wouldn't want `ops` to install snaps unless I told it to, or it would install both the apt package and the snap.
+
+Managing these options via hard-coded strings in `ops.yml` isn't the best solution, however; this file is checked in, but whether or not to install snaps should be based on environment. In the future, `ops` will support using env vars to set any option, based on a scheme like `apt.use_sudo` == `$APT__USE_SUDO`.
+
 ### `docker`
 
 E.g.:

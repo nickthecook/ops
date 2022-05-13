@@ -1,3 +1,38 @@
+## 1.18.0
+
+#### snap support
+
+`ops` now supports installing `snap`s as project dependencies.
+
+```yaml
+dependencies:
+  snap:
+    - mosquitto
+```
+
+`snap` seems to require sudo on most distros by default, so `ops` will use `sudo` by default. Options supported by the `snap` dependency are:
+
+```yaml
+options:
+  snap:
+    use_sudo: false  # default is true
+    install: true  # default is false
+```
+
+Unlike `apt`, `brew`, or `apk`, `snap` may be present on any Linux system, and its presence alone probably shouldn't be taken as a sign that `ops` should install every snap listed in `dependencies`. Therefore, `ops` will never install snaps unless the `snap.install` option is `true`.
+
+For example, on Solus Linux, `snap` is necessary to install the `mosquitto` MQTT broker, but on Debian I would `apt install mosquitto-tools` instead. So both of these dependencies would be listed in the `ops.yml`. However, I may still have `snap` present; I just wouldn't want `ops` to install snaps unless I told it to, or it would install both the apt package and the snap.
+
+To make `ops` install snaps on some systems, put something like this in `ops.yml`:
+
+```yaml
+options:
+  snap:
+    install: grep -q Solus /etc/lsb-release
+```
+
+or whatever makes sense for your project.
+
 ## 1.17.0
 
 #### One-line actions
