@@ -113,7 +113,7 @@ RSpec.describe Dependencies::Apt do
 		context "Darwin kernel is running" do
 			let(:uname) { "Darwin\n" }
 
-			it "returns true" do
+			it "returns false" do
 				expect(result).to be false
 			end
 		end
