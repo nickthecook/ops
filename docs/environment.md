@@ -32,7 +32,7 @@ If any `environment_aliases` are specified in `ops.yml`, `ops` will not change t
 
 E.g.:
 
-```json
+```yaml
 options:
   environment:
     EJSON_KEYDIR: "./spec/ejson_keys"

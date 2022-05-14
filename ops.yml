@@ -5,6 +5,7 @@ dependencies:
     - ejson
   custom:
     - bundle install --quiet
+    - false
   brew:
     - hyperfine
   dir:

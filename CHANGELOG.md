@@ -1,3 +1,30 @@
+## 1.19.0.rc1
+
+#### Setting options via environment variable
+
+`ops` supports a number of options that change its default behaviour. Previously, these options could only be specified in the `options` section of `ops.yml`, which is a file that is likely to be tracked by git.
+
+This means that options could not easily be set differently on different machines in the same project. That made it difficult to work on different Linux machines if, e.g., one machine needed `sudo` to install some dependencies and the other machine did not.
+
+`ops` now supports using environment variables to set options. For these options in `ops.yml`:
+
+```yaml
+options:
+	apt:
+		use_sudo: false
+	snap:
+		install: true
+```
+
+the equivalent environment variables would be:
+
+```
+OPS__APT__USE_SUDO=false
+OPS__SNAP__INSTALL=true
+```
+
+See [Options](docs/options.md) for details.
+
 ## 1.18.0
 
 #### snap support
