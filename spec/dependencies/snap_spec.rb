@@ -12,6 +12,7 @@ RSpec.describe Dependencies::Snap do
 		before do
 			allow(subject).to receive(:system).with(/^snap list/).and_return(snap_installed)
 			allow(subject).to receive(:execute)
+			ENV["OPS__APT__USE_SUDO"] = "false"
 		end
 
 		it "returns true" do
