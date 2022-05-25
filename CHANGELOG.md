@@ -1,4 +1,4 @@
-## 1.19.0.rc1
+## 1.19.0
 
 #### Setting options via environment variable
 
