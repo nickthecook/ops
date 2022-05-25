@@ -10,10 +10,10 @@ This means that options could not easily be set differently on different machine
 
 ```yaml
 options:
-	apt:
-		use_sudo: false
-	snap:
-		install: true
+  apt:
+    use_sudo: false
+  snap:
+    install: true
 ```
 
 the equivalent environment variables would be:
@@ -49,16 +49,6 @@ options:
 Unlike `apt`, `brew`, or `apk`, `snap` may be present on any Linux system, and its presence alone probably shouldn't be taken as a sign that `ops` should install every snap listed in `dependencies`. Therefore, `ops` will never install snaps unless the `snap.install` option is `true`.
 
 For example, on Solus Linux, `snap` is necessary to install the `mosquitto` MQTT broker, but on Debian I would `apt install mosquitto-tools` instead. So both of these dependencies would be listed in the `ops.yml`. However, I may still have `snap` present; I just wouldn't want `ops` to install snaps unless I told it to, or it would install both the apt package and the snap.
-
-To make `ops` install snaps on some systems, put something like this in `ops.yml`:
-
-```yaml
-options:
-  snap:
-    install: grep -q Solus /etc/lsb-release
-```
-
-or whatever makes sense for your project.
 
 ## 1.17.0
 
