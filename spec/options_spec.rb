@@ -34,11 +34,7 @@ RSpec.describe Options do
 			let(:use_sudo) { "true" }
 
 			before do
-				ENV["OPS__SNAP__USE_SUDO"] = use_sudo
-			end
-
-			after do
-				ENV["OPS__SNAP__USE_SUDO"] = nil
+				allow(ENV).to receive(:[]).with("OPS__SNAP__USE_SUDO").and_return(use_sudo)
 			end
 
 			it "checks for the env var equivalent of the option" do
