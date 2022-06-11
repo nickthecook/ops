@@ -1,3 +1,13 @@
+## 1.19.1.rc1
+
+#### $OPS_CONFIG and $OPS_SECRETS now set correctly when using config path options
+
+`ops` sets `$OPS_CONFIG` and `$OPS_SECRETS` to the path to the config and secrets files, respectively. The path from which `ops` will load config and secrets files can be overridden with the options `config.path` and `secrets.path`, respectively.
+
+Previously, when setting one of the config path options, the corresponding environment variable would still be set to the default path, not the overridden path. This fixes that, and the config and secrets path `ops` is actually using will be reflected in these environment variables.
+
+Fixes #73.
+
 ## 1.19.0
 
 #### Setting options via environment variable
