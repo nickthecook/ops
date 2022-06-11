@@ -57,6 +57,7 @@ RSpec.describe Environment do
 			let(:aliases) { %w[ENV RAILS_ENV] }
 
 			before do
+				allow(Options).to receive(:get).and_call_original
 				allow(Options).to receive(:get).with("environment_aliases").and_return(aliases)
 			end
 
@@ -77,6 +78,30 @@ RSpec.describe Environment do
 
 			it "expands the variables" do
 				expect(ENV).to receive(:[]=).with("namespace", "nick-test")
+				result
+			end
+		end
+
+		context "when config path option is set" do
+			before do
+				allow(Options).to receive(:get).and_call_original
+				allow(Options).to receive(:get).with("config.path").and_return("config/test.json")
+			end
+
+			it "sets OPS_CONFIG_FILE to the value given in the option" do
+				expect(ENV).to receive(:[]=).with("OPS_CONFIG_FILE", "config/test.json")
+				result
+			end
+		end
+
+		context "when config path option is set" do
+			before do
+				allow(Options).to receive(:get).and_call_original
+				allow(Options).to receive(:get).with("secrets.path").and_return("config/test.ejson")
+			end
+
+			it "sets OPS_CONFIG_FILE to the value given in the option" do
+				expect(ENV).to receive(:[]=).with("OPS_SECRETS_FILE", "config/test.ejson")
 				result
 			end
 		end

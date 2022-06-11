@@ -18,19 +18,15 @@ class AppConfig
 			"config/#{env}/config.json"
 		end
 
-		private
-
 		def app_config_path
-			expand_path(Options.get("config.path"))
+			expand_path(Options.get("config.path") || default_filename)
 		end
+
+		private
 
 		def expand_path(path)
 			`echo #{path}`.chomp
 		end
-	end
-
-	def initialize(filename = "")
-		@filename = filename.empty? ? AppConfig.default_filename : filename
 	end
 
 	def load
@@ -40,6 +36,10 @@ class AppConfig
 	end
 
 	private
+
+	def initialize(filename = "")
+		@filename = filename
+	end
 
 	def config
 		@config ||= if file_contents == ""

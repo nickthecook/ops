@@ -25,8 +25,8 @@ class Environment
 	def set_ops_variables
 		ENV["OPS_YML_DIR"] = File.dirname(@config_path)
 		ENV["OPS_VERSION"] = Version.version.to_s
-		ENV["OPS_SECRETS_FILE"] = Secrets.config_path_for(Environment.environment)
-		ENV["OPS_CONFIG_FILE"] = AppConfig.config_path_for(Environment.environment)
+		ENV["OPS_SECRETS_FILE"] = Secrets.app_config_path
+		ENV["OPS_CONFIG_FILE"] = AppConfig.app_config_path
 	end
 
 	def set_environment_aliases

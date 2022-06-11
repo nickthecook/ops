@@ -13,6 +13,10 @@ class Secrets < AppConfig
 			File.exist?(ejson_path_for(env)) ? ejson_path_for(env) : json_path_for(env)
 		end
 
+		def app_config_path
+			expand_path(Options.get("secrets.path") || default_filename)
+		end
+
 		private
 
 		def ejson_path_for(env)
@@ -21,10 +25,6 @@ class Secrets < AppConfig
 
 		def json_path_for(env)
 			"config/#{env}/secrets.json"
-		end
-
-		def app_config_path
-			expand_path(Options.get("secrets.path"))
 		end
 	end
 

@@ -18,8 +18,8 @@ RSpec.describe AppConfig do
 		allow(File).to receive(:open).and_return(file_double)
 	end
 
-	describe "#load" do
-		let(:result) { subject.load }
+	describe ".load" do
+		let(:result) { described_class.load }
 
 		it "loads data from the default file" do
 			expect(File).to receive(:open).with("config/test/config.json")
@@ -67,8 +67,10 @@ RSpec.describe AppConfig do
 			end
 		end
 
-		context "when given filename" do
-			subject { described_class.new("config-test.json") }
+		context "when config path option is set" do
+			before do
+				allow(Options).to receive(:get).with("config.path").and_return("config-test.json")
+			end
 
 			it "loads the correct file" do
 				expect(File).to receive(:open).with("config-test.json")
@@ -134,6 +136,24 @@ RSpec.describe AppConfig do
 			it "encodes the hash as JSON" do
 				expect(ENV).to receive(:[]=).with("key1", "{\"key2\":\"val1\"}")
 				result
+			end
+		end
+	end
+
+	describe ".app_config_path" do
+		let(:result) { AppConfig.app_config_path }
+
+		it "returns default config path" do
+			expect(result).to eq("config/test/config.json")
+		end
+
+		context "when config path option is set" do
+			before do
+				allow(Options).to receive(:get).with("config.path").and_return("config-test.json")
+			end
+
+			it "returns the path from the option" do
+				expect(result).to eq("config-test.json")
 			end
 		end
 	end
