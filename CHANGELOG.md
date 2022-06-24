@@ -1,4 +1,4 @@
-## 1.19.1.rc1
+## 1.19.1
 
 #### $OPS_CONFIG and $OPS_SECRETS now set correctly when using config path options
 
