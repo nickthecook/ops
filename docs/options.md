@@ -20,7 +20,7 @@ For the above YAML options, the equivalent environment variables would be:
 
 ```
 OPS__APT__USE_SUDO=false
-OPS__EXEC_LOAD_SECRETS=true
+OPS__EXEC__LOAD_SECRETS=true
 ```
 
 All option variable names are prefixed with `OPS` and each level of nesting in the YAML option translates to two underscores.
