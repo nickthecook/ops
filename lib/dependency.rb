@@ -46,6 +46,10 @@ class Dependency
 		@executor.nil? ? true : @executor.success?
 	end
 
+	def failure?
+		!success?
+	end
+
 	def output
 		@executor&.output
 	end

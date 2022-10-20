@@ -24,6 +24,8 @@ module Builtins
 					Output.status("[#{dependency.type}] #{dependency.name}")
 
 					meet_dependency(dependency)
+
+					break if dependency.failure? && exit_on_error?
 				end
 			end
 
@@ -55,6 +57,10 @@ module Builtins
 
 			def fail_on_error?
 				Options.get("up.fail_on_error") || false
+			end
+
+			def exit_on_error?
+				Options.get("up.exit_on_error") || false
 			end
 		end
 	end

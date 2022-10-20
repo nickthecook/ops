@@ -42,6 +42,7 @@ RSpec.describe Builtins::Common::UpDown do
 				should_meet?: should_meet?,
 				always_act?: always_act?,
 				success?: dependency_success,
+				failure?: !dependency_success,
 				name: "ridiculous_package",
 				type: "apk",
 				output: "oops!"
@@ -55,7 +56,6 @@ RSpec.describe Builtins::Common::UpDown do
 		before do
 			allow(Dependencies).to receive(:const_get).and_return(dependency_class_double)
 			allow(dependency_class_double).to receive(:new).and_return(dependency_double)
-			allow(dependency_double)
 		end
 
 		it "Looks for a class to handle the dependency" do
@@ -96,11 +96,38 @@ RSpec.describe Builtins::Common::UpDown do
 
 			context "when configured to fail on error" do
 				before do
+					allow(Options).to receive(:get).with("up.exit_on_error").and_call_original
 					allow(Options).to receive(:get).with("up.fail_on_error").and_return(true)
 				end
 
 				it "returns false" do
 					expect(result).to be false
+				end
+
+				context "when configured to exit on error" do
+					before do
+						allow(Options).to receive(:get).with("up.exit_on_error").and_return(true)
+					end
+
+					it "returns false" do
+						expect(result).to be false
+					end
+
+					it "does not try to meet any more dependencies" do
+						expect(dependency_double).to receive(:meet).once
+						result
+					end
+				end
+			end
+
+			context "when configured to exit on error but not fail on error" do
+				before do
+					allow(Options).to receive(:get).with("up.fail_on_error").and_return(false)
+					allow(Options).to receive(:get).with("up.exit_on_error").and_return(true)
+				end
+
+				it "returns true" do
+					expect(result).to be true
 				end
 			end
 		end

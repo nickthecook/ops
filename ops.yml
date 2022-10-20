@@ -5,6 +5,7 @@ dependencies:
     - ejson
   custom:
     - bundle install --quiet
+    - false
   brew:
     - hyperfine
   dir:
@@ -100,3 +101,4 @@ options:
     use_sudo: false
   up:
     fail_on_error: true
+    exit_on_error: true

@@ -31,6 +31,10 @@ RSpec.describe Dependencies::Snap do
 	describe '#meet' do
 		let(:result) { subject.meet }
 
+		before do
+			allow(Options).to receive(:get).with("snap.use_sudo").and_return(true)
+		end
+
 		it "calls snap to install the package" do
 			expect(subject).to receive(:execute).with("sudo snap install some-dependency")
 			result
