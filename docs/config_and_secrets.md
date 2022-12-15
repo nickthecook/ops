@@ -97,3 +97,16 @@ options:
     load_secrets: true
 ```
 
+## Options
+
+Setting the `config.preserve_existing_env_vars` option will cause `ops` to only set environment variables from config _and_ secrets if the variable is not already set:
+
+```yaml
+options:
+  config:
+    preserve_existing_env_vars: true
+```
+
+This can be useful when deploying a containerized app and having environment variables set in, e.g., `docker-compose.yml` or the Kubernetes environment override any config and secrets files built into the container.
+
+> Note that this option enables this behaviour for both config _and_ secrets!

@@ -54,6 +54,12 @@ class Output
 			@out.print(msg)
 		end
 
+		def debug(msg)
+			return unless ENV["OPS_DEBUG_OUTPUT"]
+
+			@err.puts(msg.blue)
+		end
+
 		def silence
 			@out = @err = dummy_output
 		end

@@ -18,6 +18,7 @@ RSpec.describe Secrets do
 	before do
 		allow(File).to receive(:exist?).with("config/test/secrets.ejson").and_return(ejson_file_exists)
 		allow(File).to receive(:exist?).with("config/test/secrets.json").and_return(json_file_exists)
+		allow(ENV).to receive(:[]=).and_return(nil)
 	end
 
 	describe ".load" do

@@ -31,6 +31,11 @@ class AppConfig
 
 	def load
 		config['environment']&.each do |key, value|
+			if Options.get("config.preserve_existing_env_vars") && ENV[key]
+				Output.debug("Environment variable '$#{key}' already set; skipping...")
+				next
+			end
+
 			ENV[key] = value.is_a?(Hash) || value.is_a?(Array) ? value.to_json : value.to_s
 		end
 	end

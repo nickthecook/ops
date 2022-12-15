@@ -16,6 +16,7 @@ RSpec.describe AppConfig do
 
 	before do
 		allow(File).to receive(:open).and_return(file_double)
+		allow(Options).to receive(:get).and_call_original
 	end
 
 	describe ".load" do
@@ -136,6 +137,31 @@ RSpec.describe AppConfig do
 			it "encodes the hash as JSON" do
 				expect(ENV).to receive(:[]=).with("key1", "{\"key2\":\"val1\"}")
 				result
+			end
+		end
+
+		context "when environment variable is already set" do
+			before do
+				allow(ENV).to receive(:[]).and_call_original
+				allow(ENV).to receive(:[]).with("KEY1").and_return("already set")
+				allow(ENV).to receive(:[]).with("KEY2").and_return(nil)
+			end
+
+			it "sets environment variables for values in the 'environment' section" do
+				expect(ENV).to receive(:[]=).with("KEY1", "This is key 1")
+				expect(ENV).to receive(:[]=).with("KEY2", "This is key 2")
+				result
+			end
+
+			context "when option is set to preserve env vars" do
+				before do
+					allow(Options).to receive(:get).with("config.preserve_existing_env_vars").and_return(true)
+				end
+
+				it "only sets the variables that are not already set" do
+					expect(ENV).to receive(:[]=).with("KEY2", "This is key 2")
+					result
+				end
 			end
 		end
 	end
