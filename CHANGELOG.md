@@ -1,4 +1,4 @@
-## 1.20.1.rc1
+## 1.20.1
 
 - Setting the `config.preserve_existing_env_vars` option will cause `ops` to only set environment variables from config _and_ secrets if the variable is not already set.
 - Setting the environment variable `OPS_DEBUG_OUTPUT` to anything will cause `ops` to print debug messages; currently only used by the `preserve_existing_env_vars` feature to print when `ops` is not setting an environment variable.
