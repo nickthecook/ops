@@ -2,6 +2,6 @@ version: "3"
 services:
   ops-debian:
     build: '.'
-    image: 'ops-debian'
+    image: 'ops-ruby-2.7-bullseye'
     volumes:
       - '../..:/ops'

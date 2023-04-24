@@ -1,0 +1,7 @@
+version: "3"
+services:
+  ops-debian:
+    build: '.'
+    image: 'ops-ruby-3.2-buster'
+    volumes:
+      - '../..:/ops'

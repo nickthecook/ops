@@ -1,7 +1,7 @@
 min_version: 0.12.0
 dependencies:
 hooks:
-  before:
+  never:
     - for image in $TEST_PLATFORMS; do [ -n "`docker image ls -q $image`" ] || bin/build.sh $image; done
 actions:
   build:
