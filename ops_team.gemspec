@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
 	s.name = 'ops_team'
-	s.version = '1.20.1'
+	s.version = '1.20.3.rc1'
 	s.authors = [
 		'nickthecook@gmail.com'
 	]
@@ -29,7 +29,7 @@ Gem::Specification.new do |s|
 	s.add_runtime_dependency 'concurrent-ruby', '~> 1.1', '>= 1.1.7'
 	s.add_runtime_dependency 'ed25519', '~> 1.2', '>= 1.2.4'
 	s.add_runtime_dependency 'ejson', '~> 1.2', '>= 1.2.1'
-	s.add_runtime_dependency 'net-ssh', '~> 6.1', '>= 6.1.0'
+	s.add_runtime_dependency 'net-ssh', '~> 7.1', '>= 7.1.0'
 	s.add_runtime_dependency 'require_all', '~> 1.1', '>= 1.1.6'
 	s.add_runtime_dependency 'zeitwerk', '~> 2.5', '>= 2.5.3'
 	s.license = 'GPL-3.0-only'

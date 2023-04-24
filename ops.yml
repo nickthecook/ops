@@ -1,4 +1,6 @@
 dependencies:
+  sshkey:
+    - test
   gem:
     - bundler =2.2.22
     - rerun
@@ -87,6 +89,7 @@ options:
   environment:
     EJSON_KEYDIR: "./spec/ejson_keys"
     NAMESPACE: "$USER-$environment"
+    SSH_KEY_PASSPHRASE: test
   environment_aliases:
     - environment
     - ENV

@@ -72,3 +72,5 @@ spec/e2e/hooks/before_hook_*
 benchmark/*.json
 benchmark/*.md
 vendor
+/test
+/test.pub

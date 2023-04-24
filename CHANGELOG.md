@@ -1,3 +1,7 @@
+## 1.20.3
+
+- bump net-ssh to handle openssl3 compatibility
+
 ## 1.20.1
 
 - Setting the `config.preserve_existing_env_vars` option will cause `ops` to only set environment variables from config _and_ secrets if the variable is not already set.
