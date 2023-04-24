@@ -1,3 +1,7 @@
+## 1.20.2
+
+- ops is now using `ssh-keygen` instead of Net::SSH to decrypt and load passphrase-protected SSH keys, for better cross-platform and OpenSSL compatibility
+
 ## 1.20.1
 
 - Setting the `config.preserve_existing_env_vars` option will cause `ops` to only set environment variables from config _and_ secrets if the variable is not already set.

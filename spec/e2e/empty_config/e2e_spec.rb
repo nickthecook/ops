@@ -17,7 +17,6 @@ RSpec.describe "environment_loading" do
 	end
 
 	it "outputs a warning for empty config" do
-		require 'pry-byebug'
 		expect(@output).to match(/Config file 'config\/test\/config.json' exists but is empty./)
 	end
 

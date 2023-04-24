@@ -52,14 +52,16 @@ RSpec.describe Dependencies::Sshkey do
 		let(:key_generation_exit_status) { 0 }
 		let(:priv_key_exists) { false }
 		let(:pub_key_exists) { false }
+		let(:decrytpor_double) { instance_double(Dependencies::Helpers::SshKeyDecryptor, plaintext_key: unencrypted_key) }
 
 		before do
 			allow(Options).to receive(:get).with(anything).and_call_original
+			allow(File).to receive(:directory?).and_call_original
 			allow(File).to receive(:directory?).with("config/test").and_return(dir_exists)
 			allow(Net::SSH::Authentication::Agent).to receive(:connect).and_return(agent_double)
 			allow(agent_double).to receive(:add_identity)
 			allow(Open3).to receive(:capture2e).with(/ssh-keygen /).and_return(key_generation_return_value)
-			allow(Net::SSH::KeyFactory).to receive(:load_private_key).and_return(unencrypted_key)
+			allow(Net::SSH::KeyFactory).to receive(:load_data_private_key).and_return(unencrypted_key)
 			allow(Output).to receive(:warn)
 			allow(Ops).to receive(:project_name).and_return("some_project")
 
@@ -67,6 +69,8 @@ RSpec.describe Dependencies::Sshkey do
 			allow(File).to receive(:exist?)
 			allow(File).to receive(:exist?).with(priv_key_name).and_return(priv_key_exists)
 			allow(File).to receive(:exist?).with(pub_key_name).and_return(pub_key_exists)
+
+			allow(Dependencies::Helpers::SshKeyDecryptor).to receive(:new).and_return(decrytpor_double)
 		end
 
 		it "does not create the directory" do

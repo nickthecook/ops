@@ -18,9 +18,9 @@ RSpec.describe "help" do
 
 	it "includes help for builtins other than 'help'" do
 		# binding.pry
-		expect(@output).to match(/49mup\e/)
-		expect(@output).to match(/49mdown\e/)
-		expect(@output).to match(/49minit\e/)
-		expect(@output).to match(/49mexec\e/)
+		expect(@output).to match(/up\e/)
+		expect(@output).to match(/down\e/)
+		expect(@output).to match(/init\e/)
+		expect(@output).to match(/exec\e/)
 	end
 end

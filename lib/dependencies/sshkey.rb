@@ -54,7 +54,11 @@ module Dependencies
 		end
 
 		def unencrypted_key
-			Net::SSH::KeyFactory.load_private_key(priv_key_name, passphrase.empty? ? nil : passphrase)
+			Net::SSH::KeyFactory.load_data_private_key(decryptor.plaintext_key, nil)
+		end
+
+		def decryptor
+			@decryptor ||= Helpers::SshKeyDecryptor.new(priv_key_name, passphrase)
 		end
 
 		def key_comment
