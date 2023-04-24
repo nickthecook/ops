@@ -1,7 +1,0 @@
-version: "3"
-services:
-  ops-ubuntu1804:
-    build: '.'
-    image: 'ops-ubuntu1804'
-    volumes:
-      - '../..:/ops'

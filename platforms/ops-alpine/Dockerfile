@@ -10,6 +10,7 @@ RUN apk add openssh keychain
 RUN echo "PATH=\"$PATH:$(ruby -e 'puts Gem.user_dir')/bin\"" >> ~/.profile
 
 WORKDIR /ops
+RUN git config --global --add safe.directory /ops
 RUN gem install ops_team
 
 COPY entrypoint.sh /entrypoint.sh
