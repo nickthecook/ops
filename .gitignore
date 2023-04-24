@@ -71,3 +71,4 @@ spec/e2e/hooks/before_hook_*
 # performance testing artefacts
 benchmark/*.json
 benchmark/*.md
+vendor
