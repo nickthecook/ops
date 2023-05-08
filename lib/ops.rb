@@ -9,6 +9,8 @@ end
 Profiler.measure("ops:requires_internal") do
 end
 
+CONFIG_FILES = ["ops.yaml", "ops.yml"].freeze
+
 # executes commands based on local `ops.yml`
 class Ops
 	INVALID_SYNTAX_EXIT_CODE = 64
@@ -30,7 +32,7 @@ class Ops
 	def initialize(argv, config_file: nil)
 		@action_name = argv[0]
 		@args = argv[1..-1]
-		@config_file = config_file || "ops.yml"
+		@config_file = config_file || CONFIG_FILES.find { |file| File.exist?(file) } || "ops.yml"
 
 		Options.set(config["options"] || {})
 	end
