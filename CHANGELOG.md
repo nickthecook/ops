@@ -1,3 +1,7 @@
+## 1.21.0
+
+- prefer "ops.yaml" over "ops.yml` (fixes [issue #75](https://github.com/nickthecook/ops/issues/75))
+
 ## 1.20.3
 
 - bump net-ssh to handle openssl3 compatibility
