@@ -4,6 +4,8 @@
 
 [View on RubyGems.org](https://rubygems.org/gems/ops_team)
 
+> If you're on `ops` >= 2.0.0, you're running code from the [`crops`](https://github.com/nickthecook/crops) repo.
+
 `ops` is like an operations team for your project. It allows you to implement automation for your project in a simple and readable way.
 
 `ops` aims to be:
