@@ -5,7 +5,7 @@ Layout/IndentationWidth:
 Style/Documentation:
   Enabled: false
 AllCops:
-  TargetRubyVersion: 2.5
+  TargetRubyVersion: 2.6
 Style/StringLiterals:
   Enabled: false
 Style/HashEachMethods:

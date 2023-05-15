@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
 	s.name = 'ops_team'
-	s.version = '1.21.0'
+	s.version = '1.21.1'
 	s.authors = [
 		'nickthecook@gmail.com'
 	]
@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
 		'ops_team.gemspec'
 	]
 	s.executables << 'ops'
-	s.required_ruby_version = '> 2.5'
+	s.required_ruby_version = '> 2.6'
 	s.add_runtime_dependency 'bcrypt_pbkdf', '~> 1.0', '>= 1.0.1'
 	s.add_runtime_dependency 'colorize', '~> 0.8', '>= 0.8.1'
 	s.add_runtime_dependency 'concurrent-ruby', '~> 1.1', '>= 1.1.7'

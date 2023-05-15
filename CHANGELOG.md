@@ -1,3 +1,7 @@
+## 1.21.1
+
+- bump minimum Ruby version to 2.6; previous two releases are broken on 2.5 because new net-ssh min version needs 2.6
+
 ## 1.21.0
 
 - prefer "ops.yaml" over "ops.yml` (fixes [issue #75](https://github.com/nickthecook/ops/issues/75))
