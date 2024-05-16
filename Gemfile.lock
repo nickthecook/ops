@@ -43,7 +43,8 @@ GEM
     require_all (3.0.0)
     rerun (0.13.1)
       listen (~> 3.0)
-    rexml (3.2.5)
+    rexml (3.2.8)
+      strscan (>= 3.0.9)
     rspec (3.10.0)
       rspec-core (~> 3.10.0)
       rspec-expectations (~> 3.10.0)
@@ -69,6 +70,7 @@ GEM
     rubocop-ast (1.11.0)
       parser (>= 3.0.1.1)
     ruby-progressbar (1.11.0)
+    strscan (3.1.0)
     unicode-display_width (2.0.0)
     zeitwerk (2.5.3)
 
