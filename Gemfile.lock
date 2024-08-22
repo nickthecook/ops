@@ -43,7 +43,7 @@ GEM
     require_all (3.0.0)
     rerun (0.13.1)
       listen (~> 3.0)
-    rexml (3.3.3)
+    rexml (3.3.6)
       strscan
     rspec (3.10.0)
       rspec-core (~> 3.10.0)
